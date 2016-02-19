@@ -17,7 +17,7 @@ public class Image {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "IMAGE_ID")
-	private long id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ITEM_ID")

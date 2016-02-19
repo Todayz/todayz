@@ -16,5 +16,5 @@ public interface MemberService {
 	 */
 	public List<Member> findMembers();
 
-	public Member findOne(long id);
+	public Member findOne(Long id);
 }

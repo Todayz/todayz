@@ -24,7 +24,7 @@ public class Meeting {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "MEETING_ID")
-	private long id;
+	private Long id;
 
 	private String title;
 
@@ -35,7 +35,7 @@ public class Meeting {
 
 	private String attendCosts;
 
-	private long quota;
+	private Long quota;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLUB_ID")
@@ -46,4 +46,68 @@ public class Meeting {
 		joinColumns = @JoinColumn(name = "MEETING_ID") , 
 		inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> attachMembers;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Date getMeetingDate() {
+		return meetingDate;
+	}
+
+	public void setMeetingDate(Date meetingDate) {
+		this.meetingDate = meetingDate;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
+	public String getAttendCosts() {
+		return attendCosts;
+	}
+
+	public void setAttendCosts(String attendCosts) {
+		this.attendCosts = attendCosts;
+	}
+
+	public Long getQuota() {
+		return quota;
+	}
+
+	public void setQuota(Long quota) {
+		this.quota = quota;
+	}
+
+	public Club getParent() {
+		return parent;
+	}
+
+	public void setParent(Club parent) {
+		this.parent = parent;
+	}
+
+	public List<Member> getAttachMembers() {
+		return attachMembers;
+	}
+
+	public void setAttachMembers(List<Member> attachMembers) {
+		this.attachMembers = attachMembers;
+	}
 }

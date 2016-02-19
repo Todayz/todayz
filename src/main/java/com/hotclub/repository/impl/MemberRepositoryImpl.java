@@ -16,20 +16,46 @@ public class MemberRepositoryImpl implements MemberRepository {
 	@PersistenceContext
 	private EntityManager em;
 
+	@Override
 	public void save(Member member) {
-		em.persist(member);
+		if (member.getId() == null) {
+			em.persist(member);
+		} else {
+			em.merge(member);
+		}
+
 	}
 
-	public Member findOne(long id) {
+	@Override
+	public void delete(Long id) {
+		Member member = em.find(Member.class, id);
+		em.remove(member);
+	}
+
+	@Override
+	public Member findOne(Long id) {
 		return em.find(Member.class, id);
 	}
 
+	@Override
 	public List<Member> findAll() {
 		return em.createQuery("select m from Member m", Member.class).getResultList();
 	}
 
-	public List<Member> findByAuthId(String authId) {
+	@Override
+	public Member findByAuthId(String authId) {
 		return em.createQuery("select m from Member m where m.authId = :authId", Member.class)
-				.setParameter("authId", authId).getResultList();
+				.setParameter("authId", authId).getSingleResult();
 	}
+
+	@Override
+	public List<Member> findByClubId(Long clubId) {
+		return null;
+	}
+
+	@Override
+	public List<Member> findByMeetingId(Long meetingId) {
+		return null;
+	}
+
 }

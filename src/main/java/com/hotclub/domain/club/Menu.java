@@ -15,7 +15,7 @@ public class Menu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "MENU_ID")
-	private long id;
+	private Long id;
 
 	//private MenuType type;
 

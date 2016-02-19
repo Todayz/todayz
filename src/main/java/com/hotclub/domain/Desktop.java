@@ -12,7 +12,7 @@ public class Desktop {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "DESKTOP_ID")
-	private long id;
+	private Long id;
 
 	// private Member currentMember;
 	// @OneToMany(mappedBy = "parent")
