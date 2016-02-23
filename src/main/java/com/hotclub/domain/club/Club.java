@@ -14,12 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.hotclub.domain.Desktop;
 import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
 
@@ -40,10 +38,6 @@ public class Club {
 	@Lob
 	private String notice;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "DESKTOP_ID")
-	private Desktop parent;
-
 	// @OneToMany(mappedBy = "parent")
 	// private List<Meeting> meetings;
 
@@ -54,9 +48,7 @@ public class Club {
 	 * 이거 관련하여 테이블 하나 필요.
 	 **/
 	@ManyToMany
-	@JoinTable(name = "CLUB_AND_MEMBER",
-		joinColumns = @JoinColumn(name = "CLUB_ID") , 
-		inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
+	@JoinTable(name = "CLUB_AND_MEMBER", joinColumns = @JoinColumn(name = "CLUB_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> joiningMembers;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -64,7 +56,6 @@ public class Club {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedDate;
-
 
 	/**
 	 * @return the id
@@ -74,7 +65,8 @@ public class Club {
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(Long id) {
 		this.id = id;
@@ -88,7 +80,8 @@ public class Club {
 	}
 
 	/**
-	 * @param title the title to set
+	 * @param title
+	 *            the title to set
 	 */
 	public void setTitle(String title) {
 		this.title = title;
@@ -102,7 +95,8 @@ public class Club {
 	}
 
 	/**
-	 * @param mainImage the mainImage to set
+	 * @param mainImage
+	 *            the mainImage to set
 	 */
 	public void setMainImage(Image mainImage) {
 		this.mainImage = mainImage;
@@ -116,24 +110,11 @@ public class Club {
 	}
 
 	/**
-	 * @param notice the notice to set
+	 * @param notice
+	 *            the notice to set
 	 */
 	public void setNotice(String notice) {
 		this.notice = notice;
-	}
-
-	/**
-	 * @return the parent
-	 */
-	public Desktop getParent() {
-		return parent;
-	}
-
-	/**
-	 * @param parent the parent to set
-	 */
-	public void setParent(Desktop parent) {
-		this.parent = parent;
 	}
 
 	/**
@@ -144,7 +125,8 @@ public class Club {
 	}
 
 	/**
-	 * @param joiningMembers the joiningMembers to set
+	 * @param joiningMembers
+	 *            the joiningMembers to set
 	 */
 	public void setJoiningMembers(List<Member> joiningMembers) {
 		this.joiningMembers = joiningMembers;
@@ -158,7 +140,8 @@ public class Club {
 	}
 
 	/**
-	 * @param createdDate the createdDate to set
+	 * @param createdDate
+	 *            the createdDate to set
 	 */
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
@@ -172,7 +155,8 @@ public class Club {
 	}
 
 	/**
-	 * @param updatedDate the updatedDate to set
+	 * @param updatedDate
+	 *            the updatedDate to set
 	 */
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;

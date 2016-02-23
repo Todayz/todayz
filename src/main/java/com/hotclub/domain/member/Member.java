@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,7 @@ public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "MEMBER_ID")
 	private Long id;
 
 	private String authId;
@@ -222,5 +224,10 @@ public class Member {
 	 */
 	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", authId=" + authId + ", name=" + name + "]";
 	}
 }

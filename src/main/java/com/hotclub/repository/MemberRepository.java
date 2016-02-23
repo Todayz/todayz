@@ -12,6 +12,7 @@ public interface MemberRepository {
 
 	public Member findOne(Long id);
 
+	//추후에 paging에 대한 처리 필요.
 	public List<Member> findAll();
 
 	public Member findByAuthId(String authId);

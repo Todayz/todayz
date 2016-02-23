@@ -3,10 +3,13 @@ package com.hotclub.repository.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import com.hotclub.domain.club.Club;
+import com.hotclub.domain.club.Meeting;
 import com.hotclub.domain.member.Member;
 import com.hotclub.repository.MemberRepository;
 
@@ -23,12 +26,11 @@ public class MemberRepositoryImpl implements MemberRepository {
 		} else {
 			em.merge(member);
 		}
-
 	}
 
 	@Override
 	public void delete(Long id) {
-		Member member = em.find(Member.class, id);
+		Member member = findOne(id);
 		em.remove(member);
 	}
 
@@ -44,18 +46,27 @@ public class MemberRepositoryImpl implements MemberRepository {
 
 	@Override
 	public Member findByAuthId(String authId) {
-		return em.createQuery("select m from Member m where m.authId = :authId", Member.class)
-				.setParameter("authId", authId).getSingleResult();
+		Member member = null;
+		// http://stackoverflow.com/questions/25616374/javax-persistence-noresultexception-no-entity-found-for-query-jpql-query
+		try {
+			member = em.createQuery("select m from Member m where m.authId = :authId", Member.class)
+					.setParameter("authId", authId).getSingleResult();
+		} catch (NoResultException nre) {
+			// Ignore this because as per your logic this is ok!
+		}
+		return member;
 	}
 
 	@Override
 	public List<Member> findByClubId(Long clubId) {
-		return null;
+		// 양방향 매핑이므로 이론상 성립하나 확인 필요.
+		Club club = em.find(Club.class, clubId);
+		return club.getJoiningMembers();
 	}
 
 	@Override
 	public List<Member> findByMeetingId(Long meetingId) {
-		return null;
+		Meeting meeting = em.find(Meeting.class, meetingId);
+		return meeting.getAttachMembers();
 	}
-
 }
