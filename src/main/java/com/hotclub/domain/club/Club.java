@@ -1,5 +1,6 @@
 package com.hotclub.domain.club;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,14 @@ import javax.persistence.TemporalType;
 import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class Club {
 
 	@Id
@@ -48,117 +56,14 @@ public class Club {
 	 * 이거 관련하여 테이블 하나 필요.
 	 **/
 	@ManyToMany
-	@JoinTable(name = "CLUB_AND_MEMBER", joinColumns = @JoinColumn(name = "CLUB_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
-	private List<Member> joiningMembers;
+	@JoinTable(name = "CLUB_AND_MEMBER", 
+		joinColumns = @JoinColumn(name = "CLUB_ID") , 
+		inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
+	private List<Member> joiningMembers = new ArrayList<>();
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedDate;
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * @param title
-	 *            the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * @return the mainImage
-	 */
-	public Image getMainImage() {
-		return mainImage;
-	}
-
-	/**
-	 * @param mainImage
-	 *            the mainImage to set
-	 */
-	public void setMainImage(Image mainImage) {
-		this.mainImage = mainImage;
-	}
-
-	/**
-	 * @return the notice
-	 */
-	public String getNotice() {
-		return notice;
-	}
-
-	/**
-	 * @param notice
-	 *            the notice to set
-	 */
-	public void setNotice(String notice) {
-		this.notice = notice;
-	}
-
-	/**
-	 * @return the joiningMembers
-	 */
-	public List<Member> getJoiningMembers() {
-		return joiningMembers;
-	}
-
-	/**
-	 * @param joiningMembers
-	 *            the joiningMembers to set
-	 */
-	public void setJoiningMembers(List<Member> joiningMembers) {
-		this.joiningMembers = joiningMembers;
-	}
-
-	/**
-	 * @return the createdDate
-	 */
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	/**
-	 * @param createdDate
-	 *            the createdDate to set
-	 */
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	/**
-	 * @return the updatedDate
-	 */
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-
-	/**
-	 * @param updatedDate
-	 *            the updatedDate to set
-	 */
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
 }

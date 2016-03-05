@@ -1,5 +1,6 @@
 package com.hotclub.domain.club;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,14 @@ import javax.persistence.TemporalType;
 
 import com.hotclub.domain.member.Member;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class Meeting {
 
 	@Id
@@ -45,69 +53,5 @@ public class Meeting {
 	@JoinTable(name = "MEETING_AND_MEMBER",
 		joinColumns = @JoinColumn(name = "MEETING_ID") , 
 		inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
-	private List<Member> attachMembers;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public Date getMeetingDate() {
-		return meetingDate;
-	}
-
-	public void setMeetingDate(Date meetingDate) {
-		this.meetingDate = meetingDate;
-	}
-
-	public String getPlace() {
-		return place;
-	}
-
-	public void setPlace(String place) {
-		this.place = place;
-	}
-
-	public String getAttendCosts() {
-		return attendCosts;
-	}
-
-	public void setAttendCosts(String attendCosts) {
-		this.attendCosts = attendCosts;
-	}
-
-	public Long getQuota() {
-		return quota;
-	}
-
-	public void setQuota(Long quota) {
-		this.quota = quota;
-	}
-
-	public Club getParent() {
-		return parent;
-	}
-
-	public void setParent(Club parent) {
-		this.parent = parent;
-	}
-
-	public List<Member> getAttachMembers() {
-		return attachMembers;
-	}
-
-	public void setAttachMembers(List<Member> attachMembers) {
-		this.attachMembers = attachMembers;
-	}
+	private List<Member> attachMembers = new ArrayList<>();
 }

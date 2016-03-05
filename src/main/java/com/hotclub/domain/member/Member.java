@@ -21,7 +21,14 @@ import com.hotclub.domain.club.Club;
 import com.hotclub.domain.club.Meeting;
 import com.hotclub.domain.common.Image;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class Member {
 
 	@Id
@@ -29,7 +36,8 @@ public class Member {
 	@Column(name = "MEMBER_ID")
 	private Long id;
 
-	private String authId;
+	@Column(unique = true)
+	private String username;
 
 	private String password;
 
@@ -60,174 +68,4 @@ public class Member {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date joinDate;
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the authId
-	 */
-	public String getAuthId() {
-		return authId;
-	}
-
-	/**
-	 * @param authId
-	 *            the authId to set
-	 */
-	public void setAuthId(String authId) {
-		this.authId = authId;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * @param password
-	 *            the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name
-	 *            the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description
-	 *            the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the phoneNumber
-	 */
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	/**
-	 * @param phoneNumber
-	 *            the phoneNumber to set
-	 */
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	/**
-	 * @return the birthday
-	 */
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	/**
-	 * @param birthday
-	 *            the birthday to set
-	 */
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
-
-	/**
-	 * @return the profileImage
-	 */
-	public Image getProfileImage() {
-		return profileImage;
-	}
-
-	/**
-	 * @param profileImage
-	 *            the profileImage to set
-	 */
-	public void setProfileImage(Image profileImage) {
-		this.profileImage = profileImage;
-	}
-
-	/**
-	 * @return the joinClubs
-	 */
-	public List<Club> getJoinClubs() {
-		return joinClubs;
-	}
-
-	/**
-	 * @param joinClubs
-	 *            the joinClubs to set
-	 */
-	public void setJoinClubs(List<Club> joinClubs) {
-		this.joinClubs = joinClubs;
-	}
-
-	/**
-	 * @return the attachMeetings
-	 */
-	public List<Meeting> getAttachMeetings() {
-		return attachMeetings;
-	}
-
-	/**
-	 * @param attachMeetings
-	 *            the attachMeetings to set
-	 */
-	public void setAttachMeetings(List<Meeting> attachMeetings) {
-		this.attachMeetings = attachMeetings;
-	}
-
-	/**
-	 * @return the joinDate
-	 */
-	public Date getJoinDate() {
-		return joinDate;
-	}
-
-	/**
-	 * @param joinDate
-	 *            the joinDate to set
-	 */
-	public void setJoinDate(Date joinDate) {
-		this.joinDate = joinDate;
-	}
-
-	@Override
-	public String toString() {
-		return "Member [id=" + id + ", authId=" + authId + ", name=" + name + "]";
-	}
 }

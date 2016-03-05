@@ -11,7 +11,14 @@ import javax.persistence.ManyToOne;
 
 import com.hotclub.domain.item.Item;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class Image {
 
 	@Id
@@ -23,34 +30,7 @@ public class Image {
 	@JoinColumn(name = "ITEM_ID")
 	private Item parent;
 
-	private String imageUrl;
+	private String imageName;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Item getParent() {
-		return parent;
-	}
-
-	public void setParent(Item parent) {
-		this.parent = parent;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
-
-	@Override
-	public String toString() {
-		return "Image [id=" + id + ", parent=" + parent + ", imageUrl=" + imageUrl + "]";
-	}
+	private String type;
 }

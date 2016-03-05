@@ -1,7 +1,6 @@
 package com.hotclub.domain.item;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -13,18 +12,22 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.hotclub.domain.club.Menu;
-import com.hotclub.domain.common.Comment;
-import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "ITEM_TYPE")
+@Getter
+@Setter
+@ToString
 public abstract class Item {
 
 	@Id

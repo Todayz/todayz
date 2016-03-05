@@ -1,6 +1,7 @@
 package com.hotclub.domain.common;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +15,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.hotclub.domain.club.Club;
+import com.hotclub.domain.club.Meeting;
 import com.hotclub.domain.item.Item;
 import com.hotclub.domain.member.Member;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
+@Getter
+@Setter
+@ToString
 public class Comment {
 
 	@Id
