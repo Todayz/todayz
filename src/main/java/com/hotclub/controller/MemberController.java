@@ -1,4 +1,4 @@
-package com.hotclub.ui.controller;
+package com.hotclub.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hotclub.controller.support.MemberDto;
 import com.hotclub.domain.member.Member;
 import com.hotclub.repository.MemberRepository;
 import com.hotclub.service.MemberService;
-import com.hotclub.ui.controller.support.MemberDto;
 
 @RestController
 @SuppressWarnings("rawtypes")
@@ -58,17 +58,17 @@ public class MemberController {
 		return new ResponseEntity<>(modelMapper.map(newMember, MemberDto.Response.class), HttpStatus.CREATED);
 	}
 
-	/*// TODO stream() vs parallelStream()
-	// TODO HATEOAS
-	// TODO 뷰
-	// TODO boot를 프로덕션에 배포할때 튜닝포인트(?) 궁금해요~ ^^ (강대권)
-	// NSPA 1. Thymeleaf
-	// SPA 2. 앵귤러 3. 리액트
+	// http://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
+	// 의 Table 1.1. 참조 
+	// members?page=0&size=20&sort=username,asc$sort=name,asc
 	@RequestMapping(value = "/members", method = GET)
 	@ResponseStatus(HttpStatus.OK)
 	public PageImpl<MemberDto.Response> getMembers(Pageable pageable) {
 		Page<Member> page = memberRepository.findAll(pageable);
-		List<MemberDto.Response> content = page.getContent().parallelStream()
+
+		// 종종 스트림에 있는 값들을 특정 방식으로 변환하고 싶을때가 있다. 이 경우 map 메서드를 사용하고
+		// 변환을 수행하는 함수를 파라미터로 전달한다.
+		List<MemberDto.Response> content = page.getContent().stream()
 				.map(account -> modelMapper.map(account, MemberDto.Response.class)).collect(Collectors.toList());
 		return new PageImpl<>(content, pageable, page.getTotalElements());
 	}
@@ -102,27 +102,5 @@ public class MemberController {
 	public ResponseEntity leave(@PathVariable Long id) {
 		memberService.leave(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}*/
-
-	/*
-	 * // TODO 예외 처리 네번째 방법 (콜백 비스무리한거...)
-	 * 
-	 * @ExceptionHandler(UserDuplicatedException.class)
-	 * 
-	 * @ResponseStatus(HttpStatus.BAD_REQUEST) public ErrorResponse
-	 * handleUserDuplicatedException(UserDuplicatedException e) { ErrorResponse
-	 * errorResponse = new ErrorResponse(); errorResponse.setMessage("[" +
-	 * e.getUsername() + "] 중복된 username 입니다.");
-	 * errorResponse.setCode("duplicated.username.exception"); return
-	 * errorResponse; }
-	 * 
-	 * @ExceptionHandler(MemberNotFoundException.class)
-	 * 
-	 * @ResponseStatus(HttpStatus.BAD_REQUEST) public ErrorResponse
-	 * handleMemberNotFoundException(MemberNotFoundException e) { ErrorResponse
-	 * errorResponse = new ErrorResponse(); errorResponse.setMessage("[" +
-	 * e.getId() + "]에 해당하는 계정이 없습니다.");
-	 * errorResponse.setCode("account.not.found.exception"); return
-	 * errorResponse; }
-	 */
+	}
 }

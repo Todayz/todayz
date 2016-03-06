@@ -8,11 +8,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hotclub.controller.support.ClubDto;
 import com.hotclub.domain.club.Club;
 import com.hotclub.exception.ClubNotFoundException;
 import com.hotclub.repository.ClubRepository;
 import com.hotclub.service.ClubService;
-import com.hotclub.ui.controller.support.ClubDto;
 
 @Service
 @Transactional
@@ -50,7 +50,7 @@ public class ClubServiceImpl implements ClubService {
 
 	@Override
 	public void delete(Long id) {
-		clubRepository.delete(id);
+		clubRepository.delete(getClub(id));
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package com.hotclub.service;
 
+import com.hotclub.controller.support.ClubDto;
 import com.hotclub.domain.club.Club;
-import com.hotclub.ui.controller.support.ClubDto;
 
 public interface ClubService {
 

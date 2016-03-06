@@ -1,7 +1,7 @@
 package com.hotclub.service;
 
+import com.hotclub.controller.support.MemberDto;
 import com.hotclub.domain.member.Member;
-import com.hotclub.ui.controller.support.MemberDto;
 
 // 멤버가 할수 있는 일들에 대한 정의
 public interface MemberService {

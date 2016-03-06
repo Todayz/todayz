@@ -14,12 +14,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hotclub.HotclubApplication;
+import com.hotclub.controller.support.ClubDto;
+import com.hotclub.controller.support.MemberDto;
 import com.hotclub.domain.club.Club;
 import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
 import com.hotclub.repository.MemberRepository;
-import com.hotclub.ui.controller.support.ClubDto;
-import com.hotclub.ui.controller.support.MemberDto;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(HotclubApplication.class)
@@ -35,7 +35,7 @@ public class MemberServiceIntegrationTests {
 	@Autowired
 	private MemberRepository memberRepository;
 
-	public MemberDto.Create memberCreateDto() throws ParseException {
+	private MemberDto.Create memberCreateDto() throws ParseException {
 		MemberDto.Create createDto = new MemberDto.Create();
 		createDto.setUsername("jmlim");
 		createDto.setName("임정묵");

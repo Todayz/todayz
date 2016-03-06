@@ -1,4 +1,4 @@
-package com.hotclub.ui.controller.support;
+package com.hotclub.controller.support;
 
 import java.util.ArrayList;
 import java.util.Date;
