@@ -42,10 +42,10 @@ public class MemberServiceImpl implements MemberService {
 	public Member join(MemberDto.Create dto) {
 		Member member = modelMapper.map(dto, Member.class);
 
-		String username = dto.getUsername();
-		if (memberRepository.findByUsername(username) != null) {
+		String authName = dto.getAuthName();
+		if (memberRepository.findByAuthName(authName) != null) {
 			// log.error("user duplicated exception. {}", username);
-			throw new MemberDuplicatedException(username);
+			throw new MemberDuplicatedException(authName);
 		}
 
 		// account.setPassword(passwordEncoder.encode(account.getPassword()));
