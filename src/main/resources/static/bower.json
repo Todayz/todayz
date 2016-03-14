@@ -1,29 +1,24 @@
 {
-  "name": "startbootstrap-sb-admin-2",
-  "version": "1.0.7",
-  "homepage": "http://startbootstrap.com/template-overviews/sb-admin-2/",
+  "name": "todayz",
+  "homepage": "https://github.com/Todayz/todayz",
   "authors": [
-    "David Miller"
+    "Lim Jungmuk <hypnodisc@naver.com>"
   ],
-  "description": "A free, open source, Bootstrap admin theme created by Start Bootstrap",
+  "description": "매일 만나는 동호회 todayz",
+  "main": [
+    "dist/js/index.js"
+  ],
+  "moduleType": [],
   "keywords": [
-    "bootstrap",
-    "theme"
+    "todayz'"
   ],
-  "license": "Apache",
+  "license": "MIT",
   "ignore": [
     "**/.*",
     "node_modules",
     "bower_components",
     "test",
-    "tests",
-    "pages",
-    "index.html",
-    "/js"
-  ],
-  "main": [
-    "dist/css/sb-admin-2.css",
-    "dist/js/sb-admin-2.js"
+    "tests"
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
