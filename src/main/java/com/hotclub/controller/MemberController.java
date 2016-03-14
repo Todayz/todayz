@@ -1,9 +1,6 @@
 package com.hotclub.controller;
 
-import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,15 +39,10 @@ public class MemberController {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	// 조건문에 따라 HttpStatus 를 변경해서 리턴하기 위해 ResponseEntity 로 반환한다.
 	@RequestMapping(value = "/members", method = POST)
 	public ResponseEntity joinMember(@RequestBody @Valid MemberDto.Create create, BindingResult result) {
 		if (result.hasErrors()) {
-			// ErrorResponse errorResponse = new ErrorResponse();
-			// errorResponse.setMessage("잘못된 요청입니다.");
-			// errorResponse.setCode("bad.request");
-			// TODO BindingResult 안에 들어있는 에러 정보 사용하기.
-			// return new ResponseEntity<>(errorResponse,
-			// HttpStatus.BAD_REQUEST);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -59,7 +51,7 @@ public class MemberController {
 	}
 
 	// http://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
-	// 의 Table 1.1. 참조 
+	// 의 Table 1.1. 참조
 	// members?page=0&size=20&sort=username,asc$sort=name,asc
 	@RequestMapping(value = "/members", method = GET)
 	@ResponseStatus(HttpStatus.OK)
@@ -80,13 +72,6 @@ public class MemberController {
 		return modelMapper.map(member, MemberDto.Response.class);
 	}
 
-	// 전체 업데이트: PUT
-	// - (password:"pass", fullName:null)
-
-	// 부분 업데이트: PATCH
-	// - (username:"whiteship")
-	// - (password:"pass")
-	// - (username:"whiteship", password:"pass")
 	@RequestMapping(value = "/members/{id}", method = PUT)
 	public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid MemberDto.Update updateDto,
 			BindingResult result) {

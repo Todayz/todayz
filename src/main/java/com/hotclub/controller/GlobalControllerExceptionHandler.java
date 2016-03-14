@@ -19,7 +19,7 @@ public class GlobalControllerExceptionHandler {
 	public ErrorResponse handleMemberDuplicatedException(MemberDuplicatedException e) {
 		ErrorResponse errorResponse = new ErrorResponse();
 		errorResponse.setMessage("[" + e.getUsername() + "] 중복된 username 입니다.");
-		errorResponse.setCode("duplicated.username.exception");
+		errorResponse.setCode("duplicated.authName.exception");
 		return errorResponse;
 	}
 

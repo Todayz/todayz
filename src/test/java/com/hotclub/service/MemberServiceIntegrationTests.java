@@ -37,7 +37,7 @@ public class MemberServiceIntegrationTests {
 
 	private MemberDto.Create memberCreateDto() throws ParseException {
 		MemberDto.Create createDto = new MemberDto.Create();
-		createDto.setUsername("jmlim");
+		createDto.setAuthName("jmlim");
 		createDto.setName("임정묵");
 		createDto.setPassword("passjmlim");
 		createDto.setPhoneNumber("010-8791-1883");

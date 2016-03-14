@@ -6,5 +6,5 @@ import com.hotclub.domain.member.Member;
 
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-	public Member findByUsername(String username);
+	public Member findByAuthName(String authName);
 }
