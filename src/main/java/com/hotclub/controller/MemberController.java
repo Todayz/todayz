@@ -42,6 +42,8 @@ public class MemberController {
 	// 조건문에 따라 HttpStatus 를 변경해서 리턴하기 위해 ResponseEntity 로 반환한다.
 	@RequestMapping(value = "/members", method = POST)
 	public ResponseEntity joinMember(@RequestBody @Valid MemberDto.Create create, BindingResult result) {
+		System.out.println(create);
+		
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
