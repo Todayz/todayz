@@ -8,20 +8,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.hotclub.security.AjaxAuthenticationFailureHandler;
-import com.hotclub.security.AjaxAuthenticationSuccessHandler;
-
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@Autowired
-	private AjaxAuthenticationSuccessHandler successHandler;
+	//@Autowired
+	//private AjaxAuthenticationSuccessHandler successHandler;
 
-	@Autowired
-	private AjaxAuthenticationFailureHandler failureHandler;
+	//@Autowired
+	//private AjaxAuthenticationFailureHandler failureHandler;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -31,21 +28,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// csrf 에 대한 설명 : http://whiteship.me/?p=13833
-		http.csrf().disable();
-		http.httpBasic();
+		//http.csrf().disable();
+		//http.httpBasic();
 		http
 				// formLogin 관련
-				.formLogin().loginPage("/pages/sign.html")
+				.formLogin().loginPage("/pages/signin").defaultSuccessUrl("/pages/index")
 				// 인증 성공시와 인증 실패 시 ajax 요청을 받기 위해 사용한 handler
-				.successHandler(successHandler).failureHandler(failureHandler).loginProcessingUrl("/loginProcess")
-				// logout 관련
-				.and().logout().logoutSuccessUrl("/").and().authorizeRequests()
-				// login.html
-				.antMatchers("/pages/sign.html").permitAll()
+				// .successHandler(successHandler).failureHandler(failureHandler)
+				.loginProcessingUrl("/loginProcess")
+				// logout
+				.and().logout().permitAll().logoutSuccessUrl("/").and().authorizeRequests()
+				// resources
+				.antMatchers("/webjars/**").permitAll()
+				// sign page
+				.antMatchers("/pages/signin", "/pages/signup").permitAll()
 				// members
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
+				// members
 				.antMatchers("/members", "/members/**").hasRole("USER")
-				// index.html
-				.antMatchers("/pages/**").authenticated().anyRequest().permitAll();
+				// etc
+				.antMatchers("/pages/**").hasRole("USER").anyRequest().authenticated();
 	}
 }
