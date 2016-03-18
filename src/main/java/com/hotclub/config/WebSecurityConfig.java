@@ -28,8 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// csrf 에 대한 설명 : http://whiteship.me/?p=13833
-		//\ http.csrf().disable();
-		// http.httpBasic();
 		http
 				// formLogin 관련
 				.formLogin().loginPage("/pages/signin").defaultSuccessUrl("/pages/index")
@@ -37,9 +35,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// .successHandler(successHandler).failureHandler(failureHandler)
 				.loginProcessingUrl("/loginProcess")
 				// logout
-				.and().logout().permitAll().logoutSuccessUrl("/").and().authorizeRequests()
+				.and().logout().logoutUrl("/logoutProcess").logoutSuccessUrl("/pages/signin").and().authorizeRequests()
 				// resources
-				.antMatchers("/webjars/**","/static/**").permitAll()
+				//.antMatchers("/webjars/**","/static/**").permitAll()
 				// sign page
 				.antMatchers("/pages/signin", "/pages/signup").permitAll()
 				// members
@@ -47,6 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// members
 				.antMatchers("/members", "/members/**").hasRole("USER")
 				// etc
-				.antMatchers("/**").authenticated();
+				.antMatchers("/pages/**").authenticated().anyRequest().permitAll();
 	}
 }
