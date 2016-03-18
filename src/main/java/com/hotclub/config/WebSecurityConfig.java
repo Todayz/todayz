@@ -14,11 +14,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	//@Autowired
-	//private AjaxAuthenticationSuccessHandler successHandler;
+	// @Autowired
+	// private AjaxAuthenticationSuccessHandler successHandler;
 
-	//@Autowired
-	//private AjaxAuthenticationFailureHandler failureHandler;
+	// @Autowired
+	// private AjaxAuthenticationFailureHandler failureHandler;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -28,8 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// csrf 에 대한 설명 : http://whiteship.me/?p=13833
-		//http.csrf().disable();
-		//http.httpBasic();
+		// http.csrf().disable();
+		// http.httpBasic();
 		http
 				// formLogin 관련
 				.formLogin().loginPage("/pages/signin").defaultSuccessUrl("/pages/index")
@@ -39,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// logout
 				.and().logout().permitAll().logoutSuccessUrl("/").and().authorizeRequests()
 				// resources
-				.antMatchers("/webjars/**").permitAll()
+				.antMatchers("/webjars/**","/static/**").permitAll()
 				// sign page
 				.antMatchers("/pages/signin", "/pages/signup").permitAll()
 				// members
@@ -47,6 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// members
 				.antMatchers("/members", "/members/**").hasRole("USER")
 				// etc
-				.antMatchers("/pages/**").hasRole("USER").anyRequest().authenticated();
+				.antMatchers("/**").authenticated();
 	}
 }

@@ -10,6 +10,11 @@
 <title>Login</title>
 </head>
 <body>
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-static-top" role="navigation"
+		style="margin-bottom: 0">
+		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
+	</nav>
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
