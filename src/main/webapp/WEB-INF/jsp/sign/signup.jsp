@@ -23,34 +23,37 @@
 						<h3 class="panel-title">Sign Up</h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" action="/members" method="POST">
+						<form id="signup-form" role="form" action="/members" method="POST">
+							<input type="hidden" id="_csrf" name="_csrf"
+								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>username</label> <input class="form-control"
-									name="authName" type="text" autofocus />
+								<label>username</label> <input id="authName"
+									class="form-control" name="authName" type="text" autofocus />
 							</div>
 							<div class="form-group">
 								<label>password</label> <input class="form-control"
-									name="password" type="password" />
+									id="password" name="password" type="password" />
 							</div>
 							<div class="form-group">
-								<label>name</label> <input class="form-control" name="name"
-									type="text" />
+								<label>name</label> <input class="form-control" id="name"
+									name="name" type="text" />
 							</div>
 							<div class="form-group">
 								<label>phone number</label> <input class="form-control"
-									name="phoneNumber" type="text" />
+									id="phoneNumber" name="phoneNumber" type="text" />
 							</div>
 							<div class="form-group">
 								<label>birthday</label> <input class="form-control"
-									name="birthday" type="text" />
+									id="birthday" name="birthday" type="text" />
 							</div>
 							<div class="form-group">
 								<label>description</label>
-								<textarea class="form-control" name="description" rows="3"></textarea>
+								<textarea class="form-control" id="description"
+									name="description" rows="3"></textarea>
 							</div>
 							<div class="form-group">
 								<label>profile image</label> <input type="file"
-									name="profileImage" />
+									id="profileImage" name="profileImage" />
 							</div>
 							<button type="submit" class="btn btn-default">Submit
 								Button</button>
@@ -62,6 +65,43 @@
 			</div>
 		</div>
 	</div>
+	<!-- jQuery -->
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="/js/hotclub.js"></script>
+	<script type="text/javascript">
+		$('#signup-form').submit(function(event) {
+			event.preventDefault();
+			var form = $(this);
+
+			if (console) {
+				console.log(JSON.stringify(form.serializeObject()));
+			}
+			$.ajax({
+				url : form.attr('action'),
+				dataType : 'json',
+				type : form.attr('method'),
+				data : JSON.stringify(form.serializeObject()),
+				cache : false,
+				contentType : 'application/json',
+				beforeSend : function(request) {
+					request.setRequestHeader("X-CSRF-TOKEN", form_data._csrf);
+				},
+				success : function(data) {
+					if (data) {
+						console.log(data);
+					}
+				}.bind(this),
+				error : function(xhr, status, err) {
+					if (console) {
+						console.log(xhr);
+						console.log(status);
+						console.log(err);
+					}
+				}.bind(this)
+			});
+		});
+	</script>
+
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 </body>
 </html>

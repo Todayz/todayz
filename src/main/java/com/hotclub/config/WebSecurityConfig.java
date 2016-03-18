@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		// csrf 에 대한 설명 : http://whiteship.me/?p=13833
-		// http.csrf().disable();
+		//\ http.csrf().disable();
 		// http.httpBasic();
 		http
 				// formLogin 관련
