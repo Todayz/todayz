@@ -12,13 +12,20 @@ import com.hotclub.domain.member.Member;
 
 public class UserDetailsImpl extends User {
 
+	private Long id;
+
 	public UserDetailsImpl(Member member) {
 		super(member.getAuthName(), member.getPassword(), authorities(member));
+		this.id = member.getId();
 	}
 
 	private static Collection<? extends GrantedAuthority> authorities(Member member) {
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		return authorities;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

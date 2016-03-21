@@ -15,6 +15,7 @@
 		style="margin-bottom: 0">
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 	</nav>
+			 ${sessionScope.member}
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
@@ -50,6 +51,11 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- jQuery -->
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 </body>
 </html>

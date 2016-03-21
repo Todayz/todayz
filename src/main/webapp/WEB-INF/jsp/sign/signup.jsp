@@ -67,6 +67,9 @@
 	</div>
 	<!-- jQuery -->
 	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+	<!-- Bootstrap Core JavaScript -->
+	<script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 	<script src="/js/hotclub.js"></script>
 	<script type="text/javascript">
 		$('#signup-form').submit(function(event) {

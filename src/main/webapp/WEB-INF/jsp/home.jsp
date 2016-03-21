@@ -15,7 +15,6 @@
 			style="margin-bottom: 0">
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 		</nav>
-		
 		<div id="page-wrapper" class="no-sidenav">
 			<div class="row">
 				<div class="col-lg-12">

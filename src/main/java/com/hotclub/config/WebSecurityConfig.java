@@ -8,14 +8,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.hotclub.security.LoginAuthenticationSuccessHandler;
+
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	// @Autowired
-	// private AjaxAuthenticationSuccessHandler successHandler;
+	@Autowired
+	private LoginAuthenticationSuccessHandler successHandler;
 
 	// @Autowired
 	// private AjaxAuthenticationFailureHandler failureHandler;
@@ -32,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// formLogin 관련
 				.formLogin().loginPage("/pages/signin").defaultSuccessUrl("/pages/index")
 				// 인증 성공시와 인증 실패 시 ajax 요청을 받기 위해 사용한 handler
-				// .successHandler(successHandler).failureHandler(failureHandler)
+				.successHandler(successHandler)//.failureHandler(failureHandler)
 				.loginProcessingUrl("/loginProcess")
 				// logout
 				.and().logout().logoutUrl("/logoutProcess").logoutSuccessUrl("/pages/signin").and().authorizeRequests()
@@ -45,6 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// members
 				.antMatchers("/members", "/members/**").hasRole("USER")
 				// etc
-				.antMatchers("/pages/**").authenticated().anyRequest().permitAll();
+				.antMatchers("/pages/**","/").authenticated().anyRequest().permitAll();
 	}
 }
