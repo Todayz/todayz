@@ -15,7 +15,6 @@
 		style="margin-bottom: 0">
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 	</nav>
-			 ${sessionScope.member}
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">

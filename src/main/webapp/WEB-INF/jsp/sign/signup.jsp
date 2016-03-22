@@ -15,6 +15,11 @@
 		style="margin-bottom: 0">
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 	</nav>
+
+	<fmt:formatDate value="${member.birthday}" var="formattedDate"
+		type="date" pattern="yyyy-MM-dd" />
+
+	<!-- TODO validation -->
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
@@ -23,12 +28,21 @@
 						<h3 class="panel-title">Sign Up</h3>
 					</div>
 					<div class="panel-body">
-						<form id="signup-form" role="form" action="/members" method="POST">
+						<form id="signup-form" role="form" action="/members">
 							<input type="hidden" id="_csrf" name="_csrf"
 								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>username</label> <input id="authName"
-									class="form-control" name="authName" type="text" autofocus />
+								<label>username</label>
+								<c:choose>
+									<c:when test="${member.id == null}">
+										<input id="authName" class="form-control" name="authName"
+											value="${member.authName}" type="text" autofocus />
+									</c:when>
+									<c:otherwise>
+										<input id="authName" class="form-control" name="authName"
+											value="${member.authName}" type="text" autofocus disabled />
+									</c:otherwise>
+								</c:choose>
 							</div>
 							<div class="form-group">
 								<label>password</label> <input class="form-control"
@@ -36,20 +50,22 @@
 							</div>
 							<div class="form-group">
 								<label>name</label> <input class="form-control" id="name"
-									name="name" type="text" />
+									name="name" value="${member.name}" type="text" />
 							</div>
 							<div class="form-group">
 								<label>phone number</label> <input class="form-control"
-									id="phoneNumber" name="phoneNumber" type="text" />
+									id="phoneNumber" name="phoneNumber"
+									value="${member.phoneNumber}" type="text" />
 							</div>
 							<div class="form-group">
 								<label>birthday</label> <input class="form-control"
-									id="birthday" name="birthday" type="text" />
+									id="birthday" name="birthday" value="${formattedDate}"
+									type="text" />
 							</div>
 							<div class="form-group">
 								<label>description</label>
 								<textarea class="form-control" id="description"
-									name="description" rows="3"></textarea>
+									name="description" rows="3">${member.description}</textarea>
 							</div>
 							<div class="form-group">
 								<label>profile image</label> <input type="file"
@@ -76,22 +92,29 @@
 			event.preventDefault();
 			var form = $(this);
 
+			var id = "${member.id}";
+			var action = form.attr('action');
+			var url = id === "" ? action : action + "/" + id;
+			var type = id === "" ? 'POST' : 'PUT';
+			var _csrf = $('#_csrf').val();
+
 			if (console) {
 				console.log(JSON.stringify(form.serializeObject()));
 			}
+
 			$.ajax({
-				url : form.attr('action'),
+				url : url,
 				dataType : 'json',
-				type : form.attr('method'),
+				type : type,
 				data : JSON.stringify(form.serializeObject()),
 				cache : false,
 				contentType : 'application/json',
 				beforeSend : function(request) {
-					request.setRequestHeader("X-CSRF-TOKEN", form_data._csrf);
+					request.setRequestHeader("X-CSRF-TOKEN", _csrf);
 				},
 				success : function(data) {
 					if (data) {
-						console.log(data);
+						location.href = "/pages/home";
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {

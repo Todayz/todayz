@@ -11,6 +11,7 @@ import lombok.Data;
  * Rest 방식으로 개발할때 필요. 
  * 기존방식은 dto를 사용하지 않더라도 자기가 원하는 내용만 반환할 수 있음.
  * */
+//TODO validation 처리
 public class MemberDto {
 
 	@Data

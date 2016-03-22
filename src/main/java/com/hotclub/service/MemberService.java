@@ -16,13 +16,14 @@ public interface MemberService {
 	 * 
 	 * @param member
 	 */
-	public Member update(Long id ,MemberDto.Update dto);
+	public Member update(Long id, MemberDto.Update dto);
 
 	/**
 	 * @param id
 	 * @return
 	 */
 	public Member getMember(Long id);
+
 	/**
 	 * 탈퇴
 	 * 
