@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 
 <!-- Navigation -->
 
@@ -177,26 +178,32 @@
 
 	<!-- /.dropdown -->
 	<!-- 회원 권한이 없을 때 -->
-    <sec:authorize access="hasRole('USER')">
+	<sec:authorize access="hasRole('USER')">
 		<li class="dropdown"><a class="dropdown-toggle"
 			data-toggle="dropdown" href="#"> <i class="fa fa-user fa-fw"></i>
 				<i class="fa fa-caret-down"></i>
 		</a>
 			<ul class="dropdown-menu dropdown-user">
-				<li><a href="/pages/signup"><i class="fa fa-user fa-fw"></i> User
-						Info</a></li>
+				<li><a href="/pages/signup"><i class="fa fa-user fa-fw"></i>
+						User Info</a></li>
 				<li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a></li>
 				<li class="divider"></li>
 				<li>
-				<!-- http://stackoverflow.com/questions/8398726/using-the-post-method-with-html-anchor-tags -->
+					<!-- http://stackoverflow.com/questions/8398726/using-the-post-method-with-html-anchor-tags -->
 					<form id="logout-form" action="/logoutProcess" method="post">
 						<a class="fa fa-sign-out fa-fw"
 							onclick="document.getElementById('logout-form').submit();">Disconnect</a>
 						<input type="hidden" name="_csrf" value="${_csrf.token}"></input>
-					</form></li>
+					</form>
+				</li>
 			</ul> <!-- /.dropdown-user --></li>
+	</sec:authorize>
+	<!-- 회원 권한이 없을 때 -->
+	<sec:authorize access="hasRole('ADMIN')">
+		<li class="dropdown"><a class="dropdown-toggle"
+			 href="/pages/admin/member/list"> <i class="fa fa-user fa-fw"></i>
+		</a></li>
 	</sec:authorize>
 	<!-- /.dropdown -->
 </ul>
 <!-- /.navbar-top-links -->
-		 

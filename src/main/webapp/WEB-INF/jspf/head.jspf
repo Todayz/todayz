@@ -30,4 +30,19 @@
 	rel="stylesheet" type="text/css">
 <!-- webjars/jquery/2.2.1/jquery.js -->
 <style type="text/css">
+
+.glyphicon {
+	margin-bottom: 10px;
+	margin-right: 10px;
+}
+
+small {
+	display: block;
+	line-height: 1.428571429;
+	color: #999;
+}
+
+.member-list {
+	padding-top: 20px;
+}
 </style>

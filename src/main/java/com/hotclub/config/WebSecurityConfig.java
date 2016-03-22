@@ -34,19 +34,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// formLogin 관련
 				.formLogin().loginPage("/pages/signin").defaultSuccessUrl("/pages/index")
 				// 인증 성공시와 인증 실패 시 ajax 요청을 받기 위해 사용한 handler
-				.successHandler(successHandler)//.failureHandler(failureHandler)
+				.successHandler(successHandler)// .failureHandler(failureHandler)
 				.loginProcessingUrl("/loginProcess")
 				// logout
 				.and().logout().logoutUrl("/logoutProcess").logoutSuccessUrl("/pages/signin").and().authorizeRequests()
 				// resources
-				//.antMatchers("/webjars/**","/static/**").permitAll()
+				// .antMatchers("/webjars/**","/static/**").permitAll()
 				// sign page
 				.antMatchers("/pages/signin", "/pages/signup").permitAll()
+				// TODO 주소 규칙 변경
 				// members
 				.antMatchers(HttpMethod.POST, "/members").permitAll()
 				// members
+				.antMatchers("/members/admin/**").hasRole("ADMIN")
 				.antMatchers("/members", "/members/**").hasRole("USER")
+				// clubs TODO ROLE_MANAGER 생성 할 예정. 앞으로 club 는 매니저만 만들수 있도록 변경.
+				.antMatchers("/clubs", "/clubs/**").hasRole("USER")
 				// etc
-				.antMatchers("/pages/**","/").authenticated().anyRequest().permitAll();
+				.antMatchers("/pages/**", "/").authenticated().anyRequest().permitAll();
 	}
 }

@@ -49,7 +49,9 @@ public class Member {
 
 	private Date birthday;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	// image 를 굳이 LAZY 로 불러올 필요가 있는지 확인 필요.
+	// http://stackoverflow.com/questions/26957554/jsonmappingexception-could-not-initialize-proxy-no-session
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "IMAGE_ID")
 	private Image profileImage;
 	/*
