@@ -39,7 +39,7 @@ public class Club {
 
 	private String title;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "IMAGE_ID")
 	private Image mainImage;
 

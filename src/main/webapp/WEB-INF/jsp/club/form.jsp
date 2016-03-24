@@ -25,51 +25,32 @@
 			<div class="col-md-4 col-md-offset-4">
 				<div class="login-panel panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Sign Up</h3>
+						<c:choose>
+							<c:when test="${club.title == null}">
+								<h3 class="panel-title">Club Create page</h3>
+							</c:when>
+							<c:otherwise>
+								<h3 class="panel-title">${club.title}</h3>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div class="panel-body">
-						<form id="signup-form" role="form" action="/members">
+						<form id="club-form" role="form" action="/clubs">
 							<input type="hidden" id="_csrf" name="_csrf"
 								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>username</label>
-								<c:choose>
-									<c:when test="${member.id == null}">
-										<input id="authName" class="form-control" name="authName"
-											value="${member.authName}" type="text" autofocus />
-									</c:when>
-									<c:otherwise>
-										<input id="authName" class="form-control" name="authName"
-											value="${member.authName}" type="text" autofocus disabled />
-									</c:otherwise>
-								</c:choose>
+								<label>Club title</label>
+									<input id="title" class="form-control" name="title"
+										value="${club.title}" type="text" autofocus />
 							</div>
 							<div class="form-group">
-								<label>password</label> <input class="form-control"
-									id="password" name="password" type="password" />
+								<label>notice</label>
+								<textarea class="form-control" id="notice"
+									name="notice" rows="3">${club.notice}</textarea>
 							</div>
 							<div class="form-group">
-								<label>name</label> <input class="form-control" id="name"
-									name="name" value="${member.name}" type="text" />
-							</div>
-							<div class="form-group">
-								<label>phone number</label> <input class="form-control"
-									id="phoneNumber" name="phoneNumber"
-									value="${member.phoneNumber}" type="text" />
-							</div>
-							<div class="form-group">
-								<label>birthday</label> <input class="form-control"
-									id="birthday" name="birthday" value="${formattedDate}"
-									type="text" />
-							</div>
-							<div class="form-group">
-								<label>description</label>
-								<textarea class="form-control" id="description"
-									name="description" rows="3">${member.description}</textarea>
-							</div>
-							<div class="form-group">
-								<label>profile image</label> <input type="file"
-									id="profileImage" name="profileImage" />
+								<label>Main image</label> <input type="file"
+									id="mainImage" name="mainImage" />
 							</div>
 							<button type="submit" class="btn btn-default">Submit
 								Button</button>
@@ -82,11 +63,12 @@
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 	<script src="/js/hotclub.js"></script>
 	<script type="text/javascript">
-		$('#signup-form').submit(function(event) {
+		//공통화 필요.
+		$('#club-form').submit(function(event) {
 			event.preventDefault();
 			var form = $(this);
 
-			var id = "${member.id}";
+			var id = "${club.id}";
 			var action = form.attr('action');
 			var url = id === "" ? action : action + "/" + id;
 			var type = id === "" ? 'POST' : 'PUT';
@@ -108,6 +90,7 @@
 				},
 				success : function(data) {
 					if (data) {
+						// TODO 추후에 개설된 클럽으로 이동할 수 있도록 변경. 
 						location.href = "/pages/home";
 					}
 				}.bind(this),

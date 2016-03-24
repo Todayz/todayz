@@ -23,101 +23,137 @@
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
-			<div class="row">
-				<div class="col-lg-3 col-md-6">
-					<div class="panel panel-primary">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-comments fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">26 명</div>
-									<div>2030 등산동호회</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="panel panel-green">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-tasks fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">12 명</div>
-									<div>동네친구들 모임</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="panel panel-yellow">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-shopping-cart fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">124</div>
-									<div>New Orders!</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<div class="panel panel-red">
-						<div class="panel-heading">
-							<div class="row">
-								<div class="col-xs-3">
-									<i class="fa fa-support fa-5x"></i>
-								</div>
-								<div class="col-xs-9 text-right">
-									<div class="huge">13</div>
-									<div>Support Tickets!</div>
-								</div>
-							</div>
-						</div>
-						<a href="#">
-							<div class="panel-footer">
-								<span class="pull-left">View Details</span> <span
-									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-								<div class="clearfix"></div>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
+			<div id="club-list" class="row member-list"></div>
 		</div>
 		<!-- /#page-wrapper -->
 	</div>
 	<!-- /#wrapper -->
+	<!--  club list -->
+	<div style="display: none" class="club-component">
+		<div class="col-lg-3 col-md-6 club">
+			<div class="panel panel-green">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-3">
+							<i class="fa fa-tasks fa-5x"></i>
+						</div>
+						<div class="col-xs-9 text-right">
+							<div class="huge"><span id="joinMemberCount">12</span> 명</div>
+							<div id="title">title</div>
+						</div>
+					</div>
+				</div>
+				<a id="enter-club" href="#">
+					<div class="panel-footer">
+						<span class="pull-left">입장하기</span><span
+							class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+						<div class="clearfix"></div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
 
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
+	<script type="text/javascript">
+		$(function() {
+			event.preventDefault();
+			//?page=0&size=20;
+			var pageable = {
+				page: 0,
+				size: 12
+			};
+			// 내보낸 화면의 아이디들은 여기에 보관.
+			//보관되어진 id에 해당하는 데이터는 화면에 뿌려지지 않도록 하기 위함.
+			var idList = [];
+			// ajax 요청을 받는동안 또다른 요청을 하지 않기 위함.
+			var requesting = false;
+
+			// 공통화 필요.
+			var getClubs = function(callback) {
+				requesting = true;
+				var url = '/clubs';
+				var $lodingImg = $('#loader');
+				//TODO 변경 필요 (hard coding).
+				$lodingImg.show().css({
+					'top' : $(document).height() - 126 + 'px',
+					'left' : '45%'
+				});
+
+				$.ajax({
+					url : url,
+					type : 'GET',
+					cache : false,
+					data: pageable,
+					success : function(data) {
+						if (data) {
+							if(console) {
+								console.log(data);
+							}
+							//if(data.numberOfElements === data.size) {
+							if(!data.last) {
+								pageable.page += 1;
+							}
+
+							var clubs = data.content;
+							var $clubList = $('#club-list');
+							$.each(clubs, function(index, club) {
+								if(idList.indexOf(club.id) == -1){
+									idList.push(club.id);
+									var $clubComponent = callback(club);
+									$clubList.append($clubComponent.html());									
+								}
+								$("#loader").hide();
+							});
+							requesting = false;
+						}
+					}.bind(this),
+					error : function(xhr, status, err) {
+						if (console) {
+							console.log(xhr);
+							console.log(status);
+							console.log(err);
+						}
+						alert("error");
+					}.bind(this)
+				});
+			};
+
+			var clubComponent = function(club) {
+			/* private Long id;
+			  private String title;
+			  private Image mainImage;
+			  private String notice;
+			  private List<Member> joiningMembers = new ArrayList<>();
+			  private Date createdDate;
+			  private Date updatedDate; */
+			 	var url = '/pages/club/main/' + club.id;
+				var $clubComponent = $('.club-component');
+				var $title = $clubComponent.find('#title');
+				var $enterClub = $clubComponent.find('#enter-club');
+				//var $mainImage = $clubComponent.find('#mainImage');
+				//var $joiningMembers = $clubComponent.find('#joiningMembers');	
+				var $notice = $clubComponent.find('#notice');
+				var $createdDate = $clubComponent.find('#createdDate');
+
+				$title.text(club.title);
+				$notice.text(club.notice);
+				$createdDate.text(club.createdDate);
+				$enterClub.attr('href',url)
+
+				return $clubComponent;
+			}
+			getClubs(clubComponent);
+			$(window).scroll(
+					function() {
+						if ($(window).scrollTop() == $(document).height()
+								- $(window).height()) {
+							if (!requesting) {
+								getClubs(clubComponent);
+							}
+						}
+					});
+		});
+	</script>
 </body>
 </html>

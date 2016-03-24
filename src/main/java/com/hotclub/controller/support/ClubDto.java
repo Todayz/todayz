@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
 
@@ -25,7 +26,9 @@ public class ClubDto {
 		private Image mainImage;
 		private String notice;
 		private List<Member> joiningMembers = new ArrayList<>();
+		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date createdDate;
+		@JsonFormat(pattern = "yyyy-MM-dd")
 		private Date updatedDate;
 	}
 

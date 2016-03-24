@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<!-- loding image -->
+<img id="loader" alt="" src="/images/loading.gif"
+	style="position: absolute;" />
 <footer>
 	<div class="container"></div>
 </footer>
