@@ -33,4 +33,6 @@ public class Image {
 	private String imageName;
 
 	private String type;
+
+	private String contentType;
 }
