@@ -6,7 +6,6 @@
 <html lang="ko">
 <head>
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
-<title>매일 만나는 동호회 Todays</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -16,8 +15,53 @@
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 		<%@ include file="/WEB-INF/jspf/navside.jspf"%>
 		</nav>
-		
 		<div id="page-wrapper">
+			<c:if test="${club.mainImage.id != null}">
+				<!-- Half Page Image Background Carousel Header -->
+				<div id="main-carousel" class="carousel slide">
+					<!-- Indicators -->
+					<ol class="carousel-indicators">
+						<li data-target="#main-carousel" data-slide-to="0" class="active"></li>
+						<li data-target="#main-carousel" data-slide-to="1"></li>
+						<li data-target="#main-carousel" data-slide-to="2"></li>
+					</ol>
+
+					<!-- Wrapper for Slides -->
+					<div class="carousel-inner">
+						<div class="item active">
+							<!-- Set the first background image using inline CSS below. -->
+							<div class="fill"
+								style="background-image: url('/upload/images/${club.mainImage.id}');"></div>
+							<div class="carousel-caption">
+								<h2>Caption 1</h2>
+							</div>
+						</div>
+						<!-- <div class="item">
+						Set the second background image using inline CSS below.
+						<div class="fill"
+							style="background-image: url('http://placehold.it/1900x1080&amp;text=Slide Two');"></div>
+						<div class="carousel-caption">
+							<h2>Caption 2</h2>
+						</div>
+					</div>
+					<div class="item">
+						Set the third background image using inline CSS below.
+						<div class="fill"
+							style="background-image: url('http://placehold.it/1900x1080&amp;text=Slide Three');"></div>
+						<div class="carousel-caption">
+							<h2>Caption 3</h2>
+						</div>
+					</div> -->
+					</div>
+
+					<!-- Controls -->
+					<a class="left carousel-control" href="#main-carousel"
+						data-slide="prev"> <span class="icon-prev"></span>
+					</a> <a class="right carousel-control" href="#main-carousel"
+						data-slide="next"> <span class="icon-next"></span>
+					</a>
+				</div>
+			</c:if>
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">${club.title}</h1>
@@ -224,5 +268,11 @@
 	<!-- /#wrapper -->
 
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
+	 <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
 </body>
 </html>

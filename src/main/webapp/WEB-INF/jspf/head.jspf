@@ -6,7 +6,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>SB Admin 2 - Bootstrap Admin Theme</title>
+<title>벙벙벙벙</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css"
@@ -50,4 +50,27 @@ small {
 .club-list {
 	padding-bottom: 100px;
 }
+
+.carousel {
+    height: 200px !important;
+}
+
+.carousel .item,
+.carousel .active,
+.carousel .carousel-inner {
+    height: 100%;
+}
+
+/* Background images are set within the HTML using inline CSS, not here */
+
+.carousel .fill {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
 </style>
