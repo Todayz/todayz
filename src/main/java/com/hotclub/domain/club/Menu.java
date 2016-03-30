@@ -24,14 +24,16 @@ public class Menu {
 	@Column(name = "MENU_ID")
 	private Long id;
 
-	//private MenuType type;
+	// private MenuType type;
 
 	private String title;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLUB_ID")
 	private Club parentClub;
-	
-	//@OneToMany(mappedBy = "parent")
-	//private List<Item> items;
+
+	private boolean defaultMenu;
+
+	// @OneToMany(mappedBy = "parent")
+	// private List<Item> items;
 }

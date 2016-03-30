@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/members", "/members/**").hasRole("USER")
 				// clubs TODO ROLE_MANAGER 생성 할 예정. 앞으로 club 는 매니저만 만들수 있도록 변경.
 				.antMatchers("/clubs", "/clubs/**").hasRole("USER")
+				// menus TODO 해당 클럽에 관리 권한이 있는 사람만 수정가능하도록 변경.
 				// etc
 				.antMatchers("/pages/**", "/").authenticated().anyRequest().permitAll();
 	}
