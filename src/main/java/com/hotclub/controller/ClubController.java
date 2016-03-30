@@ -68,4 +68,25 @@ public class ClubController {
 
 		return "club/menu/form";
 	}
+
+	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/list" })
+	public String itemList(@PathVariable Long clubId, @PathVariable Long menuId, Model model) {
+		if (clubId == null) {
+			throw new NullPointerException();
+		}
+
+		if (menuId == null) {
+			throw new NullPointerException();
+		}
+
+		Club club = clubService.getClub(clubId);
+
+		ClubDto.Response response = modelMapper.map(club, ClubDto.Response.class);
+		model.addAttribute("club", response);
+
+		List<Menu> menuList = menuRepository.findByParentClub(club);
+		model.addAttribute("menuList", menuList);
+
+		return "club/item/list";
+	}
 }

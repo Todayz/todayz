@@ -42,6 +42,7 @@ public class ClubRestController {
 
 	@Autowired
 	private ImageService imageService;
+
 	@Autowired
 	private ClubRepository clubRepository;
 

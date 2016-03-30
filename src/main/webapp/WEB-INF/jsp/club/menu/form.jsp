@@ -38,7 +38,7 @@
 							<input type="hidden" id="_csrf" name="_csrf"
 								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>Club title</label>
+								<label>메뉴 이름</label>
 									<input id="title" class="form-control" name="title"
 										value="${menu.title}" type="text" autofocus />
 							</div>

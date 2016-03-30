@@ -51,15 +51,13 @@ public class MenuController {
 	// file upload 관련..참조(아래)
 	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 	@RequestMapping(value = "/club/{clubId}/menus/{id}", method = PUT) // method
-																		// =
-																		// PUT)
 	public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid Menu update, BindingResult result) {
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
 		Menu updatedMenu = menuService.update(id, update);
-		return new ResponseEntity<>(update, HttpStatus.OK);
+		return new ResponseEntity<>(updatedMenu, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/club/{clubId}/menus/{id}", method = DELETE)

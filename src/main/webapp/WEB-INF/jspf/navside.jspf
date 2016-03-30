@@ -23,7 +23,7 @@
 					게시판<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 				<c:forEach var="menu" items="${menuList}">
-					<li><a href="#">${menu.title}</a></li>
+					<li><a href="/pages/club/main/${club.id}/menu/${menu.id}/item/list">${menu.title}</a></li>
 				</c:forEach>
 				</ul> <!-- /.nav-second-level --></li>
 			<li><a href="#"><i class="fa fa-table fa-fw"></i>
