@@ -15,7 +15,17 @@
 			style="margin-bottom: 0">
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 		</nav>
+		<!-- /#page-wrapper -->
 		<div id="page-wrapper" class="no-sidenav">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">가입한 모임</h1>
+				</div>
+				<!-- /.col-lg-12 -->
+			</div>
+			<!-- /.row -->
+			<div id="joined-club-list" class="row member-list"></div>
+
 			<div class="row">
 				<div class="col-lg-12">
 					<h1 class="page-header">개설된 모임</h1>

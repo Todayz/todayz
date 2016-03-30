@@ -129,6 +129,7 @@
 				var $name = $memberComponent.find('#name');
 				var $description = $memberComponent.find('#description');
 				var $phoneNumber = $memberComponent.find('#phoneNumber');
+				var $profileImage = $memberComponent.find('#profileImage');
 				var $birthday = $memberComponent.find('#birthday');
 				var $joinDate = $memberComponent.find('#joinDate');
 
@@ -136,6 +137,11 @@
 				$name.text(member.name);
 				$description.text(member.description);
 				$phoneNumber.text(member.phoneNumber);
+				console.log(member);
+				if(member.profileImage != null && member.profileImage.id != null) {
+					console.log(member);
+					$profileImage.attr('src', '/upload/images/'+member.profileImage.id);
+				}
 				$birthday.text(member.birthday);
 				$joinDate.text(member.joinDate);
 

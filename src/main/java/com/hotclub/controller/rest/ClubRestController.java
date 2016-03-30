@@ -3,8 +3,8 @@ package com.hotclub.controller.rest;
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
-import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,15 +19,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hotclub.controller.support.ClubDto;
 import com.hotclub.domain.club.Club;
+import com.hotclub.domain.common.Image;
 import com.hotclub.repository.ClubRepository;
 import com.hotclub.service.ClubService;
+import com.hotclub.service.ImageService;
 
 @RestController
 @SuppressWarnings("rawtypes")
@@ -37,6 +41,8 @@ public class ClubRestController {
 	private ClubService clubService;
 
 	@Autowired
+	private ImageService imageService;
+	@Autowired
 	private ClubRepository clubRepository;
 
 	@Autowired
@@ -44,10 +50,21 @@ public class ClubRestController {
 
 	// 조건문에 따라 HttpStatus 를 변경해서 리턴하기 위해 ResponseEntity 로 반환한다.
 	@RequestMapping(value = "/clubs", method = POST)
-	public ResponseEntity create(@RequestBody @Valid ClubDto.Create create, BindingResult result) {
+	public ResponseEntity create(@RequestPart("club") @Valid ClubDto.Create create,
+			@RequestParam(value = "mainImage", required = false) MultipartFile mainImage, BindingResult result) {
 
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		if (mainImage != null) {
+			Image image = null;
+			try {
+				image = imageService.uploadImage(mainImage);
+			} catch (IOException e) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			create.setMainImage(image);
 		}
 
 		Club newClub = clubService.create(create);// create(create);
@@ -76,11 +93,23 @@ public class ClubRestController {
 		return modelMapper.map(member, ClubDto.Response.class);
 	}
 
-	@RequestMapping(value = "/clubs/{id}", method = PUT)
-	public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid ClubDto.Update updateDto,
-			BindingResult result) {
+	// file upload 관련..참조(아래)
+	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
+	@RequestMapping(value = "/clubs/{id}", method = POST) // method = PUT)
+	public ResponseEntity update(@PathVariable Long id, @RequestPart("club") @Valid ClubDto.Update updateDto,
+			@RequestParam(value = "mainImage", required = false) MultipartFile mainImage, BindingResult result) {
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		if (mainImage != null) {
+			Image image = null;
+			try {
+				image = imageService.uploadImage(mainImage);
+			} catch (IOException e) {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
+			updateDto.setMainImage(image);
 		}
 
 		Club updatedClub = clubService.update(id, updateDto);

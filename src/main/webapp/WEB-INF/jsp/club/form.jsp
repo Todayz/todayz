@@ -64,34 +64,49 @@
 	<script src="/js/hotclub.js"></script>
 	<script type="text/javascript">
 		//공통화 필요.
+		// file upload 관련..참조(아래)
+		// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 		$('#club-form').submit(function(event) {
 			event.preventDefault();
 			var form = $(this);
+			var formData = new FormData();
+			var uploadFile = form[0].mainImage.files[0];
 
 			var id = "${club.id}";
 			var action = form.attr('action');
 			var url = id === "" ? action : action + "/" + id;
-			var type = id === "" ? 'POST' : 'PUT';
+			//var type = id === "" ? 'POST' : 'PUT';
+			var type = 'POST';
 			var _csrf = $('#_csrf').val();
 
 			if (console) {
 				console.log(JSON.stringify(form.serializeObject()));
+				console.log(uploadFile);
 			}
+			if (uploadFile) {
+				formData.append('mainImage', uploadFile);
+			}
+			formData.append('club', new Blob([JSON.stringify(form.serializeObject())], {
+			                type: 'application/json'
+			            }));
 
 			$.ajax({
 				url : url,
-				dataType : 'json',
+				//dataType : 'json',
 				type : type,
-				data : JSON.stringify(form.serializeObject()),
-				cache : false,
-				contentType : 'application/json',
+				data: formData,
+				enctype: 'multipart/form-data',
+			    processData: false,
+			    contentType: false,
+			    cache: false,
 				beforeSend : function(request) {
 					request.setRequestHeader("X-CSRF-TOKEN", _csrf);
 				},
 				success : function(data) {
 					if (data) {
+						console.log(data);
 						// TODO 추후에 개설된 클럽으로 이동할 수 있도록 변경. 
-						location.href = "/pages/home";
+						//location.href = "/pages/home";
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {
