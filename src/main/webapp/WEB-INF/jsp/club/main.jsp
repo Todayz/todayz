@@ -15,6 +15,7 @@
 		<%@ include file="/WEB-INF/jspf/navtop.jspf"%>
 		<%@ include file="/WEB-INF/jspf/navside.jspf"%>
 		</nav>
+		
 		<div id="page-wrapper">
 			<c:if test="${club.mainImage.id != null}">
 				<!-- Half Page Image Background Carousel Header -->
@@ -148,116 +149,46 @@
 						<!-- /.panel-body -->
 					</div>
 					<!-- /.panel -->
-					<div class="chat-panel panel panel-default">
+
+					<div class="members-panel panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-comments fa-fw"></i> Chat
-							<div class="btn-group pull-right">
-								<button type="button"
-									class="btn btn-default btn-xs dropdown-toggle"
-									data-toggle="dropdown">
-									<i class="fa fa-chevron-down"></i>
-								</button>
-								<ul class="dropdown-menu slidedown">
-									<li><a href="#"> <i class="fa fa-refresh fa-fw"></i>
-											Refresh
-									</a></li>
-									<li><a href="#"> <i class="fa fa-check-circle fa-fw"></i>
-											Available
-									</a></li>
-									<li><a href="#"> <i class="fa fa-times fa-fw"></i>
-											Busy
-									</a></li>
-									<li><a href="#"> <i class="fa fa-clock-o fa-fw"></i>
-											Away
-									</a></li>
-									<li class="divider"></li>
-									<li><a href="#"> <i class="fa fa-sign-out fa-fw"></i>
-											Sign Out
-									</a></li>
-								</ul>
-							</div>
+							<i class="fa fa-comments fa-fw"></i> 가입한 멤버
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<ul class="chat">
-								<li class="left clearfix"><span class="chat-img pull-left">
-										<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar"
-										class="img-circle" />
-								</span>
-									<div class="chat-body clearfix">
-										<div class="header">
-											<strong class="primary-font">Jack Sparrow</strong> <small
-												class="pull-right text-muted"> <i
-												class="fa fa-clock-o fa-fw"></i> 12 mins ago
-											</small>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit. Curabitur bibendum ornare dolor, quis ullamcorper
-											ligula sodales.</p>
-									</div></li>
-								<li class="right clearfix"><span
-									class="chat-img pull-right"> <img
-										src="http://placehold.it/50/FA6F57/fff" alt="User Avatar"
-										class="img-circle" />
-								</span>
-									<div class="chat-body clearfix">
-										<div class="header">
-											<small class=" text-muted"> <i
-												class="fa fa-clock-o fa-fw"></i> 13 mins ago
-											</small> <strong class="pull-right primary-font">Bhaumik
-												Patel</strong>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit. Curabitur bibendum ornare dolor, quis ullamcorper
-											ligula sodales.</p>
-									</div></li>
-								<li class="left clearfix"><span class="chat-img pull-left">
-										<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar"
-										class="img-circle" />
-								</span>
-									<div class="chat-body clearfix">
-										<div class="header">
-											<strong class="primary-font">Jack Sparrow</strong> <small
-												class="pull-right text-muted"> <i
-												class="fa fa-clock-o fa-fw"></i> 14 mins ago
-											</small>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit. Curabitur bibendum ornare dolor, quis ullamcorper
-											ligula sodales.</p>
-									</div></li>
-								<li class="right clearfix"><span
-									class="chat-img pull-right"> <img
-										src="http://placehold.it/50/FA6F57/fff" alt="User Avatar"
-										class="img-circle" />
-								</span>
-									<div class="chat-body clearfix">
-										<div class="header">
-											<small class=" text-muted"> <i
-												class="fa fa-clock-o fa-fw"></i> 15 mins ago
-											</small> <strong class="pull-right primary-font">Bhaumik
-												Patel</strong>
-										</div>
-										<p>Lorem ipsum dolor sit amet, consectetur adipiscing
-											elit. Curabitur bibendum ornare dolor, quis ullamcorper
-											ligula sodales.</p>
-									</div></li>
+							<ul class="members">
+								<c:forEach var="joiningMember" items="${club.joiningMembers}">
+									<li class="left clearfix"><span class="members-img pull-left"> 
+									<fmt:formatDate
+												value="${joiningMember.birthday}" var="formattedDate" type="date"
+												pattern="yyyy-MM-dd" /> 
+									<c:choose>
+										<c:when test="${joiningMember.profileImage.id != null}">
+											<img alt=""
+												src="/upload/images/${joiningMember.profileImage.id}"
+												style="width: 50px; height: 50px;" class="img-circle">
+										</c:when>
+										<c:otherwise>
+											<img src="http://placehold.it/50/55C1E7/fff"
+												alt="User Avatar" class="img-circle" />
+										</c:otherwise>
+									</c:choose>
+									</span>
+										<div class="members-body clearfix">
+											<div class="header">
+												<strong class="primary-font">${joiningMember.name}</strong> <small
+													class="pull-right text-muted"> <i
+													class="fa birthday-cake fa-fw"></i> ${formattedDate}
+												</small>
+											</div>
+											<p>${joiningMember.description}</p>
+										</div></li>
+								</c:forEach>
 							</ul>
 						</div>
 						<!-- /.panel-body -->
-						<div class="panel-footer">
-							<div class="input-group">
-								<input id="btn-input" type="text" class="form-control input-sm"
-									placeholder="Type your message here..." /> <span
-									class="input-group-btn">
-									<button class="btn btn-warning btn-sm" id="btn-chat">
-										Send</button>
-								</span>
-							</div>
-						</div>
-						<!-- /.panel-footer -->
 					</div>
-					<!-- /.panel .chat-panel -->
+					<!-- /.panel .members-panel -->
 				</div>
 				<!-- /.col-lg-4 -->
 			</div>

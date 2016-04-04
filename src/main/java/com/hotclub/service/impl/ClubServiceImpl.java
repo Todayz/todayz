@@ -7,14 +7,7 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.BasePermission;
-import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.PrincipalSid;
-import org.springframework.security.acls.model.MutableAcl;
-import org.springframework.security.acls.model.MutableAclService;
-import org.springframework.security.acls.model.NotFoundException;
-import org.springframework.security.acls.model.ObjectIdentity;
-import org.springframework.security.acls.model.Permission;
-import org.springframework.security.acls.model.Sid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +18,7 @@ import com.hotclub.domain.club.Club;
 import com.hotclub.exception.ClubNotFoundException;
 import com.hotclub.repository.ClubRepository;
 import com.hotclub.service.ClubService;
+import com.hotclub.service.TodayzAclService;
 
 @Service
 @Transactional
@@ -36,31 +30,31 @@ public class ClubServiceImpl implements ClubService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	// @Autowired
+	// private MutableAclService mutableAclService;
+
 	@Autowired
-	private MutableAclService mutableAclService;
+	private TodayzAclService<Club> todayzAclService;
 
 	/**
 	 * @param club
 	 * @param recipient
 	 * @param permission
 	 */
-	protected void addPermission(Club club, Sid recipient, Permission permission) {
-		MutableAcl acl;
-		ObjectIdentity oid = new ObjectIdentityImpl(Club.class, club.getId());
-
-		try {
-			acl = (MutableAcl) mutableAclService.readAclById(oid);
-		} catch (NotFoundException nfe) {
-			acl = mutableAclService.createAcl(oid);
-		}
-
-		acl.insertAce(acl.getEntries().size(), permission, recipient, true);
-		mutableAclService.updateAcl(acl);
-
-		// logger.debug("Added permission " + permission + " for Sid " +
-		// recipient
-		// + " contact " + contact);
-	}
+	/*
+	 * protected void addPermission(Club club, Sid recipient, Permission
+	 * permission) { MutableAcl acl; ObjectIdentity oid = new
+	 * ObjectIdentityImpl(Club.class, club.getId());
+	 * 
+	 * try { acl = (MutableAcl) mutableAclService.readAclById(oid); } catch
+	 * (NotFoundException nfe) { acl = mutableAclService.createAcl(oid); }
+	 * 
+	 * acl.insertAce(acl.getEntries().size(), permission, recipient, true);
+	 * mutableAclService.updateAcl(acl);
+	 * 
+	 * // logger.debug("Added permission " + permission + " for Sid " + //
+	 * recipient // + " contact " + contact); }
+	 */
 
 	protected String getUsername() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -82,7 +76,9 @@ public class ClubServiceImpl implements ClubService {
 
 		club = clubRepository.save(club);
 
-		addPermission(club, new PrincipalSid(getUsername()), BasePermission.ADMINISTRATION);
+		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
+		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
+		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.ADMINISTRATION);
 
 		return club;
 	}
@@ -103,12 +99,8 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public void delete(Long id) {
 		Club club = getClub(id);
-		// Delete the ACL information as well
-		ObjectIdentity oid = new ObjectIdentityImpl(Club.class, club.getId());
-		mutableAclService.deleteAcl(oid, false);
-
 		clubRepository.delete(club);
-
+		todayzAclService.deleteAcl(club);
 		/*
 		 * if (logger.isDebugEnabled()) { logger.debug("Deleted contact " +
 		 * contact + " including ACL permissions"); }

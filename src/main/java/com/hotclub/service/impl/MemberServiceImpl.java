@@ -5,6 +5,11 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +23,7 @@ import com.hotclub.repository.ClubRepository;
 import com.hotclub.repository.MeetingRepository;
 import com.hotclub.repository.MemberRepository;
 import com.hotclub.service.MemberService;
+import com.hotclub.service.TodayzAclService;
 
 @Service
 @Transactional
@@ -34,6 +40,19 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private TodayzAclService<Club> todayzAclService;
+
+	protected String getUsername() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth.getPrincipal() instanceof UserDetails) {
+			return ((UserDetails) auth.getPrincipal()).getUsername();
+		} else {
+			return auth.getPrincipal().toString();
+		}
+	}
 
 	/**
 	 * 회원 가입
@@ -94,17 +113,27 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void joinClub(Long clubId, Member member) {
-		// TODO Auto-generated method stub
 		Club club = clubRepository.findOne(clubId);
 
 		List<Member> members = club.getJoiningMembers();
 		members.add(member);
+		member.getJoinClubs().add(club);
+
+		//System.out.println(club.getJoiningMembers().get(0));
+		//System.out.println(member.getJoinClubs().get(0));
+
+		// TODO Permission Read Write 추가.
+		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
+		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
 	}
 
 	@Override
 	public void leaveClub(Long clubId, Member member) {
 		// TODO Auto-generated method stub
 		Club club = clubRepository.findOne(clubId);
+
+		todayzAclService.deletePermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
+		todayzAclService.deletePermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
 
 		List<Member> members = club.getJoiningMembers();
 		members.remove(member);

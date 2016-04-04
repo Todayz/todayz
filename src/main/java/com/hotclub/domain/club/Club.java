@@ -19,7 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.hotclub.domain.BaseEntity;
+import com.hotclub.domain.AclDomain;
 import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
 
@@ -30,8 +30,8 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString
-public class Club extends BaseEntity {
+@ToString(callSuper = true, exclude = { "joiningMembers" })
+public class Club implements AclDomain {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,10 +56,8 @@ public class Club extends BaseEntity {
 	/*
 	 * 이거 관련하여 테이블 하나 필요.
 	 **/
-	@ManyToMany
-	@JoinTable(name = "CLUB_AND_MEMBER", 
-		joinColumns = @JoinColumn(name = "CLUB_ID") , 
-		inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "CLUB_AND_MEMBER", joinColumns = @JoinColumn(name = "CLUB_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> joiningMembers = new ArrayList<>();
 
 	@Temporal(TemporalType.TIMESTAMP)

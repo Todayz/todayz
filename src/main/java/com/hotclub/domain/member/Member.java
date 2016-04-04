@@ -28,7 +28,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true, exclude = { "joinClubs", "attachMeetings", "password" })
 public class Member {
 
 	@Id

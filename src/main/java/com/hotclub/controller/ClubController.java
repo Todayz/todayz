@@ -3,6 +3,7 @@ package com.hotclub.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import com.hotclub.service.ClubService;
 import com.hotclub.service.MemberService;
 
 @Controller
+@Transactional
 @RequestMapping("/pages/club")
 public class ClubController {
 
@@ -51,6 +53,7 @@ public class ClubController {
 		Club club = clubService.getClub(id);
 		model.addAttribute("club", club);
 
+		//System.out.println(club.getJoiningMembers());
 		List<Menu> menuList = menuRepository.findByParentClub(club);
 		model.addAttribute("menuList", menuList);
 
@@ -58,7 +61,7 @@ public class ClubController {
 	}
 
 	@RequestMapping({ "/main/{id}/joinClub" })
-	public String joinClub(Long id, HttpSession session, Model model) {
+	public String joinClub(@PathVariable Long id, HttpSession session, Model model) {
 		if (id == null) {
 			throw new NullPointerException();
 		}
@@ -70,14 +73,15 @@ public class ClubController {
 			Member member = memberService.getMember(user.getId());
 			memberService.joinClub(id, member);
 		}
+		/*
+		 * Club club = clubService.getClub(id); model.addAttribute("club",
+		 * club);
+		 * 
+		 * List<Menu> menuList = menuRepository.findByParentClub(club);
+		 * model.addAttribute("menuList", menuList);
+		 */
 
-		Club club = clubService.getClub(id);
-		model.addAttribute("club", club);
-
-		List<Menu> menuList = menuRepository.findByParentClub(club);
-		model.addAttribute("menuList", menuList);
-
-		return "club/main";
+		return "redirect:/pages/club/main/" + id;
 	}
 
 	@RequestMapping({ "/main/{id}/menu/form" })

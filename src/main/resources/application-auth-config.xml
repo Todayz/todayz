@@ -14,7 +14,8 @@
 	<!-- ========= ACL SERVICE DEFINITIONS ========= -->
 	<security:global-method-security
 		pre-post-annotations="enabled">
-		<security:expression-handler ref="expressionHandler" />
+		<!-- <security:expression-handler ref="expressionHandler" /> -->
+		<security:expression-handler ref="webExpressionHandler" />
 	</security:global-method-security>
 
 	<bean id="lookupStrategy"
@@ -69,7 +70,8 @@
 	</bean>
 
 	<!-- ================= METHOD INVOCATION AUTHORIZATION ==================== -->
-	<bean id="expressionHandler"
+	<!-- 밑에 두개의 표현식을 같이 쓸수는 없는건지 고민 필요.. -->
+	<bean id="methodExpressionHandler"
 		class="org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler">
 		<property name="permissionEvaluator" ref="permissionEvaluator" />
 		<property name="permissionCacheOptimizer">
@@ -79,6 +81,10 @@
 		</property>
 	</bean>
 
+	<bean id="webExpressionHandler"
+		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler">
+		<property name="permissionEvaluator" ref="permissionEvaluator" />
+	</bean>
 	<bean id="permissionEvaluator"
 		class="org.springframework.security.acls.AclPermissionEvaluator">
 		<constructor-arg ref="aclService" />

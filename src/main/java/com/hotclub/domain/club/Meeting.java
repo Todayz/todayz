@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.hotclub.domain.AclDomain;
 import com.hotclub.domain.member.Member;
 
 import lombok.Getter;
@@ -27,7 +28,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Meeting {
+public class Meeting implements AclDomain {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,8 +51,6 @@ public class Meeting {
 	private Club parent;
 
 	@ManyToMany
-	@JoinTable(name = "MEETING_AND_MEMBER",
-		joinColumns = @JoinColumn(name = "MEETING_ID") , 
-		inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
+	@JoinTable(name = "MEETING_AND_MEMBER", joinColumns = @JoinColumn(name = "MEETING_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> attachMembers = new ArrayList<>();
 }

@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!-- loding image -->
 <img id="loader" alt="" src="/images/loading.gif"
-	style="position: absolute;" />
+	style="position: absolute; display:none;" />
 <footer>
 	<div class="container"></div>
 </footer>

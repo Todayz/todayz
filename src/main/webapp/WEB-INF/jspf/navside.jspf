@@ -17,35 +17,40 @@
 					</span>
 				</div> <!-- /input-group -->
 			</li>
-			<li><a href="/pages/club/main/${club.id}"><i class="fa fa-dashboard fa-fw"></i>
-					메인</a></li>
-			<li><a href="/pages/club/main/${club.id}/joinClub"><i class="fa fa-dashboard fa-fw"></i>
-					가입하기</a></li>
-			<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
-					게시판<span class="fa arrow"></span></a>
+			<li><a href="/pages/club/main/${club.id}"><i
+					class="fa fa-dashboard fa-fw"></i> 메인</a></li>
+			<sec:authorize
+				access="!hasPermission(#club,'ADMINISTRATION') and !hasPermission(#club,'READ') ">
+				<li><a href="/pages/club/main/${club.id}/joinClub"><i
+						class="fa fa-dashboard fa-fw"></i> 가입하기</a></li>
+			</sec:authorize>
+			<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 게시판<span
+					class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-				<c:forEach var="menu" items="${menuList}">
-					<li><a href="/pages/club/main/${club.id}/menu/${menu.id}/item/list">${menu.title}</a></li>
-				</c:forEach>
+					<c:forEach var="menu" items="${menuList}">
+						<li><a
+							href="/pages/club/main/${club.id}/menu/${menu.id}/item/list">${menu.title}</a></li>
+					</c:forEach>
 				</ul> <!-- /.nav-second-level --></li>
-			<li><a href="#"><i class="fa fa-table fa-fw"></i>
-					사진첩</a></li>
-			<li><a href="#"><i class="fa fa-edit fa-fw"></i>
-					채팅</a></li>
-			<sec:accesscontrollist domainObject="${club}" hasPermission="16">
-			<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
-					모임장 메뉴<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="/pages/club/main/${club.id}/menu/form">게시판 추가</a></li>
-					<li><a href="#">클럽 정보 수정</a></li>
-					<li><a href="#">회원 관리</a></li>
-				</ul> <!-- /.nav-second-level --></li>
-			<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i>
-					운영진 메뉴<span class="fa arrow"></span></a>
-				<ul class="nav nav-second-level">
-					<li><a href="#">미팅 추가</a></li>
-				</ul> <!-- /.nav-second-level --></li>
-			</sec:accesscontrollist>
+			<li><a href="#"><i class="fa fa-table fa-fw"></i> 사진첩</a></li>
+			<sec:authorize access="hasPermission(#club,'READ')">
+				<li><a href="#"><i class="fa fa-edit fa-fw"></i> 채팅</a></li>
+			</sec:authorize>
+			<sec:authorize access="hasPermission(#club,'ADMINISTRATION')">
+				<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 모임장
+						메뉴<span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li><a href="/pages/club/main/${club.id}/menu/form">게시판
+								추가</a></li>
+						<li><a href="#">클럽 정보 수정</a></li>
+						<li><a href="#">회원 관리</a></li>
+					</ul> <!-- /.nav-second-level --></li>
+				<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 운영진
+						메뉴<span class="fa arrow"></span></a>
+					<ul class="nav nav-second-level">
+						<li><a href="#">미팅 추가</a></li>
+					</ul> <!-- /.nav-second-level --></li>
+			</sec:authorize>
 		</ul>
 	</div>
 	<!-- /.sidebar-collapse -->

@@ -41,6 +41,8 @@ public class ImageController {
 	@RequestMapping(value = "/images", method = POST)
 	public ResponseEntity uploadFile(@RequestPart("properties") @Valid MemberDto.Create create,
 			@RequestParam("profileImage") MultipartFile profileImage) {
+
+		//TODO 업로드 시 이미지 크기 줄일 수 있도록.
 		Image image = null;
 		try {
 			image = imageService.uploadImage(profileImage);

@@ -217,6 +217,41 @@ body {
     overflow-y: scroll;
 }
 
+
+.members {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.members li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #999;
+}
+
+.members li.left .members-body {
+    margin-left: 60px;
+}
+
+.members li.right .members-body {
+    margin-right: 60px;
+}
+
+.members li .members-body p {
+    margin: 0;
+}
+
+.panel .slidedown .glyphicon,
+.members .glyphicon {
+    margin-right: 5px;
+}
+
+.members-panel .panel-body {
+    height: 350px;
+    overflow-y: scroll;
+}
+
 .login-panel {
     margin-top: 25%;
 }
