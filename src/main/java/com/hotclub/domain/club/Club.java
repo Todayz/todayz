@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,7 +31,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = { "joiningMembers" })
+@ToString(callSuper = true, exclude = { "joiningMembers", "mainImage", "owner" })
 public class Club implements AclDomain {
 
 	@Id
@@ -40,7 +41,7 @@ public class Club implements AclDomain {
 
 	private String title;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "IMAGE_ID")
 	private Image mainImage;
 
@@ -59,6 +60,10 @@ public class Club implements AclDomain {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "CLUB_AND_MEMBER", joinColumns = @JoinColumn(name = "CLUB_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> joiningMembers = new ArrayList<>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "MEMBER_ID")
+	private Member owner;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;

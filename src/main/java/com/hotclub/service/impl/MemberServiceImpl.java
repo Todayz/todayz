@@ -98,6 +98,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
+	public Member getMemberByAuthName(String authName) {
+		Member member = memberRepository.findByAuthName(authName);
+		if (member == null) {
+			throw new MemberNotFoundException(authName);
+		}
+		return member;
+	}
+
+	@Override
 	public void leave(Long id) {
 		memberRepository.delete(getMember(id));
 	}

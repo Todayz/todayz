@@ -48,7 +48,7 @@
 							<i class="fa fa-tasks fa-5x"></i>
 						</div>
 						<div class="col-xs-9 text-right">
-							<div class="huge"><span id="joinMemberCount">12</span> 명</div>
+							<div class="huge"><span id="joinMemberCount"></span></div>
 							<div id="title">title</div>
 						</div>
 					</div>

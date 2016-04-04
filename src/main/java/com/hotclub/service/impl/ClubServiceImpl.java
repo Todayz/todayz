@@ -15,9 +15,11 @@ import org.springframework.stereotype.Service;
 
 import com.hotclub.controller.support.ClubDto;
 import com.hotclub.domain.club.Club;
+import com.hotclub.domain.member.Member;
 import com.hotclub.exception.ClubNotFoundException;
 import com.hotclub.repository.ClubRepository;
 import com.hotclub.service.ClubService;
+import com.hotclub.service.MemberService;
 import com.hotclub.service.TodayzAclService;
 
 @Service
@@ -29,6 +31,9 @@ public class ClubServiceImpl implements ClubService {
 
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Autowired
+	private MemberService memberService;
 
 	// @Autowired
 	// private MutableAclService mutableAclService;
@@ -69,16 +74,18 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public Club create(ClubDto.Create dto) {
 		Club club = modelMapper.map(dto, Club.class);
+		String authName = getUsername();
+		Member owner = memberService.getMemberByAuthName(authName);
 
 		Date now = new Date();
 		club.setCreatedDate(now);
 		club.setUpdatedDate(now);
 
+		club.setOwner(owner);
 		club = clubRepository.save(club);
 
-		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
-		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
-		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.ADMINISTRATION);
+		todayzAclService.addPermission(club, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
+		memberService.joinClub(club.getId(), owner);
 
 		return club;
 	}

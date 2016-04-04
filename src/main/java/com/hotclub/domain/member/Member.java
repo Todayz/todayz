@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +27,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString(callSuper = true, exclude = { "joinClubs", "attachMeetings", "password" })
+@ToString(callSuper = true, exclude = { "joinClubs", "attachMeetings", "password", "profileImage" })
 public class Member {
 
 	@Id
@@ -51,7 +50,7 @@ public class Member {
 
 	// image 를 굳이 LAZY 로 불러올 필요가 있는지 확인 필요.
 	// http://stackoverflow.com/questions/26957554/jsonmappingexception-could-not-initialize-proxy-no-session
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "IMAGE_ID")
 	private Image profileImage;
 	/*
@@ -65,6 +64,7 @@ public class Member {
 	@ManyToMany(mappedBy = "attachMembers")
 	private List<Meeting> attachMeetings = new ArrayList<>();
 
+	//private List<Club> myClubs = new ArrayList<>();
 	// @OneToMany(mappedBy = "writer")
 	// private List<Item> items;
 

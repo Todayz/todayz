@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -152,7 +154,8 @@
 
 					<div class="members-panel panel panel-default">
 						<div class="panel-heading">
-							<i class="fa fa-comments fa-fw"></i> 가입한 멤버
+							<i class="fa fa-comments fa-fw"></i> 가입한 멤버 <strong
+								class="primary-font text-primary">${club.joiningMembers.size()}명</strong>
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
@@ -176,10 +179,14 @@
 									</span>
 										<div class="members-body clearfix">
 											<div class="header">
-												<strong class="primary-font">${joiningMember.name}</strong> <small
+												<strong class="primary-font">${joiningMember.name}</strong> 
+												<small
 													class="pull-right text-muted"> <i
-													class="fa birthday-cake fa-fw"></i> ${formattedDate}
+													class="	fa fa-birthday-cake fa-fw"></i> ${formattedDate}
 												</small>
+												<c:if test="${joiningMember.authName == club.owner.authName}">
+													<strong class="primary-font text-primary">모임장</strong> 
+												</c:if>
 											</div>
 											<p>${joiningMember.description}</p>
 										</div></li>

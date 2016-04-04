@@ -23,6 +23,12 @@ public interface MemberService {
 	 * @return
 	 */
 	public Member getMember(Long id);
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Member getMemberByAuthName(String authName);
 
 	/**
 	 * 탈퇴
