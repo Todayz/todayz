@@ -35,7 +35,7 @@ import com.hotclub.service.MemberService;
 
 @RestController
 @SuppressWarnings("rawtypes")
-public class MemberController {
+public class MemberRestController {
 
 	@Autowired
 	private MemberService memberService;

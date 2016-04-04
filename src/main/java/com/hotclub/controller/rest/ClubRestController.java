@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,6 +98,7 @@ public class ClubRestController {
 	// file upload 관련..참조(아래)
 	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 	@RequestMapping(value = "/clubs/{id}", method = POST) // method = PUT)
+	@PreAuthorize("hasPermission(#club, admin)")
 	public ResponseEntity update(@PathVariable Long id, @RequestPart("club") @Valid ClubDto.Update updateDto,
 			@RequestParam(value = "mainImage", required = false) MultipartFile mainImage, BindingResult result) {
 		if (result.hasErrors()) {

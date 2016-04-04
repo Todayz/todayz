@@ -106,7 +106,7 @@
 					if (data) {
 						console.log(data);
 						// TODO 추후에 개설된 클럽으로 이동할 수 있도록 변경. 
-						//location.href = "/pages/home";
+						location.href = "/pages/home";
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {

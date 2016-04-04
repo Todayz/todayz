@@ -19,6 +19,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.hotclub.domain.BaseEntity;
 import com.hotclub.domain.common.Image;
 import com.hotclub.domain.member.Member;
 
@@ -30,7 +31,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Club {
+public class Club extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

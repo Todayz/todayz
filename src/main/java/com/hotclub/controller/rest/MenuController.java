@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +36,7 @@ public class MenuController {
 
 	// 조건문에 따라 HttpStatus 를 변경해서 리턴하기 위해 ResponseEntity 로 반환한다.
 	@RequestMapping(value = "/club/{clubId}/menus", method = POST)
+	@PreAuthorize("hasPermission(#clubId,'com.hotclub.domain.club.Club', admin)")
 	public ResponseEntity create(@PathVariable Long clubId, @RequestBody @Valid Menu create, BindingResult result) {
 
 		if (result.hasErrors()) {
@@ -51,6 +53,7 @@ public class MenuController {
 	// file upload 관련..참조(아래)
 	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 	@RequestMapping(value = "/club/{clubId}/menus/{id}", method = PUT) // method
+	@PreAuthorize("hasPermission(#clubId,'com.hotclub.domain.club.Club', admin)")
 	public ResponseEntity update(@PathVariable Long id, @RequestBody @Valid Menu update, BindingResult result) {
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -61,6 +64,7 @@ public class MenuController {
 	}
 
 	@RequestMapping(value = "/club/{clubId}/menus/{id}", method = DELETE)
+	@PreAuthorize("hasPermission(#clubId,'com.hotclub.domain.club.Club', admin)")
 	public ResponseEntity leave(@PathVariable Long id) {
 		menuService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);

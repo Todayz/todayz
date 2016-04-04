@@ -6,6 +6,18 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.ObjectIdentityImpl;
+import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.model.MutableAcl;
+import org.springframework.security.acls.model.MutableAclService;
+import org.springframework.security.acls.model.NotFoundException;
+import org.springframework.security.acls.model.ObjectIdentity;
+import org.springframework.security.acls.model.Permission;
+import org.springframework.security.acls.model.Sid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.hotclub.controller.support.ClubDto;
@@ -24,6 +36,42 @@ public class ClubServiceImpl implements ClubService {
 	@Autowired
 	private ModelMapper modelMapper;
 
+	@Autowired
+	private MutableAclService mutableAclService;
+
+	/**
+	 * @param club
+	 * @param recipient
+	 * @param permission
+	 */
+	protected void addPermission(Club club, Sid recipient, Permission permission) {
+		MutableAcl acl;
+		ObjectIdentity oid = new ObjectIdentityImpl(Club.class, club.getId());
+
+		try {
+			acl = (MutableAcl) mutableAclService.readAclById(oid);
+		} catch (NotFoundException nfe) {
+			acl = mutableAclService.createAcl(oid);
+		}
+
+		acl.insertAce(acl.getEntries().size(), permission, recipient, true);
+		mutableAclService.updateAcl(acl);
+
+		// logger.debug("Added permission " + permission + " for Sid " +
+		// recipient
+		// + " contact " + contact);
+	}
+
+	protected String getUsername() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+		if (auth.getPrincipal() instanceof UserDetails) {
+			return ((UserDetails) auth.getPrincipal()).getUsername();
+		} else {
+			return auth.getPrincipal().toString();
+		}
+	}
+
 	@Override
 	public Club create(ClubDto.Create dto) {
 		Club club = modelMapper.map(dto, Club.class);
@@ -32,7 +80,11 @@ public class ClubServiceImpl implements ClubService {
 		club.setCreatedDate(now);
 		club.setUpdatedDate(now);
 
-		return clubRepository.save(club);
+		club = clubRepository.save(club);
+
+		addPermission(club, new PrincipalSid(getUsername()), BasePermission.ADMINISTRATION);
+
+		return club;
 	}
 
 	@Override
@@ -50,7 +102,17 @@ public class ClubServiceImpl implements ClubService {
 
 	@Override
 	public void delete(Long id) {
-		clubRepository.delete(getClub(id));
+		Club club = getClub(id);
+		// Delete the ACL information as well
+		ObjectIdentity oid = new ObjectIdentityImpl(Club.class, club.getId());
+		mutableAclService.deleteAcl(oid, false);
+
+		clubRepository.delete(club);
+
+		/*
+		 * if (logger.isDebugEnabled()) { logger.debug("Deleted contact " +
+		 * contact + " including ACL permissions"); }
+		 */
 	}
 
 	@Override
