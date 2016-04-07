@@ -107,7 +107,7 @@ public class ArticleRestController {
 	// file upload 관련..참조(아래)
 	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 	@RequestMapping(value = "/articles/{id}", method = POST) // method = PUT)
-	@PreAuthorize("hasPermission(#article, admin)")
+	//@PreAuthorize("hasPermission(#article, admin)")
 	public ResponseEntity update(@PathVariable Long id, @RequestPart("article") @Valid ArticleDto.Update updateDto,
 			@RequestParam(value = "articleImage", required = false) MultipartFile articleImage, BindingResult result) {
 		if (result.hasErrors()) {

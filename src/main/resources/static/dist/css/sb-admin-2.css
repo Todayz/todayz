@@ -259,6 +259,7 @@ body {
     padding: 0;
     list-style: none;
 }
+
 .article-list-img img {
 	width: 40px;
 	height: 40px;
@@ -327,6 +328,47 @@ body {
 }
 
 /** 게시판 목록 끝*/
+
+.article .navbar {
+	margin-bottom: 5px;
+	border-bottom: 1px dotted #999;
+}
+
+/** 댓글목록 */
+.comments {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.comments-img img {
+	width: 35px;
+	height: 35px;
+}
+.comments li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #999;
+}
+
+.comments li.left .comments-body {
+    margin-left: 40px;
+}
+
+.comments li.left .comments-body .header {
+	font-size: 12px;
+}
+
+.comments li .comments-body p {
+    margin: 0;
+    font-size: 12px;
+}
+
+.panel .slidedown .glyphicon,
+.comments .glyphicon {
+    margin-right: 5px;
+}
+/** 댓글목록 끝*/
 .login-panel {
     margin-top: 25%;
 }

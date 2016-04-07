@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -17,8 +19,10 @@
 			<%@ include file="/WEB-INF/jspf/navside.jspf"%>
 		</nav>
 		<div id="page-wrapper" style="position: relative">
+			<sec:authorize access="hasPermission(#club,'WRITE')">
 			<a class="article-write-btn btn btn-primary btn-lg"
 				href="/pages/club/main/${club.id}/menu/${menuId}/item/form"><i class="fa fa-pencil"></i> 글쓰기</a>
+			</sec:authorize>
 			<div class="panel-body">
 				<ul id="article-list" class="article-list">
 				</ul>
@@ -59,12 +63,17 @@
 					</small>
 					<br/>
 					<div class="title-and-content">
-						<a href="#">
+						<sec:authorize access="hasPermission(#club,'READ')">
+						<a id="contentPath" href="#">
+						</sec:authorize>
 							<strong class="title primary-font"><span id="title">안녕하세요</span></strong>
 							<p id="content" class="content">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 							Curabitur bibendum ornare dolor, quis ullamcorper ligula
 							sodales.</p>
+						<sec:authorize access="hasPermission(#club,'READ')">
 						</a>
+						</sec:authorize>
+						
 					</div>
 				</div>
 				<div class="body-right" >
@@ -167,19 +176,33 @@
 				var $articleImage = $articleComponent.find('#articleImage');
 				var $profileImage = $articleComponent.find('#profileImage');
 
-				
+				var $contentPath = $articleComponent.find('#contentPath');
+
 				var writer = article.writer;
+				$title.text('');
+				$writer.text('');
+				$content.text('');
+				$updatedDate.text('');
+				$contentPath.removeAttr('href');
+
 				$title.text(article.title);
 				$writer.text(writer.name);
 				$content.text(article.content);
 				$updatedDate.text(article.updatedDate);
 
-				 if(article.articleImage != null && article.articleImage.id != null) {
+				if($contentPath.size()) {
+					$contentPath.attr('href',
+							'/pages/club/main/${club.id}/menu/${menuId}/item/'
+									+ article.id);
+				}
+				if (article.articleImage != null
+						&& article.articleImage.id != null) {
 					$articleImage.show();
-					$articleImage.attr('src', '/upload/images/'+article.articleImage.id);
+					$articleImage.attr('src', '/upload/images/'
+							+ article.articleImage.id);
 				} else {
-					 $articleImage.removeAttr('src');
-					 $articleImage.hide();
+					$articleImage.removeAttr('src');
+					$articleImage.hide();
 				}
 
 				if (writer.profileImage != null

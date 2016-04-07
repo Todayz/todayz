@@ -28,7 +28,7 @@
 					<div class="panel-heading">
 						<c:choose>
 							<c:when test="${article.title == null}">
-								<h3 class="panel-title">article Create page</h3>
+								<h3 class="panel-title">게시글 생성</h3>
 							</c:when>
 							<c:otherwise>
 								<h3 class="panel-title">${article.title}</h3>
@@ -40,17 +40,17 @@
 							<input type="hidden" id="_csrf" name="_csrf"
 								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>article title</label>
+								<label>제목</label>
 									<input id="title" class="form-control" name="title"
 										value="${article.title}" type="text" autofocus />
 							</div>
 							<div class="form-group">
-								<label>content</label>
+								<label>내용</label>
 								<textarea class="form-control" id="content"
 									name="content" rows="3">${article.content}</textarea>
 							</div>
 							<div class="form-group">
-								<label>Main image</label> <input type="file"
+								<label>게시판 이미지</label> <input type="file"
 									id="articleImage" name="articleImage" />
 							</div>
 							<button type="submit" class="btn btn-default">Submit

@@ -5,19 +5,24 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hotclub.context.web.TodayzSession;
 import com.hotclub.domain.club.Club;
 import com.hotclub.domain.club.Menu;
+import com.hotclub.domain.item.Article;
+import com.hotclub.domain.item.Item;
 import com.hotclub.domain.member.Member;
 import com.hotclub.repository.MenuRepository;
 import com.hotclub.security.UserDetailsImpl;
 import com.hotclub.service.ClubService;
+import com.hotclub.service.ItemService;
 import com.hotclub.service.MemberService;
 
 @Controller
@@ -33,11 +38,14 @@ public class ClubController {
 
 	@Autowired
 	private MenuRepository menuRepository;
+
+	@Autowired
+	private ItemService<Item> itemService;
 	// @Autowired
 	// private MemberService memberService;
 
-	// @Autowired
-	// private ModelMapper modelMapper;
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@RequestMapping({ "/form" })
 	public String clubForm() {
@@ -120,8 +128,13 @@ public class ClubController {
 	}
 
 	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/form" })
-	public String clubArticleForm(@PathVariable Long clubId, @PathVariable Long menuId, Model model) {
+	public String clubArticleForm(@PathVariable Long clubId, @PathVariable Long menuId,
+			@RequestParam(value = "itemId", required = false) Long itemId, Model model) {
 		if (clubId == null) {
+			throw new NullPointerException();
+		}
+
+		if (menuId == null) {
 			throw new NullPointerException();
 		}
 
@@ -132,7 +145,38 @@ public class ClubController {
 		model.addAttribute("menuList", menuList);
 		model.addAttribute("menuId", menuId);
 
+		if(itemId != null) {
+			Item item = itemService.getItem(itemId);
+			model.addAttribute("article", modelMapper.map(item, Article.class));
+		}
+
 		return "club/item/form";
 	}
 
+	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/{itemId}" })
+	public String itemContent(@PathVariable Long clubId, @PathVariable Long menuId, @PathVariable Long itemId,
+			Model model) {
+		if (clubId == null) {
+			throw new NullPointerException();
+		}
+
+		if (menuId == null) {
+			throw new NullPointerException();
+		}
+
+		if (itemId == null) {
+			throw new NullPointerException();
+		}
+
+		Club club = clubService.getClub(clubId);
+		model.addAttribute("club", club);
+
+		List<Menu> menuList = menuRepository.findByParentClub(club);
+		Item item = itemService.getItem(itemId);
+		model.addAttribute("menuList", menuList);
+		model.addAttribute("menuId", menuId);
+		model.addAttribute("article", modelMapper.map(item, Article.class));
+
+		return "club/item/content";
+	}
 }

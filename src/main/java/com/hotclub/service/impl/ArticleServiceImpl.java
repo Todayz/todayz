@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.acls.domain.BasePermission;
+import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -60,14 +62,18 @@ public class ArticleServiceImpl implements ItemService<Article> {
 		article.setWriter(writer);
 		article = itemRepository.save(article);
 
-		// todayzAclService.addPermission(article, new PrincipalSid(authName),
-		// BasePermission.ADMINISTRATION);
+		todayzAclService.addPermission(article, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
 		return article;
 	}
 
 	@Override
 	public Article update(Long id, Article article) {
 		Article updateArticle = getItem(id);
+		updateArticle.setTitle(article.getTitle());
+		updateArticle.setContent(article.getContent());
+		if (article.getArticleImage() != null) {
+			updateArticle.setArticleImage(article.getArticleImage());
+		}
 		updateArticle.setUpdatedDate(new Date());
 		return updateArticle;
 	}
@@ -82,9 +88,9 @@ public class ArticleServiceImpl implements ItemService<Article> {
 	@Override
 	public Article getItem(Long id) {
 		Article article = itemRepository.findOne(id);
-		//if (article == null) {
-		//	throw new ClubNotFoundException(id);
-		//}
+		// if (article == null) {
+		// throw new ClubNotFoundException(id);
+		// }
 		return article;
 	}
 }

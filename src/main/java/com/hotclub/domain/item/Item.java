@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.hotclub.domain.AclDomain;
 import com.hotclub.domain.club.Menu;
 import com.hotclub.domain.member.Member;
 
@@ -28,7 +29,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public abstract class Item {
+public abstract class Item implements AclDomain {
 
 	@Id
 	@GeneratedValue
