@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -30,6 +32,7 @@ public class Menu {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CLUB_ID")
+	@JsonIgnore
 	private Club parentClub;
 
 	private boolean defaultMenu;

@@ -126,7 +126,7 @@ public class MemberServiceImpl implements MemberService {
 
 		List<Member> members = club.getJoiningMembers();
 		members.add(member);
-		member.getJoinClubs().add(club);
+		//member.getJoinClubs().add(club);
 
 		//System.out.println(club.getJoiningMembers().get(0));
 		//System.out.println(member.getJoinClubs().get(0));
