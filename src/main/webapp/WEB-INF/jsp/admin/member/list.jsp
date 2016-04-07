@@ -133,13 +133,18 @@
 				var $birthday = $memberComponent.find('#birthday');
 				var $joinDate = $memberComponent.find('#joinDate');
 
+				$authName.text('');
+				$name.text('');
+				$description.text('');
+				$phoneNumber.text('');
+				$birthday.text('');
+				$joinDate.text('');
+
 				$authName.text(member.authName);
 				$name.text(member.name);
 				$description.text(member.description);
 				$phoneNumber.text(member.phoneNumber);
-				console.log(member);
 				if(member.profileImage != null && member.profileImage.id != null) {
-					console.log(member);
 					$profileImage.show();
 					$profileImage.attr('src', '/upload/images/'+member.profileImage.id);
 				} else {

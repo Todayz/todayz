@@ -146,6 +146,11 @@
 				var $notice = $clubComponent.find('#notice');
 				var $createdDate = $clubComponent.find('#createdDate');
 
+				$title.text('');
+				$notice.text('');
+				$createdDate.text('');
+				$enterClub.removeAttr('href')
+
 				$title.text(club.title);
 				$notice.text(club.notice);
 				$createdDate.text(club.createdDate);
