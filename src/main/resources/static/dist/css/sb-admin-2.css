@@ -217,7 +217,7 @@ body {
     overflow-y: scroll;
 }
 
-
+/** 회원목록 */
 .members {
     margin: 0;
     padding: 0;
@@ -251,7 +251,82 @@ body {
     height: 350px;
     overflow-y: scroll;
 }
+/** 회원목록 끝*/
 
+/** 게시판 목록*/
+.article-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.article-list-img img {
+	width: 40px;
+	height: 40px;
+}
+.article-list li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #999;
+}
+
+.article-list li.left .article-list-body {
+	/**기존 chat 과 다른 부분*/
+    margin-left: 0px;
+}
+
+.article-list .article-list-body .body-left {
+	/**기존 chat 과 다른 부분*/
+	width: 80%;
+	display: inline-block;
+}
+
+.article-list .article-list-body .body-right {
+	/**기존 chat 과 다른 부분*/
+	width: 15%;
+	float:right;
+}
+.article-list .article-list-body .body-right img {
+	/**기존 chat 과 다른 부분*/
+	width: 100px;
+	height: 100px;
+}
+
+.article-list .article-list-body .body-right .comment-count {
+	padding-left: 3px;
+	float: right;
+}
+/**
+.article-list li.right .article-list-body {
+    margin-right: 60px;
+}
+*/
+.article-list li .title-and-content .title {
+	font-size: 16px;
+}
+
+.article-list li .title-and-content .content {
+	color: #999;
+}
+
+.article-list li .article-list-body p {
+    margin: 0;
+}
+
+.panel .slidedown .glyphicon,
+.article-list .glyphicon {
+    margin-right: 5px;
+}
+
+.article-list-panel .panel-body {
+    height: 350px;
+    overflow-y: scroll;
+}
+.article-write-btn {
+	position: fixed;
+	display: none;
+}
+
+/** 게시판 목록 끝*/
 .login-panel {
     margin-top: 25%;
 }

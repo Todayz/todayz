@@ -36,11 +36,11 @@ public class MenuServiceImpl implements MenuService {
 		menuRepository.delete(getMenu(id));
 	}
 
-	protected Menu getMenu(Long id) throws MenuNotFoundException {
-		Menu club = menuRepository.findOne(id);
-		if (club == null) {
-			throw new MenuNotFoundException(id);
-		}
-		return club;
+	public Menu getMenu(Long id) {
+		Menu menu = menuRepository.findOne(id);
+		//if (club == null) {
+		//	throw new MenuNotFoundException(id);
+		//}
+		return menu;
 	}
 }

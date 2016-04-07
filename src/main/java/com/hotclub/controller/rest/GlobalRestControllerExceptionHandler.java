@@ -1,4 +1,4 @@
-package com.hotclub.controller;
+package com.hotclub.controller.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

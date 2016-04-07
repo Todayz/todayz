@@ -8,4 +8,6 @@ public interface MenuService {
 	public Menu update(Long id, Menu update);
 
 	public void delete(Long id);
+
+	public Menu getMenu(Long id);
 }

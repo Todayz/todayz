@@ -140,7 +140,11 @@
 				console.log(member);
 				if(member.profileImage != null && member.profileImage.id != null) {
 					console.log(member);
+					$profileImage.show();
 					$profileImage.attr('src', '/upload/images/'+member.profileImage.id);
+				} else {
+					 $profileImage.removeAttr('src');
+					 $profileImage.hide();
 				}
 				$birthday.text(member.birthday);
 				$joinDate.text(member.joinDate);

@@ -53,7 +53,7 @@ public class ClubController {
 		Club club = clubService.getClub(id);
 		model.addAttribute("club", club);
 
-		//System.out.println(club.getJoiningMembers());
+		// System.out.println(club.getJoiningMembers());
 		List<Menu> menuList = menuRepository.findByParentClub(club);
 		model.addAttribute("menuList", menuList);
 
@@ -114,7 +114,25 @@ public class ClubController {
 
 		List<Menu> menuList = menuRepository.findByParentClub(club);
 		model.addAttribute("menuList", menuList);
+		model.addAttribute("menuId", menuId);
 
 		return "club/item/list";
 	}
+
+	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/form" })
+	public String clubArticleForm(@PathVariable Long clubId, @PathVariable Long menuId, Model model) {
+		if (clubId == null) {
+			throw new NullPointerException();
+		}
+
+		Club club = clubService.getClub(clubId);
+		model.addAttribute("club", club);
+
+		List<Menu> menuList = menuRepository.findByParentClub(club);
+		model.addAttribute("menuList", menuList);
+		model.addAttribute("menuId", menuId);
+
+		return "club/item/form";
+	}
+
 }

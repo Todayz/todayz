@@ -93,14 +93,13 @@ public class ClubServiceImpl implements ClubService {
 	@Override
 	public Club update(Long id, ClubDto.Update dto) {
 		// TODO Auto-generated method stub
-
 		Club club = getClub(id);
 		club.setTitle(dto.getTitle());
 		club.setMainImage(dto.getMainImage());
 		club.setNotice(dto.getNotice());
 
 		club.setUpdatedDate(new Date());
-		return null;
+		return club;
 	}
 
 	@Override
