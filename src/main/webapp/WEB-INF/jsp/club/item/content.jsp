@@ -77,90 +77,98 @@
 				</nav>
 				<div class="comments-panel panel-default">
 					<ul class="comments">
-						<li class="left clearfix"><span class="comments-img pull-left">
-								<img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar"
-								class="img-circle" />
-						</span>
-							<div class="comments-body clearfix">
-								<div class="header">
-									<strong class="primary-font">임정묵</strong> <small
-										class="pull-right text-muted"> 1986-08-30 11:22:33
-									</small> <strong class="primary-font text-primary">모임장</strong>
-								</div>
-								<p>안녕하세요</p>
-							</div></li>
+						<c:forEach var="comment" items="${commentList}">
+							<li class="comment left clearfix">
+								<span
+									class="comments-img pull-left">
+									<c:choose>
+										<c:when test="${comment.writer.profileImage.id != null}">
+											<img alt=""
+												src="/upload/images/${comment.writer.profileImage.id}"
+												 class="img-circle">
+										</c:when>
+										<c:otherwise>
+											<img src="http://placehold.it/50/55C1E7/fff"
+												alt="User Avatar" class="img-circle" />
+										</c:otherwise>
+									</c:choose>
+								</span>
+								<div class="comments-body clearfix">
+									<div class="header">
+										<strong class="primary-font"><span id="writer">${comment.writer.name}</span></strong>
+										<small class="pull-right text-muted"><span
+											id="createdDate">${comment.createdDate} </span></small> <strong
+											class="primary-font text-primary">모임장</strong>
+									</div>
+									<p id="content">${comment.content}</p>
+								</div></li>
+						</c:forEach>
 					</ul>
 				</div>
 				<!-- /.panel .comments-panel -->
+				<nav class="navbar navbar-default navbar-fixed-bottom">
+					<form id="comment-form" role="form" method="POST"
+						action="/comments">
+						<div class="comment-input-panel panel-footer">
+							<div class="input-group">
+								<input type="hidden" id="_csrf" name="_csrf"
+									value="${_csrf.token}"></input> <input id="comment-content"
+									type="text" name="content" class="form-control input-lg"
+									placeholder="댓글을 달아주세요" /> <span class="input-group-btn">
+									<button class="btn btn-warning btn-lg" id="btn-chat">전송</button>
+								</span>
+							</div>
+						</div>
+					</form>
+				</nav>
 			</div>
 		</div>
 	</div>
+
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 	<script src="/js/hotclub.js"></script>
 	<script type="text/javascript">
 		//공통화 필요.
-		// file upload 관련..참조(아래)
-		// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
-		/* $('#article-form').submit(function(event) {
-			//private Long id;
-			//private String title;
-			//private Menu parent;
-			//private Member writer;
-			//private Date createdDate;
-			//private Date updatedDate;
-			event.preventDefault();
-			var form = $(this);
-			var formData = new FormData();
-			var uploadFile = form[0].articleImage.files[0];
+		$(function() {
+			$('#comment-form').submit(function(event) {
+				event.preventDefault();
+				var form = $(this);
+				var action = form.attr('action');
+				var url = action;
+				var type = 'POST';
+				var _csrf = $('#_csrf').val();
 
-			var id = "${article.id}";
-			var action = form.attr('action');
-			var url = id === "" ? action : action + "/" + id;
-			//var type = id === "" ? 'POST' : 'PUT';
-			url += "?menuId=${menuId}";
-			var type = 'POST';
-			var _csrf = $('#_csrf').val();
+				url += '?itemId=${article.id}';
+				if (console) {
+					console.log(JSON.stringify(form.serializeObject()));
+				}
 
-			if (console) {
-				console.log(JSON.stringify(form.serializeObject()));
-				console.log(uploadFile);
-			}
-			if (uploadFile) {
-				formData.append('articleImage', uploadFile);
-			}
-			formData.append('article', new Blob([JSON.stringify(form.serializeObject())], {
-			                type: 'application/json'
-			            }));
-
-			$.ajax({
-				url : url,
-				//dataType : 'json',
-				type : type,
-				data: formData,
-				enctype: 'multipart/form-data',
-			    processData: false,
-			    contentType: false,
-			    cache: false,
-				beforeSend : function(request) {
-					request.setRequestHeader("X-CSRF-TOKEN", _csrf);
-				},
-				success : function(data) {
-					if (data) {
-						console.log(data);
-						// TODO 추후에 개설된 클럽으로 이동할 수 있도록 변경. 
-						//location.href = "/pages/club/main/" + data.id;
-						//location.href = "/pages/club/main/${club.id}/menu/${menuId}/item/list";
-					}
-				}.bind(this),
-				error : function(xhr, status, err) {
-					if (console) {
-						console.log(xhr);
-						console.log(status);
-						console.log(err);
-					}
-				}.bind(this)
+				$.ajax({
+					url : url,
+					dataType : 'json',
+					type : type,
+					data : JSON.stringify(form.serializeObject()),
+					cache : false,
+					contentType : 'application/json',
+					beforeSend : function(request) {
+						request.setRequestHeader("X-CSRF-TOKEN", _csrf);
+					},
+					success : function(data) {
+						if (data) {
+							console.log(data);
+							//location.href = "/pages/home";
+						}
+					}.bind(this),
+					error : function(xhr, status, err) {
+						if (console) {
+							console.log(xhr);
+							console.log(status);
+							console.log(err);
+						}
+					}.bind(this)
+				});
 			});
-		}); */
+		});
 	</script>
 </body>
 </html>

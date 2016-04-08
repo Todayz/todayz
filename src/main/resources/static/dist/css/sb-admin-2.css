@@ -334,6 +334,15 @@ body {
 	border-bottom: 1px dotted #999;
 }
 
+.article .navbar-fixed-bottom {
+	margin-bottom: 0px;
+	border-bottom: 0px;
+}
+@media ( min-width :768px) {
+	.article .navbar-fixed-bottom {
+		margin: 0 0 0 250px;
+	}
+}
 /** 댓글목록 */
 .comments {
     margin: 0;

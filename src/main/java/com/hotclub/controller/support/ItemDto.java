@@ -7,7 +7,7 @@ import com.hotclub.domain.common.Image;
 
 import lombok.Data;
 
-public class ArticleDto {
+public class ItemDto {
 
 	@Data
 	public static class Create {

@@ -16,15 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.hotclub.context.web.TodayzSession;
 import com.hotclub.domain.club.Club;
 import com.hotclub.domain.club.Menu;
+import com.hotclub.domain.common.Comment;
 import com.hotclub.domain.item.Article;
 import com.hotclub.domain.item.Item;
 import com.hotclub.domain.member.Member;
+import com.hotclub.repository.CommentRepository;
 import com.hotclub.repository.MenuRepository;
 import com.hotclub.security.UserDetailsImpl;
 import com.hotclub.service.ClubService;
 import com.hotclub.service.ItemService;
 import com.hotclub.service.MemberService;
 
+//리팩토링 필요.
 @Controller
 @Transactional
 @RequestMapping("/pages/club")
@@ -40,9 +43,12 @@ public class ClubController {
 	private MenuRepository menuRepository;
 
 	@Autowired
-	private ItemService<Item> itemService;
+	private ItemService<Item> articleService;
+
 	// @Autowired
 	// private MemberService memberService;
+	@Autowired
+	private CommentRepository commentRepository;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -145,9 +151,9 @@ public class ClubController {
 		model.addAttribute("menuList", menuList);
 		model.addAttribute("menuId", menuId);
 
-		if(itemId != null) {
-			Item item = itemService.getItem(itemId);
-			model.addAttribute("article", modelMapper.map(item, Article.class));
+		if (itemId != null) {
+			Article article = (Article) articleService.getItem(itemId);
+			model.addAttribute("article", article);
 		}
 
 		return "club/item/form";
@@ -172,10 +178,13 @@ public class ClubController {
 		model.addAttribute("club", club);
 
 		List<Menu> menuList = menuRepository.findByParentClub(club);
-		Item item = itemService.getItem(itemId);
+		Article article = (Article) articleService.getItem(itemId);
+
+		List<Comment> commentList = commentRepository.findByParent(article);
 		model.addAttribute("menuList", menuList);
 		model.addAttribute("menuId", menuId);
-		model.addAttribute("article", modelMapper.map(item, Article.class));
+		model.addAttribute("article", article);
+		model.addAttribute("commentList", commentList);
 
 		return "club/item/content";
 	}

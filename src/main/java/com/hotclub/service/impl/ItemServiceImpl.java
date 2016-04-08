@@ -13,7 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.hotclub.domain.item.Article;
+import com.hotclub.domain.item.Item;
 import com.hotclub.domain.member.Member;
 //import com.hotclub.exception.ClubNotFoundException;
 import com.hotclub.repository.ItemRepository;
@@ -23,10 +23,10 @@ import com.hotclub.service.TodayzAclService;
 
 @Service
 @Transactional
-public class ArticleServiceImpl implements ItemService<Article> {
+public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 
 	@Autowired
-	private ItemRepository<Article> itemRepository;
+	private ItemRepository<T> itemRepository;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -38,7 +38,7 @@ public class ArticleServiceImpl implements ItemService<Article> {
 	// private MutableAclService mutableAclService;
 
 	@Autowired
-	private TodayzAclService<Article> todayzAclService;
+	private TodayzAclService<T> todayzAclService;
 
 	protected String getUsername() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -51,46 +51,47 @@ public class ArticleServiceImpl implements ItemService<Article> {
 	}
 
 	@Override
-	public Article create(Article article) {
+	public T create(T item) {
 		String authName = getUsername();
 		Member writer = memberService.getMemberByAuthName(authName);
 
 		Date now = new Date();
-		article.setCreatedDate(now);
-		article.setUpdatedDate(now);
+		item.setCreatedDate(now);
+		item.setUpdatedDate(now);
 
-		article.setWriter(writer);
-		article = itemRepository.save(article);
+		item.setWriter(writer);
+		item = itemRepository.save(item);
 
-		todayzAclService.addPermission(article, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
-		return article;
+		todayzAclService.addPermission(item, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
+		return item;
 	}
 
 	@Override
-	public Article update(Long id, Article article) {
-		Article updateArticle = getItem(id);
-		updateArticle.setTitle(article.getTitle());
-		updateArticle.setContent(article.getContent());
-		if (article.getArticleImage() != null) {
-			updateArticle.setArticleImage(article.getArticleImage());
-		}
-		updateArticle.setUpdatedDate(new Date());
+	public T update(Long id, T item) {
+		T updateArticle = getItem(id);
+		/* //modelMapper.
+		 updateArticle.setTitle(item.getTitle());
+		 updateArticle.setContent(item.getContent());
+		 if (item.getArticleImage() != null) {
+		 updateArticle.setArticleImage(item.getArticleImage());
+		 }
+		updateArticle.setUpdatedDate(new Date());*/
 		return updateArticle;
 	}
 
 	@Override
 	public void delete(Long id) {
-		Article article = getItem(id);
-		itemRepository.delete(article);
-		todayzAclService.deleteAcl(article);
+		T item = getItem(id);
+		itemRepository.delete(item);
+		todayzAclService.deleteAcl(item);
 	}
 
 	@Override
-	public Article getItem(Long id) {
-		Article article = itemRepository.findOne(id);
-		// if (article == null) {
+	public T getItem(Long id) {
+		T item = itemRepository.findOne(id);
+		// if (item == null) {
 		// throw new ClubNotFoundException(id);
 		// }
-		return article;
+		return item;
 	}
 }
