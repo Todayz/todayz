@@ -96,6 +96,9 @@
 								<div class="comments-body clearfix">
 									<div class="header">
 										<strong class="primary-font"><span id="writer">${comment.writer.name}</span></strong>
+										<sec:authorize access="hasPermission(#club,'ADMINISTRATION') or hasPermission(#comment,'DELETE')">
+										<a id="delete-link" class="pull-right text-muted" href="/comments/${comment.id}"><i class="fa fa-times fa-3x"></i></a>
+										</sec:authorize>
 										<small class="pull-right text-muted"><span
 											id="createdDate">${comment.createdDate} </span></small> <strong
 											class="primary-font text-primary">모임장</strong>
@@ -130,6 +133,30 @@
 	<script type="text/javascript">
 		//공통화 필요.
 		$(function() {
+			$('.comment #delete-link').click(function(event) {
+				event.preventDefault();
+				var _csrf = $('#_csrf').val();
+				$.ajax({
+					url : $(this).attr("href"),
+					type : 'DELETE',
+					cache : false,
+					contentType : 'application/json',
+					beforeSend : function(request) {
+						request.setRequestHeader("X-CSRF-TOKEN", _csrf);
+					},
+					success : function(data) {
+						location.reload();
+					}.bind(this),
+					error : function(xhr, status, err) {
+						if (console) {
+							console.log(xhr);
+							console.log(status);
+							console.log(err);
+						}
+					}.bind(this)
+				});
+			});
+
 			$('#comment-form').submit(function(event) {
 				event.preventDefault();
 				var form = $(this);
@@ -157,6 +184,7 @@
 						if (data) {
 							console.log(data);
 							//location.href = "/pages/home";
+							location.reload();
 						}
 					}.bind(this),
 					error : function(xhr, status, err) {

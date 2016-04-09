@@ -94,7 +94,7 @@ public class ArticleRestController {
 		// 종종 스트림에 있는 값들을 특정 방식으로 변환하고 싶을때가 있다. 이 경우 map 메서드를 사용하고
 		// 변환을 수행하는 함수를 파라미터로 전달한다.
 		List<ItemDto.Response> content = page.getContent().stream()
-				.map(account -> modelMapper.map(account, ItemDto.Response.class)).collect(Collectors.toList());
+				.map(item -> modelMapper.map(item, ItemDto.Response.class)).collect(Collectors.toList());
 		return new PageImpl<>(content, pageable, page.getTotalElements());
 	}
 

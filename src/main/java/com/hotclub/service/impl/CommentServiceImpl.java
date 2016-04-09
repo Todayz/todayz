@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
 		comment.setWriter(writer);
 		comment = commentRepository.save(comment);
 
-		todayzAclService.addPermission(comment, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
+		todayzAclService.addPermission(comment, new PrincipalSid(authName), BasePermission.DELETE);
 		return comment;
 	}
 

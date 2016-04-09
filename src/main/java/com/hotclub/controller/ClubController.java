@@ -50,8 +50,8 @@ public class ClubController {
 	@Autowired
 	private CommentRepository commentRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	//@Autowired
+	//private ModelMapper modelMapper;
 
 	@RequestMapping({ "/form" })
 	public String clubForm() {

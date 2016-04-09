@@ -5,6 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hotclub.controller.support.CommentDto;
@@ -64,15 +64,17 @@ public class CommentRestController {
 	// 의 Table 1.1. 참조
 	// articles?page=0&size=20&sort=username,asc$sort=name,asc
 	@RequestMapping(value = "/comments", method = GET)
-	@ResponseStatus(HttpStatus.OK)
-	public List<Comment> getComments(Sort sort, @RequestParam(value = "itemId") Long itemId) {
+	//@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity getComments(Sort sort, @RequestParam(value = "itemId") Long itemId) {
 		Item parent = itemService.getItem(itemId);
 		List<Comment> comments = commentRepository.findByParent(parent);
 
 		// 종종 스트림에 있는 값들을 특정 방식으로 변환하고 싶을때가 있다. 이 경우 map 메서드를 사용하고
 		// 변환을 수행하는 함수를 파라미터로 전달한다.
+		List<CommentDto.Response> content = comments.stream()
+				.map(comment -> modelMapper.map(comment, CommentDto.Response.class)).collect(Collectors.toList());
 
-		return comments;
+		return new ResponseEntity<>(content, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/comments/{id}", method = DELETE)
