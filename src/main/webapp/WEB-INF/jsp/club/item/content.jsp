@@ -69,6 +69,10 @@
 					<div class="title-and-content">
 						<strong class="title primary-font"><span id="title">${article.title}</span></strong>
 						<p id="content" class="content">${article.content}</p>
+						<div class="content-image">
+							<!-- 앞으로 여러장이 있을 수 있다. -->
+							<img src="/upload/images/${article.articleImage.id}" />
+						</div>
 					</div>
 				</div>
 				<nav class="navbar">

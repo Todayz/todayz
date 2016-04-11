@@ -343,6 +343,12 @@ body {
 		margin: 0 0 0 250px;
 	}
 }
+
+.article .title-and-content img {
+	width: 100%;
+	height: auto;
+}
+
 /** 댓글목록 */
 .comments {
     margin: 0;
