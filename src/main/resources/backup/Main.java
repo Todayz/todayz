@@ -1,4 +1,4 @@
-package com.hotclub;
+package com.todayz;
 
 public class Main {
 	public static void main(String[] args) {

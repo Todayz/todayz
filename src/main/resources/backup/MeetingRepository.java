@@ -1,9 +1,9 @@
-package com.hotclub.repository;
+package com.todayz.repository;
 
 import java.util.List;
 
-import com.hotclub.domain.club.Meeting;
-import com.hotclub.domain.member.Member;
+import com.todayz.domain.club.Meeting;
+import com.todayz.domain.member.Member;
 
 public interface MeetingRepository {
 	public void save(Meeting meeting);

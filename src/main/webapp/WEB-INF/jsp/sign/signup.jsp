@@ -86,7 +86,7 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
-	<script src="/js/hotclub.js"></script>
+	<script src="/js/todayz.js"></script>
 	<script type="text/javascript">
 	$(function() {
 		// file upload 관련..참조(아래)

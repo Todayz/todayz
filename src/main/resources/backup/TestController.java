@@ -1,4 +1,4 @@
-package com.hotclub.controller;
+package com.todayz.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

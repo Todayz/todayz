@@ -1,4 +1,4 @@
-package com.hotclub.controller.rest;
+package com.todayz.controller.rest;
 
 import static org.springframework.web.bind.annotation.RequestMethod.DELETE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -24,10 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hotclub.controller.support.ClubDto;
-import com.hotclub.domain.club.Club;
-import com.hotclub.repository.ClubRepository;
-import com.hotclub.service.ClubService;
+import com.todayz.controller.support.ClubDto;
+import com.todayz.domain.club.Club;
+import com.todayz.repository.ClubRepository;
+import com.todayz.service.ClubService;
 
 @RestController
 @SuppressWarnings("rawtypes")

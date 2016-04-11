@@ -1,4 +1,4 @@
-package com.hotclub.repository.impl;
+package com.todayz.repository.impl;
 
 import java.util.List;
 
@@ -8,10 +8,10 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
-import com.hotclub.domain.club.Club;
-import com.hotclub.domain.club.Meeting;
-import com.hotclub.domain.member.Member;
-import com.hotclub.repository.MemberRepository;
+import com.todayz.domain.club.Club;
+import com.todayz.domain.club.Meeting;
+import com.todayz.domain.member.Member;
+import com.todayz.repository.MemberRepository;
 
 @Repository
 public class MemberRepositoryImpl implements MemberRepository {

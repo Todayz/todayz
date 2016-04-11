@@ -62,7 +62,7 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
-	<script src="/js/hotclub.js"></script>
+	<script src="/js/todayz.js"></script>
 	<script type="text/javascript">
 		//공통화 필요.
 		// file upload 관련..참조(아래)

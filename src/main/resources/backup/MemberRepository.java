@@ -1,8 +1,8 @@
-package com.hotclub.repository;
+package com.todayz.repository;
 
 import java.util.List;
 
-import com.hotclub.domain.member.Member;
+import com.todayz.domain.member.Member;
 
 public interface MemberRepository {
 
