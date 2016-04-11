@@ -20,8 +20,8 @@
 		</nav>
 		<div id="page-wrapper" style="position: relative">
 			<sec:authorize access="hasPermission(#club,'WRITE')">
-			<a class="article-write-btn btn btn-primary btn-lg"
-				href="/pages/club/main/${club.id}/menu/${menuId}/item/form"><i class="fa fa-pencil"></i> 글쓰기</a>
+			<a class="item-write-btn btn btn-primary btn-lg"
+				href="/pages/club/main/${club.id}/menu/${menuId}/article/form"><i class="fa fa-pencil"></i> 글쓰기</a>
 			</sec:authorize>
 			<div class="panel-body">
 				<ul id="article-list" class="article-list">
@@ -192,7 +192,7 @@
 
 				if($contentPath.size()) {
 					$contentPath.attr('href',
-							'/pages/club/main/${club.id}/menu/${menuId}/item/'
+							'/pages/club/main/${club.id}/menu/${menuId}/article/'
 									+ article.id);
 				}
 				if (article.articleImage != null

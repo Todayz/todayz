@@ -24,9 +24,9 @@ $(function() {
         if (height > topOffset) {
             $("#page-wrapper").css("min-height", (height) + "px");
         }
-		var articleWriteBtn = $('.article-write-btn');
-		if (articleWriteBtn.size()) {
-			articleWriteBtn.css({
+		var itemWriteBtn = $('.item-write-btn');
+		if (itemWriteBtn.size()) {
+			itemWriteBtn.css({
 				'left' : (width - 120) + 'px',
 				'top': (height - 30) + 'px'
 			}).show();

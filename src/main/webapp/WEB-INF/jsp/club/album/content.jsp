@@ -9,7 +9,6 @@
 <html lang="ko">
 <head>
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
-<title>Login</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -20,15 +19,15 @@
 			<%@ include file="/WEB-INF/jspf/navside.jspf"%>
 		</nav>
 
-		<fmt:formatDate value="${article.updatedDate}" var="formattedDate"
+		<fmt:formatDate value="${album.updatedDate}" var="formattedDate"
 			type="date" pattern="yyyy-MM-dd HH:mm:ss" />
 
 		<!-- TODO validation -->
 		<div id="page-wrapper">
-			<div class="article panel-body">
+			<div class="album panel-body">
 			<!-- Single button -->
 				<sec:authorize
-				access="hasPermission(#article,'ADMINISTRATION') or hasPermission(#club,'ADMINISTRATION')">
+				access="hasPermission(#album,'ADMINISTRATION') or hasPermission(#club,'ADMINISTRATION')">
 					<div class="btn-group pull-right">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -36,22 +35,21 @@
 						</button>
 						<ul class="dropdown-menu">
 							<li><a
-								href="/pages/club/main/${club.id}/menu/${menuId}/item/form?itemId=${article.id}">게시글
-									수정</a></li>
-							<li><a href="#">게시글 삭제</a></li>
+								href="">이미지 저장</a></li>
+							<li><a href="">이미지 삭제</a></li>
 						</ul>
 					</div>
 				</sec:authorize>
 				<div class="panel-default">
-					<div class="article-list-body clearfix">
+					<div class="album-list-body clearfix">
 						<div class="body-left">
 							<div class="header">
 								<strong class="primary-font"><span
-									class="article-list-img pull-left"> 
+									class="album-list-img pull-left"> 
 									<c:choose>
-										<c:when test="${article.writer.profileImage.id != null}">
+										<c:when test="${album.writer.profileImage.id != null}">
 											<img id="profileImage"
-												src="/upload/images/${article.writer.profileImage.id}"
+												src="/upload/images/${album.writer.profileImage.id}"
 												alt="User Avatar" class="img-circle" />
 										</c:when>
 										<c:otherwise>
@@ -59,19 +57,17 @@
 												alt="User Avatar" class="img-circle" />
 										</c:otherwise>
 									</c:choose>
-								</span><span id="writer">${article.writer.name}</span></strong>
+								</span><span id="writer">${album.writer.name}</span></strong>
 							</div>
 							<small class="text-muted"> <i class="fa fa-clock-o fa-fw"></i>
-								<span id="updatedDate">${article.updatedDate}</span>
+								<span id="updatedDate">${album.updatedDate}</span>
 							</small> <br />
 						</div>
 					</div>
 					<div class="title-and-content">
-						<strong class="title primary-font"><span id="title">${article.title}</span></strong>
-						<p id="content" class="content">${article.content}</p>
 						<div class="content-image">
 							<!-- 앞으로 여러장이 있을 수 있다. -->
-							<img src="/upload/images/${article.articleImage.id}" />
+							<img src="/upload/images/${album.photo.id}" />
 						</div>
 					</div>
 				</div>
@@ -169,7 +165,7 @@
 				var type = 'POST';
 				var _csrf = $('#_csrf').val();
 
-				url += '?itemId=${article.id}';
+				url += '?itemId=${album.id}';
 				if (console) {
 					console.log(JSON.stringify(form.serializeObject()));
 				}

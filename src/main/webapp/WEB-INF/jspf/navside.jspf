@@ -29,10 +29,12 @@
 				<ul class="nav nav-second-level">
 					<c:forEach var="menu" items="${menuList}">
 						<li><a
-							href="/pages/club/main/${club.id}/menu/${menu.id}/item/list">${menu.title}</a></li>
+							href="/pages/club/main/${club.id}/menu/${menu.id}/article/list">${menu.title}</a></li>
 					</c:forEach>
 				</ul> <!-- /.nav-second-level --></li>
-			<li><a href="#"><i class="fa fa-table fa-fw"></i> 사진첩</a></li>
+			<li><a
+				href="/pages/club/main/${club.id}/menu/0/album/list"><i
+					class="fa fa-table fa-fw"></i> 사진첩</a></li>
 			<sec:authorize access="hasPermission(#club,'READ')">
 				<li><a href="#"><i class="fa fa-edit fa-fw"></i> 채팅</a></li>
 			</sec:authorize>

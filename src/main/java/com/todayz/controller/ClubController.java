@@ -18,6 +18,7 @@ import com.todayz.domain.club.Menu;
 import com.todayz.domain.common.Comment;
 import com.todayz.domain.item.Article;
 import com.todayz.domain.item.Item;
+import com.todayz.domain.item.PhotoAlbum;
 import com.todayz.domain.member.Member;
 import com.todayz.repository.CommentRepository;
 import com.todayz.repository.MenuRepository;
@@ -42,15 +43,15 @@ public class ClubController {
 	private MenuRepository menuRepository;
 
 	@Autowired
-	private ItemService<Item> articleService;
+	private ItemService<Item> itemService;
 
 	// @Autowired
 	// private MemberService memberService;
 	@Autowired
 	private CommentRepository commentRepository;
 
-	//@Autowired
-	//private ModelMapper modelMapper;
+	// @Autowired
+	// private ModelMapper modelMapper;
 
 	@RequestMapping({ "/form" })
 	public String clubForm() {
@@ -112,13 +113,10 @@ public class ClubController {
 		return "club/menu/form";
 	}
 
-	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/list" })
-	public String itemList(@PathVariable Long clubId, @PathVariable Long menuId, Model model) {
+	@RequestMapping({ "/main/{clubId}/menu/{menuId}/{itemType}/list" })
+	public String itemList(@PathVariable Long clubId, @PathVariable Long menuId, @PathVariable String itemType,
+			Model model) {
 		if (clubId == null) {
-			throw new NullPointerException();
-		}
-
-		if (menuId == null) {
 			throw new NullPointerException();
 		}
 
@@ -129,11 +127,11 @@ public class ClubController {
 		model.addAttribute("menuList", menuList);
 		model.addAttribute("menuId", menuId);
 
-		return "club/item/list";
+		return "club/" + itemType + "/list";
 	}
 
-	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/form" })
-	public String clubArticleForm(@PathVariable Long clubId, @PathVariable Long menuId,
+	@RequestMapping({ "/main/{clubId}/menu/{menuId}/{itemType}/form" })
+	public String clubItemForm(@PathVariable Long clubId, @PathVariable Long menuId, @PathVariable String itemType,
 			@RequestParam(value = "itemId", required = false) Long itemId, Model model) {
 		if (clubId == null) {
 			throw new NullPointerException();
@@ -151,16 +149,20 @@ public class ClubController {
 		model.addAttribute("menuId", menuId);
 
 		if (itemId != null) {
-			Article article = (Article) articleService.getItem(itemId);
-			model.addAttribute("article", article);
+			Item item = itemService.getItem(itemId);
+			if (itemType.equals("article")) {
+				model.addAttribute("article", (Article) item);
+			} else {
+				model.addAttribute("album", (PhotoAlbum) item);
+			}
 		}
 
-		return "club/item/form";
+		return "club/" + itemType + "/form";
 	}
 
-	@RequestMapping({ "/main/{clubId}/menu/{menuId}/item/{itemId}" })
+	@RequestMapping({ "/main/{clubId}/menu/{menuId}/{itemType}/{itemId}" })
 	public String itemContent(@PathVariable Long clubId, @PathVariable Long menuId, @PathVariable Long itemId,
-			Model model) {
+			@PathVariable String itemType, Model model) {
 		if (clubId == null) {
 			throw new NullPointerException();
 		}
@@ -177,14 +179,18 @@ public class ClubController {
 		model.addAttribute("club", club);
 
 		List<Menu> menuList = menuRepository.findByParentClub(club);
-		Article article = (Article) articleService.getItem(itemId);
+		Item item = itemService.getItem(itemId);
 
-		List<Comment> commentList = commentRepository.findByParent(article);
+		List<Comment> commentList = commentRepository.findByParent(item);
 		model.addAttribute("menuList", menuList);
 		model.addAttribute("menuId", menuId);
-		model.addAttribute("article", article);
+		if (itemType.equals("article")) {
+			model.addAttribute("article", (Article) item);
+		} else {
+			model.addAttribute("album", (PhotoAlbum) item);
+		}
 		model.addAttribute("commentList", commentList);
 
-		return "club/item/content";
+		return "club/" + itemType + "/content";
 	}
 }

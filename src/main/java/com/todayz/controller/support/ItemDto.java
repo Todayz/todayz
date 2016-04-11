@@ -13,6 +13,7 @@ public class ItemDto {
 	public static class Create {
 		private String title;
 		private Image articleImage;
+		private Image photo;
 		private String content;
 	}
 
@@ -20,9 +21,10 @@ public class ItemDto {
 	public static class Response {
 		private Long id;
 		private String title;
-		//private Menu parent;
+		// private Menu parent;
 		private MemberDto.Response writer;
 		private Image articleImage;
+		private Image photo;
 		private String content;
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 		private Date createdDate;
@@ -34,6 +36,7 @@ public class ItemDto {
 	public static class Update {
 		private String title;
 		private Image articleImage;
+		private Image photo;
 		private String content;
 	}
 }

@@ -115,7 +115,7 @@
 						console.log(data);
 						// TODO 추후에 개설된 클럽으로 이동할 수 있도록 변경. 
 						//location.href = "/pages/club/main/" + data.id;
-						//location.href = "/pages/club/main/${club.id}/menu/${menuId}/item/list";
+						//location.href = "/pages/club/main/${club.id}/menu/${menuId}/article/list";
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {

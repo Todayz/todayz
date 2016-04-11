@@ -27,8 +27,8 @@ public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 	@Autowired
 	private ItemRepository<T> itemRepository;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	// @Autowired
+	// private ModelMapper modelMapper;
 
 	@Autowired
 	private MemberService memberService;
@@ -68,13 +68,13 @@ public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 	@Override
 	public T update(Long id, T item) {
 		T updateArticle = getItem(id);
-		/* //modelMapper.
-		 updateArticle.setTitle(item.getTitle());
-		 updateArticle.setContent(item.getContent());
-		 if (item.getArticleImage() != null) {
-		 updateArticle.setArticleImage(item.getArticleImage());
-		 }
-		updateArticle.setUpdatedDate(new Date());*/
+		/*
+		 * //modelMapper. updateArticle.setTitle(item.getTitle());
+		 * updateArticle.setContent(item.getContent()); if
+		 * (item.getArticleImage() != null) {
+		 * updateArticle.setArticleImage(item.getArticleImage()); }
+		 * updateArticle.setUpdatedDate(new Date());
+		 */
 		return updateArticle;
 	}
 
