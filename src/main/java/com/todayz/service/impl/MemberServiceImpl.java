@@ -27,8 +27,11 @@ import com.todayz.repository.MemberRoleRepository;
 import com.todayz.service.MemberService;
 import com.todayz.service.TodayzAclService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
 	@Autowired
@@ -68,8 +71,9 @@ public class MemberServiceImpl implements MemberService {
 
 		String authName = dto.getAuthName();
 		if (memberRepository.findByAuthName(authName) != null) {
-			// log.error("user duplicated exception. {}", username);
-			throw new MemberDuplicatedException(authName);
+			MemberDuplicatedException e = new MemberDuplicatedException(authName);
+			log.error("member duplicated exception. {}", authName, e);
+			throw e;
 		}
 
 		// account.setPassword(passwordEncoder.encode(account.getPassword()));
@@ -82,6 +86,8 @@ public class MemberServiceImpl implements MemberService {
 		// default
 		role.setRole("ROLE_USER");
 		memberRoleRepository.save(role);
+
+		log.info("member add success. {}", authName);
 		return member;
 	}
 
@@ -96,13 +102,18 @@ public class MemberServiceImpl implements MemberService {
 		member.setBirthday(dto.getBirthday());
 		member.setProfileImage(dto.getProfileImage());
 
-		return memberRepository.save(member);
+		member = memberRepository.save(member);
+		log.info("member update success. {}", member.getAuthName());
+
+		return member;
 	}
 
 	public Member getMember(Long id) {
 		Member member = memberRepository.findOne(id);
 		if (member == null) {
-			throw new MemberNotFoundException(id);
+			MemberNotFoundException e = new MemberNotFoundException(id);
+			log.error("member not found exception. {}", id, e);
+			throw e;
 		}
 
 		return member;
@@ -112,7 +123,9 @@ public class MemberServiceImpl implements MemberService {
 	public Member getMemberByAuthName(String authName) {
 		Member member = memberRepository.findByAuthName(authName);
 		if (member == null) {
-			throw new MemberNotFoundException(authName);
+			MemberNotFoundException e = new MemberNotFoundException(authName);
+			log.error("member not found exception. {}", authName, e);
+			throw e;
 		}
 		return member;
 	}
@@ -122,6 +135,8 @@ public class MemberServiceImpl implements MemberService {
 		Member member = getMember(id);
 		memberRoleRepository.removeByParent(member);
 		memberRepository.delete(member);
+
+		log.info("member leave success. {}", member.getAuthName());
 	}
 
 	/**
@@ -147,6 +162,8 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Permission Read Write 추가.
 		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
 		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
+
+		log.info("member join club success. {}", member.getAuthName());
 	}
 
 	@Override
@@ -159,6 +176,8 @@ public class MemberServiceImpl implements MemberService {
 
 		List<Member> members = club.getJoiningMembers();
 		members.remove(member);
+
+		log.info("member leave club success. {}", member.getAuthName());
 	}
 
 	@Override
@@ -168,6 +187,8 @@ public class MemberServiceImpl implements MemberService {
 
 		List<Member> members = meeting.getAttachMembers();
 		members.add(member);
+
+		log.info("member attach meeting success. {}", member.getAuthName());
 	}
 
 	@Override
@@ -177,5 +198,7 @@ public class MemberServiceImpl implements MemberService {
 
 		List<Member> members = meeting.getAttachMembers();
 		members.remove(member);
+
+		log.info("member detach meeting success. {}", member.getAuthName());
 	}
 }
