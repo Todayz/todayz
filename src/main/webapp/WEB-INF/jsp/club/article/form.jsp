@@ -31,7 +31,7 @@
 								<h3 class="panel-title">게시글 생성</h3>
 							</c:when>
 							<c:otherwise>
-								<h3 class="panel-title">${article.title}</h3>
+								<h3 class="panel-title"><c:out value="${article.title}"/></h3>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -47,7 +47,7 @@
 							<div class="form-group">
 								<label>내용</label>
 								<textarea class="form-control" id="content"
-									name="content" rows="3">${article.content}</textarea>
+									name="content" rows="3"><c:out value="${article.content}"/></textarea>
 							</div>
 							<div class="form-group">
 								<label>게시판 이미지</label> <input type="file"

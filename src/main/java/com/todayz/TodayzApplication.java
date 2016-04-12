@@ -4,9 +4,12 @@ import org.h2.server.web.WebServlet;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
+
+import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 
 @SpringBootApplication
 @ImportResource("classpath:application-auth-config.xml")
@@ -28,5 +31,14 @@ public class TodayzApplication {
 		ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
 		registration.addUrlMappings("/console/*");
 		return registration;
+	}
+
+	@Bean
+	public FilterRegistrationBean xssEscapeServletFilter() {
+		FilterRegistrationBean registrationBean = new FilterRegistrationBean();
+		registrationBean.setFilter(new XssEscapeServletFilter());
+		registrationBean.setOrder(1); // @Order로 처리.
+		registrationBean.addUrlPatterns("/*");
+		return registrationBean;
 	}
 }

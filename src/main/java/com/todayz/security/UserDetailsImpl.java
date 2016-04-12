@@ -13,6 +13,8 @@ import com.todayz.domain.member.MemberRole;
 
 public class UserDetailsImpl extends User {
 
+	private static final long serialVersionUID = 1L;
+
 	private Long id;
 
 	public UserDetailsImpl(Member member, List<MemberRole> roles) {

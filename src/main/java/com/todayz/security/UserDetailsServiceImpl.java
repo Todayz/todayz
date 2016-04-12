@@ -13,7 +13,10 @@ import com.todayz.domain.member.MemberRole;
 import com.todayz.repository.MemberRepository;
 import com.todayz.repository.MemberRoleRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
@@ -27,9 +30,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		Member member = memberRepository.findByAuthName(authName);
 		List<MemberRole> roles = roleRepository.findByParent(member);
 		if (member == null) {
-			throw new UsernameNotFoundException(authName);
+			UsernameNotFoundException e = new UsernameNotFoundException(authName);
+			log.error("username not found exception. {}", authName, e);
+			throw e;
 		}
 
+		log.info("load user by username. {}", authName);
 		return new UserDetailsImpl(member, roles);
 	}
 }

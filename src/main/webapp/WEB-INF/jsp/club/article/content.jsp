@@ -67,8 +67,8 @@
 						</div>
 					</div>
 					<div class="title-and-content">
-						<strong class="title primary-font"><span id="title">${article.title}</span></strong>
-						<p id="content" class="content">${article.content}</p>
+						<strong class="title primary-font"><span id="title"><c:out value="${article.title}"/></span></strong>
+						<p id="content" class="content"><c:out value="${article.content}"/></p>
 						<div class="content-image">
 							<!-- 앞으로 여러장이 있을 수 있다. -->
 							<img src="/upload/images/${article.articleImage.id}" />
@@ -107,7 +107,7 @@
 											id="createdDate">${comment.createdDate} </span></small> <strong
 											class="primary-font text-primary">모임장</strong>
 									</div>
-									<p id="content">${comment.content}</p>
+									<p id="content"><c:out value="${comment.content}"/></p>
 								</div></li>
 						</c:forEach>
 					</ul>

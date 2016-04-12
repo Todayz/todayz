@@ -103,7 +103,7 @@
 											id="createdDate">${comment.createdDate} </span></small> <strong
 											class="primary-font text-primary">모임장</strong>
 									</div>
-									<p id="content">${comment.content}</p>
+									<p id="content"><c:out value="${comment.content}"/></p>
 								</div></li>
 						</c:forEach>
 					</ul>

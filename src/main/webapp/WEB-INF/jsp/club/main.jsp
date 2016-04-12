@@ -67,7 +67,7 @@
 			</c:if>
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">${club.title}</h1>
+					<h1 class="page-header"><c:out value="${club.title}"/></h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -188,7 +188,7 @@
 													<strong class="primary-font text-primary">모임장</strong> 
 												</c:if>
 											</div>
-											<p>${joiningMember.description}</p>
+											<p><c:out value="${joiningMember.description}"/></p>
 										</div></li>
 								</c:forEach>
 							</ul>

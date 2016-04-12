@@ -30,7 +30,7 @@
 								<h3 class="panel-title">Club Create page</h3>
 							</c:when>
 							<c:otherwise>
-								<h3 class="panel-title">${club.title}</h3>
+								<h3 class="panel-title"><c:out value="${club.title}"/></h3>
 							</c:otherwise>
 						</c:choose>
 					</div>

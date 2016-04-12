@@ -11,7 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Component("loginAuthenticationSuccessHandler")
+@Slf4j
 public class LoginAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 	@Override
@@ -23,6 +26,7 @@ public class LoginAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 		// jsp page ==> ${sessionScope.userInfo.id} ${userInfo.id}
 		session.setAttribute("userInfo", user);
 
+		log.info("authentication success. {}", user.getUsername());
 		/*
 		 * ObjectMapper mapper = new ObjectMapper();
 		 * 

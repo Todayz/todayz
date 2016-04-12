@@ -65,7 +65,7 @@
 							<div class="form-group">
 								<label>description</label>
 								<textarea class="form-control" id="description"
-									name="description" rows="3">${member.description}</textarea>
+									name="description" rows="3"><c:out value="${member.description}"/></textarea>
 							</div>
 							<div class="form-group">
 								<label>profile image</label> 
