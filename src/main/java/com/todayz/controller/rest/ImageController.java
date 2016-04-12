@@ -60,7 +60,7 @@ public class ImageController {
 	@RequestMapping(value = "/images/{id}", method = GET)
 	public void getImage(@PathVariable Long id, HttpServletResponse response) throws IOException {
 		Image image = imageService.getImage(id);
-		String directory = env.getProperty("todays.paths.images");
+		String directory = env.getProperty("todayz.home.images");
 		String filepath = Paths.get(directory, image.getImageName()).toString();
 		InputStream in = new FileInputStream(filepath);
 		response.setContentType(image.getContentType());

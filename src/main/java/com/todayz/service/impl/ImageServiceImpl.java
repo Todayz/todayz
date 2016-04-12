@@ -42,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
 		// Get the filename and build the local file path
 		String filename = profileImage.getOriginalFilename();
 		filename = getStoreFileName(filename);
-		String directory = env.getProperty("todays.paths.images");
+		String directory = env.getProperty("todayz.home.images");
 		String filepath = Paths.get(directory, filename).toString();
 
 		// Save the file locally

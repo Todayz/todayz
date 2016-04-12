@@ -17,11 +17,13 @@ import com.todayz.controller.support.MemberDto;
 import com.todayz.domain.club.Club;
 import com.todayz.domain.club.Meeting;
 import com.todayz.domain.member.Member;
+import com.todayz.domain.member.MemberRole;
 import com.todayz.exception.MemberDuplicatedException;
 import com.todayz.exception.MemberNotFoundException;
 import com.todayz.repository.ClubRepository;
 import com.todayz.repository.MeetingRepository;
 import com.todayz.repository.MemberRepository;
+import com.todayz.repository.MemberRoleRepository;
 import com.todayz.service.MemberService;
 import com.todayz.service.TodayzAclService;
 
@@ -31,6 +33,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberRepository memberRepository;
+
+	@Autowired
+	private MemberRoleRepository memberRoleRepository;
 
 	@Autowired
 	private MeetingRepository meetingRepository;
@@ -68,10 +73,16 @@ public class MemberServiceImpl implements MemberService {
 		}
 
 		// account.setPassword(passwordEncoder.encode(account.getPassword()));
-
 		Date now = new Date();
 		member.setJoinDate(now);
-		return memberRepository.save(member);
+
+		member = memberRepository.save(member);
+		MemberRole role = new MemberRole();
+		role.setParent(member);
+		// default
+		role.setRole("ROLE_USER");
+		memberRoleRepository.save(role);
+		return member;
 	}
 
 	@Override
@@ -108,7 +119,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void leave(Long id) {
-		memberRepository.delete(getMember(id));
+		Member member = getMember(id);
+		memberRoleRepository.removeByParent(member);
+		memberRepository.delete(member);
 	}
 
 	/**
@@ -126,10 +139,10 @@ public class MemberServiceImpl implements MemberService {
 
 		List<Member> members = club.getJoiningMembers();
 		members.add(member);
-		//member.getJoinClubs().add(club);
+		// member.getJoinClubs().add(club);
 
-		//System.out.println(club.getJoiningMembers().get(0));
-		//System.out.println(member.getJoinClubs().get(0));
+		// System.out.println(club.getJoiningMembers().get(0));
+		// System.out.println(member.getJoinClubs().get(0));
 
 		// TODO Permission Read Write 추가.
 		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);

@@ -54,7 +54,7 @@
 		<constructor-arg>
 			<bean
 				class="org.springframework.security.core.authority.SimpleGrantedAuthority">
-				<constructor-arg value="ROLE_ADMIN" />
+				<constructor-arg value="ROLE_USER" />
 			</bean>
 		</constructor-arg>
 	</bean>

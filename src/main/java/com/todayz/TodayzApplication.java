@@ -13,7 +13,9 @@ import org.springframework.context.annotation.ImportResource;
 public class TodayzApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TodayzApplication.class, args);
+		SpringApplication springApplication = new SpringApplication(TodayzApplication.class);
+		springApplication.addListeners(new TodayzApplicationListener());
+		springApplication.run(args);
 	}
 
 	@Bean
