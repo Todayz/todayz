@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -25,6 +26,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "TODAYZ_MEETING")
 @Getter
 @Setter
 @ToString
@@ -51,6 +53,6 @@ public class Meeting implements AclDomain {
 	private Club parent;
 
 	@ManyToMany
-	@JoinTable(name = "MEETING_AND_MEMBER", joinColumns = @JoinColumn(name = "MEETING_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
+	@JoinTable(name = "TODAYZ_MEETING_AND_MEMBER", joinColumns = @JoinColumn(name = "MEETING_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> attachMembers = new ArrayList<>();
 }

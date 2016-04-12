@@ -14,7 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity // (name = "AclClass")
-@Table(name = "acl_class")
+@Table(name = "ACL_CLASS")
 @Getter
 @Setter
 @ToString
@@ -23,10 +23,10 @@ public class AclClass implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "class", length = 100, nullable = false, unique = true)
+	@Column(name = "CLASS", length = 100, nullable = false, unique = true)
 	private String className;
 }

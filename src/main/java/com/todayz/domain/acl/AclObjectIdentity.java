@@ -22,8 +22,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "acl_object_identity", uniqueConstraints = @UniqueConstraint(name = "uk_acl_object_identity", columnNames = {
-		"object_id_class", "object_id_identity" }) )
+@Table(name = "ACL_OBJECT_IDENTITY", uniqueConstraints = @UniqueConstraint(name = "uk_acl_object_identity", columnNames = {
+		"OBJECT_ID_CLASS", "OBJECT_ID_IDENTITY" }))
 @Getter
 @Setter
 @ToString
@@ -33,26 +33,26 @@ public class AclObjectIdentity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "object_id_identity", nullable = false, unique = false)
+	@Column(name = "OBJECT_ID_IDENTITY", nullable = false, unique = false)
 	private Long objectIdIdentity;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "object_id_class", referencedColumnName = "id", nullable = false, unique = false, insertable = true, updatable = true)
+	@JoinColumn(name = "OBJECT_ID_CLASS", referencedColumnName = "ID", nullable = false, unique = false, insertable = true, updatable = true)
 	private AclClass objectIdClass;
 
-	@Column(name = "entries_inheriting", nullable = false, unique = false)
+	@Column(name = "ENTRIES_INHERITING", nullable = false, unique = false)
 	private Boolean entriesInheriting;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parent_object", referencedColumnName = "id", nullable = true, unique = false, insertable = true, updatable = true)
+	@JoinColumn(name = "PARENT_OBJECT", referencedColumnName = "ID", nullable = true, unique = false, insertable = true, updatable = true)
 	private AclObjectIdentity parentObject;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_sid", referencedColumnName = "id", nullable = true, unique = false, insertable = true, updatable = true)
+	@JoinColumn(name = "OWNER_SID", referencedColumnName = "ID", nullable = true, unique = false, insertable = true, updatable = true)
 	private AclSid ownerSid;
 
 	@OneToMany(targetEntity = com.todayz.domain.acl.AclEntry.class, fetch = FetchType.LAZY, mappedBy = "aclObjectIdentity", cascade = CascadeType.REMOVE)

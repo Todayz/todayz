@@ -1,8 +1,6 @@
 package com.todayz.domain.member;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -23,6 +21,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "TODAYZ_MEMBER")
 @Getter
 @Setter
 @ToString(callSuper = true, exclude = { "password", "profileImage" })

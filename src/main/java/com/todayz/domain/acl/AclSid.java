@@ -14,7 +14,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "acl_sid")
+@Table(name = "ACL_SID")
 @Getter
 @Setter	
 @ToString
@@ -23,14 +23,14 @@ public class AclSid implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "id")
+	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "principal", nullable = false, unique = false)
+	@Column(name = "PRINCIPAL", nullable = false, unique = false)
 	private Boolean principal;
 
-	@Column(name = "sid", length = 100, nullable = false, unique = false)
+	@Column(name = "SID", length = 100, nullable = false, unique = false)
 	private String sid;
 
 	public AclSid() {

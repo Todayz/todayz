@@ -17,6 +17,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -29,6 +30,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
+@Table(name = "TODAYZ_CLUB")
 @Getter
 @Setter
 @ToString(callSuper = true, exclude = { "joiningMembers", "mainImage", "owner" })
@@ -58,7 +60,7 @@ public class Club implements AclDomain {
 	 * 이거 관련하여 테이블 하나 필요.
 	 **/
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "CLUB_AND_MEMBER", joinColumns = @JoinColumn(name = "CLUB_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
+	@JoinTable(name = "TODAYZ_CLUB_AND_MEMBER", joinColumns = @JoinColumn(name = "CLUB_ID") , inverseJoinColumns = @JoinColumn(name = "MEMBER_ID") )
 	private List<Member> joiningMembers = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
