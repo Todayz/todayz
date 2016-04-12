@@ -8,7 +8,6 @@
 <html lang="ko">
 <head>
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
-<title>매일 만나는 동호회 Todays</title>
 </head>
 <body>
 	<div id="wrapper">
@@ -21,10 +20,10 @@
 
 		<div id="page-wrapper" style="position: relative">
 			<sec:authorize access="hasPermission(#club,'WRITE')">
-				<form id="album-form" role="form" action="/albums">
+				<form id="album-form" role="form" action="/albums?clubId=${club.id}">
 					<input type="hidden" id="_csrf" name="_csrf" value="${_csrf.token}"></input>
 					<input type="file" id="photo" class="item-write-btn btn btn-primary btn-lg"
-							name="photo"  accept="*" />
+							name="photo[]"  accept="*" multiple="" />
 				</form>
 			</sec:authorize>
 			<div class="panel-body">
@@ -60,55 +59,30 @@
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 	<script type="text/javascript">
 		$(function() {
-			var uploadFile = function(event) {
-				var form = $("#album-form");
-				var formData = new FormData();
-				var uploadFile = form[0].photo.files[0];
-
+			var uploadFile = function () {
+				var form = $('#album-form');
 				var action = form.attr('action');
-				var url = action;
-				//var type = id === "" ? 'POST' : 'PUT';
-				url += "?clubId=${clubId}";
-				var type = 'POST';
-				var _csrf = $('#_csrf').val();
-
-				if (console) {
-					//console.log(JSON.stringify(form.serializeObject()));
-					console.log(uploadFile);
-				}
-				if (uploadFile) {
-					formData.append('photo', uploadFile);
-				}
-				/* formData.append('album', new Blob([JSON.stringify(form.serializeObject())], {
-				                type: 'application/json'
-				            })); */
 				$.ajax({
-					url : url,
-					//dataType : 'json',
-					type : type,
-					data: formData,
-					enctype: 'multipart/form-data',
-				    processData: false,
-				    contentType: false,
-				    cache: false,
-					beforeSend : function(request) {
-						request.setRequestHeader("X-CSRF-TOKEN", _csrf);
-					},
-					success : function(data) {
-						if (data) {
-							console.log(data);
-							location.reload();
-						}
-					}.bind(this),
-					error : function(xhr, status, err) {
+			        url: action,
+			        type: 'POST',
+			        data: new FormData(form[0]),
+			        enctype: 'multipart/form-data',
+			        processData: false,
+			        contentType: false,
+			        cache: false,
+			        success: function (data) {
+			          // Handle upload success
+			          console.log(data);
+			        },
+			        error: function(xhr, status, err) {
 						if (console) {
 							console.log(xhr);
 							console.log(status);
 							console.log(err);
 						}
-					}.bind(this)
-				});
-		    } // function uploadFile
+			        }
+			      });
+		    }; // function uploadFile
 		    
 		    // list
 			//?page=0&size=20;
@@ -158,7 +132,7 @@
 									var $albumComponent = callback(album);
 									$albumList.append($albumComponent.html());									
 								}
-								$("#loader").hide();
+								$('#loader').hide();
 							});
 							requesting = false;
 						}
@@ -241,7 +215,7 @@
 						}
 					});
 
-		 	$("#album-form #photo").on("change", uploadFile);
+		 	$('#album-form #photo').on('change', uploadFile);
 		});
 	</script>
 </body>

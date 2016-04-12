@@ -30,6 +30,7 @@ import com.todayz.domain.club.Club;
 import com.todayz.domain.common.Image;
 import com.todayz.domain.item.PhotoAlbum;
 import com.todayz.repository.ItemRepository;
+import com.todayz.service.AlbumService;
 import com.todayz.service.ClubService;
 import com.todayz.service.ImageService;
 import com.todayz.service.ItemService;
@@ -39,7 +40,10 @@ import com.todayz.service.ItemService;
 public class AlbumRestController {
 
 	@Autowired
-	private ItemService<PhotoAlbum> albumService;
+	private ItemService<PhotoAlbum> itemService;
+
+	@Autowired
+	private AlbumService albumService;
 
 	@Autowired
 	private ImageService imageService;
@@ -56,22 +60,15 @@ public class AlbumRestController {
 	// 조건문에 따라 HttpStatus 를 변경해서 리턴하기 위해 ResponseEntity 로 반환한다.
 	@RequestMapping(value = "/albums", method = POST)
 	public ResponseEntity create(@RequestParam(value = "clubId") Long clubId,
-			@RequestParam(value = "photo", required = false) MultipartFile photo) {
-		PhotoAlbum newPhotoAlbum = new PhotoAlbum();
-		if (photo != null) {
-			Image image = null;
-			try {
-				image = imageService.uploadImage(photo);
-			} catch (IOException e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			newPhotoAlbum.setPhoto(image);
+			@RequestParam(value = "photo[]") MultipartFile[] photo) {
+		List<PhotoAlbum> albums;
+		try {
+			albums = albumService.create(clubId, photo);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		// PhotoAlbum newPhotoAlbum = modelMapper.map(create, PhotoAlbum.class);
-		Club parent = clubService.getClub(clubId);
-		newPhotoAlbum.setParentClub(parent);
-		newPhotoAlbum = albumService.create(newPhotoAlbum);// create(create);
-		return new ResponseEntity<>(modelMapper.map(newPhotoAlbum, ItemDto.Response.class), HttpStatus.CREATED);
+		return new ResponseEntity<>(modelMapper.map(albums, ItemDto.Response.class), HttpStatus.CREATED);
 	}
 
 	// http://docs.spring.io/spring-data/data-commons/docs/1.6.1.RELEASE/reference/html/repositories.html
@@ -93,7 +90,7 @@ public class AlbumRestController {
 	@RequestMapping(value = "/albums/{id}", method = GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ItemDto.Response getPhotoAlbum(@PathVariable Long id) {
-		PhotoAlbum member = albumService.getItem(id);
+		PhotoAlbum member = itemService.getItem(id);
 		return modelMapper.map(member, ItemDto.Response.class);
 	}
 
@@ -117,7 +114,7 @@ public class AlbumRestController {
 			updatedPhotoAlbum.setPhoto(image);
 		}
 
-		PhotoAlbum album = albumService.getItem(id);
+		PhotoAlbum album = itemService.getItem(id);
 
 		// update 메소드에서 할 수 있는 방법이 없는지 고민 필요.
 		if (updatedPhotoAlbum.getPhoto() != null) {
@@ -131,7 +128,7 @@ public class AlbumRestController {
 
 	@RequestMapping(value = "/albums/{id}", method = DELETE)
 	public ResponseEntity leave(@PathVariable Long id) {
-		albumService.delete(id);
+		itemService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
