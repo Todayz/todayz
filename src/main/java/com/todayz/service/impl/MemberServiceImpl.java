@@ -3,6 +3,7 @@ package com.todayz.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.acls.domain.BasePermission;
@@ -10,6 +11,7 @@ import org.springframework.security.acls.domain.PrincipalSid;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +54,9 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	private TodayzAclService<Club> todayzAclService;
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
 	protected String getUsername() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
@@ -76,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
 			throw e;
 		}
 
-		// account.setPassword(passwordEncoder.encode(account.getPassword()));
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		Date now = new Date();
 		member.setJoinDate(now);
 
@@ -95,14 +100,16 @@ public class MemberServiceImpl implements MemberService {
 	public Member update(Long id, MemberDto.Update dto) {
 		// TODO Auto-generated method stub
 		Member member = getMember(id);
-		member.setPassword(dto.getPassword());
+		if (StringUtils.isNotBlank(dto.getPassword())) {
+			member.setPassword(passwordEncoder.encode(dto.getPassword()));
+		}
+
 		member.setName(dto.getName());
 		member.setDescription(dto.getDescription());
 		member.setPhoneNumber(dto.getPhoneNumber());
 		member.setBirthday(dto.getBirthday());
 		member.setProfileImage(dto.getProfileImage());
 
-		member = memberRepository.save(member);
 		log.info("member update success. {}", member.getAuthName());
 
 		return member;

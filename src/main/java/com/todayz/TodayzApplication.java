@@ -8,6 +8,8 @@ import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.embedded.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 
@@ -40,5 +42,10 @@ public class TodayzApplication {
 		registrationBean.setOrder(1); // @Order로 처리.
 		registrationBean.addUrlPatterns("/*");
 		return registrationBean;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }
