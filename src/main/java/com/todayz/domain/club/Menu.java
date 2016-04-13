@@ -39,6 +39,17 @@ public class Menu {
 
 	private boolean defaultMenu;
 
+	public Menu() {
+		super();
+	}
+
+	public Menu(String title, Club parentClub, boolean defaultMenu) {
+		super();
+		this.title = title;
+		this.parentClub = parentClub;
+		this.defaultMenu = defaultMenu;
+	}
+
 	// @OneToMany(mappedBy = "parent")
 	// private List<Item> items;
 }

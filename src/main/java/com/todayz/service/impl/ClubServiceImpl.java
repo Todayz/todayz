@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.ClubDto;
 import com.todayz.domain.club.Club;
+import com.todayz.domain.club.Menu;
 import com.todayz.domain.common.Image;
 import com.todayz.domain.member.Member;
 import com.todayz.exception.ClubNotFoundException;
@@ -24,6 +25,7 @@ import com.todayz.repository.ClubRepository;
 import com.todayz.service.ClubService;
 import com.todayz.service.ImageService;
 import com.todayz.service.MemberService;
+import com.todayz.service.MenuService;
 import com.todayz.service.TodayzAclService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,9 @@ public class ClubServiceImpl implements ClubService {
 
 	@Autowired
 	private ClubRepository clubRepository;
+
+	@Autowired
+	private MenuService menuService;
 
 	@Autowired
 	private ModelMapper modelMapper;
@@ -79,6 +84,12 @@ public class ClubServiceImpl implements ClubService {
 
 		todayzAclService.addPermission(club, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
 		memberService.joinClub(club.getId(), owner);
+
+		// 기본 게시판
+		menuService.create(new Menu("공지사항", club, true));
+		menuService.create(new Menu("자유게시판", club, false));
+		menuService.create(new Menu("가입인사", club, false));
+		menuService.create(new Menu("관심사 공유", club, false));
 
 		log.info("club add success. {}", club.getTitle());
 
