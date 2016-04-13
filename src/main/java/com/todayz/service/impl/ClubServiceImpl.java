@@ -1,5 +1,6 @@
 package com.todayz.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -12,18 +13,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.ClubDto;
 import com.todayz.domain.club.Club;
+import com.todayz.domain.common.Image;
 import com.todayz.domain.member.Member;
 import com.todayz.exception.ClubNotFoundException;
 import com.todayz.repository.ClubRepository;
 import com.todayz.service.ClubService;
+import com.todayz.service.ImageService;
 import com.todayz.service.MemberService;
 import com.todayz.service.TodayzAclService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class ClubServiceImpl implements ClubService {
 
 	@Autowired
@@ -35,31 +42,11 @@ public class ClubServiceImpl implements ClubService {
 	@Autowired
 	private MemberService memberService;
 
-	// @Autowired
-	// private MutableAclService mutableAclService;
+	@Autowired
+	private ImageService imageService;
 
 	@Autowired
 	private TodayzAclService<Club> todayzAclService;
-
-	/**
-	 * @param club
-	 * @param recipient
-	 * @param permission
-	 */
-	/*
-	 * protected void addPermission(Club club, Sid recipient, Permission
-	 * permission) { MutableAcl acl; ObjectIdentity oid = new
-	 * ObjectIdentityImpl(Club.class, club.getId());
-	 * 
-	 * try { acl = (MutableAcl) mutableAclService.readAclById(oid); } catch
-	 * (NotFoundException nfe) { acl = mutableAclService.createAcl(oid); }
-	 * 
-	 * acl.insertAce(acl.getEntries().size(), permission, recipient, true);
-	 * mutableAclService.updateAcl(acl);
-	 * 
-	 * // logger.debug("Added permission " + permission + " for Sid " + //
-	 * recipient // + " contact " + contact); }
-	 */
 
 	protected String getUsername() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -72,8 +59,14 @@ public class ClubServiceImpl implements ClubService {
 	}
 
 	@Override
-	public Club create(ClubDto.Create dto) {
-		Club club = modelMapper.map(dto, Club.class);
+	public Club create(ClubDto.Create create, MultipartFile mainImage) throws IOException {
+		if (mainImage != null) {
+			Image image = null;
+			image = imageService.uploadImage(mainImage);
+			create.setMainImage(image);
+		}
+
+		Club club = modelMapper.map(create, Club.class);
 		String authName = getUsername();
 		Member owner = memberService.getMemberByAuthName(authName);
 
@@ -87,18 +80,28 @@ public class ClubServiceImpl implements ClubService {
 		todayzAclService.addPermission(club, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
 		memberService.joinClub(club.getId(), owner);
 
+		log.info("club add success. {}", club.getTitle());
+
 		return club;
 	}
 
 	@Override
-	public Club update(Long id, ClubDto.Update dto) {
+	public Club update(Long id, ClubDto.Update update, MultipartFile mainImage) throws IOException {
+		if (mainImage != null) {
+			Image image = null;
+			image = imageService.uploadImage(mainImage);
+			update.setMainImage(image);
+		}
+
 		// TODO Auto-generated method stub
 		Club club = getClub(id);
-		club.setTitle(dto.getTitle());
-		club.setMainImage(dto.getMainImage());
-		club.setNotice(dto.getNotice());
+		club.setTitle(update.getTitle());
+		club.setMainImage(update.getMainImage());
+		club.setNotice(update.getNotice());
 
 		club.setUpdatedDate(new Date());
+
+		log.info("club update success. {}", club.getTitle());
 		return club;
 	}
 
@@ -107,10 +110,7 @@ public class ClubServiceImpl implements ClubService {
 		Club club = getClub(id);
 		clubRepository.delete(club);
 		todayzAclService.deleteAcl(club);
-		/*
-		 * if (logger.isDebugEnabled()) { logger.debug("Deleted contact " +
-		 * contact + " including ACL permissions"); }
-		 */
+		log.info("club delete success. {}", club.getTitle());
 	}
 
 	@Override

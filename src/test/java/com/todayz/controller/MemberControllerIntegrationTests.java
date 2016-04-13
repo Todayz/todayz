@@ -1,38 +1,13 @@
 package com.todayz.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.transaction.Transactional;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
-import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.todayz.TodayzApplication;
-import com.todayz.controller.support.MemberDto;
-import com.todayz.domain.common.Image;
-import com.todayz.domain.member.Member;
-import com.todayz.service.MemberService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TodayzApplication.class)
@@ -40,7 +15,7 @@ import com.todayz.service.MemberService;
 @Transactional
 public class MemberControllerIntegrationTests {
 
-	@Autowired
+	/*@Autowired
 	private WebApplicationContext wac;
 
 	@Autowired
@@ -166,7 +141,7 @@ public class MemberControllerIntegrationTests {
 		ResultActions result = mockMvc
 				.perform(get("/members").with(httpBasic(createDto.getAuthName(), createDto.getPassword())));
 
-		/*
+		
 		 * Body =
 		 * {"content":[{"id":5,"authName":"jmlim","name":"임정묵","description":
 		 * "안녕하세요~ 반갑습니다 ^^"
@@ -174,7 +149,7 @@ public class MemberControllerIntegrationTests {
 		 * :{ "id":5,"parent":null,"imageName":"내사진","type":"png"},"joinDate":
 		 * 1457265179444}],"last":true,"totalElements":1,"totalPages":1,"sort":
 		 * null, "first":true,"numberOfElements":1,"size":20,"number":0}
-		 */
+		 
 		result.andDo(print());
 		result.andExpect(status().isOk());
 	}
@@ -206,5 +181,5 @@ public class MemberControllerIntegrationTests {
 		// MemberDto.Response return
 		result.andDo(print());
 		result.andExpect(status().isOk());
-	}
+	}*/
 }

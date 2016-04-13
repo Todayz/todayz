@@ -19,8 +19,11 @@ import com.todayz.service.ItemService;
 import com.todayz.service.MemberService;
 import com.todayz.service.TodayzAclService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 
 	@Autowired
@@ -61,12 +64,14 @@ public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 		item = itemRepository.save(item);
 
 		todayzAclService.addPermission(item, new PrincipalSid(authName), BasePermission.ADMINISTRATION);
+
+		log.info("item create success");
 		return item;
 	}
 
 	@Override
 	public T update(Long id, T item) {
-		T updateArticle = getItem(id);
+		T updatedItem = getItem(id);
 		/*
 		 * //modelMapper. updateArticle.setTitle(item.getTitle());
 		 * updateArticle.setContent(item.getContent()); if
@@ -74,7 +79,8 @@ public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 		 * updateArticle.setArticleImage(item.getArticleImage()); }
 		 * updateArticle.setUpdatedDate(new Date());
 		 */
-		return updateArticle;
+		log.info("item update success");
+		return updatedItem;
 	}
 
 	@Override
@@ -82,6 +88,8 @@ public class ItemServiceImpl<T extends Item> implements ItemService<T> {
 		T item = getItem(id);
 		itemRepository.delete(item);
 		todayzAclService.deleteAcl(item);
+
+		log.info("item delete success");
 	}
 
 	@Override

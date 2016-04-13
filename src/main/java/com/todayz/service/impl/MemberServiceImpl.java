@@ -1,5 +1,6 @@
 package com.todayz.service.impl;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -14,10 +15,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.MemberDto;
 import com.todayz.domain.club.Club;
 import com.todayz.domain.club.Meeting;
+import com.todayz.domain.common.Image;
 import com.todayz.domain.member.Member;
 import com.todayz.domain.member.MemberRole;
 import com.todayz.exception.MemberDuplicatedException;
@@ -26,6 +29,7 @@ import com.todayz.repository.ClubRepository;
 import com.todayz.repository.MeetingRepository;
 import com.todayz.repository.MemberRepository;
 import com.todayz.repository.MemberRoleRepository;
+import com.todayz.service.ImageService;
 import com.todayz.service.MemberService;
 import com.todayz.service.TodayzAclService;
 
@@ -35,6 +39,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @Slf4j
 public class MemberServiceImpl implements MemberService {
+
+	@Autowired
+	private ImageService imageService;
 
 	@Autowired
 	private MemberRepository memberRepository;
@@ -69,9 +76,17 @@ public class MemberServiceImpl implements MemberService {
 
 	/**
 	 * 회원 가입
+	 * 
+	 * @throws IOException
 	 */
 	@Override
-	public Member join(MemberDto.Create dto) {
+	public Member join(MemberDto.Create dto, MultipartFile profileImage) throws IOException {
+		if (profileImage != null) {
+			Image image = null;
+			image = imageService.uploadImage(profileImage);
+			dto.setProfileImage(image);
+		}
+
 		Member member = modelMapper.map(dto, Member.class);
 
 		String authName = dto.getAuthName();
@@ -97,7 +112,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public Member update(Long id, MemberDto.Update dto) {
+	public Member update(Long id, MemberDto.Update dto, MultipartFile profileImage) throws IOException {
+		if (profileImage != null) {
+			Image image = null;
+			image = imageService.uploadImage(profileImage);
+			dto.setProfileImage(image);
+		}
+
 		// TODO Auto-generated method stub
 		Member member = getMember(id);
 		if (StringUtils.isNotBlank(dto.getPassword())) {

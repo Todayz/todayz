@@ -5,11 +5,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +24,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.ItemDto;
 import com.todayz.domain.club.Club;
-import com.todayz.domain.common.Image;
 import com.todayz.domain.item.PhotoAlbum;
 import com.todayz.repository.ItemRepository;
 import com.todayz.service.AlbumService;
 import com.todayz.service.ClubService;
-import com.todayz.service.ImageService;
 import com.todayz.service.ItemService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
+@Slf4j
 @SuppressWarnings("rawtypes")
 public class AlbumRestController {
 
@@ -44,9 +42,6 @@ public class AlbumRestController {
 
 	@Autowired
 	private AlbumService albumService;
-
-	@Autowired
-	private ImageService imageService;
 
 	@Autowired
 	private ClubService clubService;
@@ -63,9 +58,10 @@ public class AlbumRestController {
 			@RequestParam(value = "photo[]") MultipartFile[] photo) {
 		List<PhotoAlbum> albums;
 		try {
-			albums = albumService.create(clubId, photo);
+			albums = albumService.createAlbum(clubId, photo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			log.info("image upload problem.", e);
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(modelMapper.map(albums, ItemDto.Response.class), HttpStatus.CREATED);
@@ -98,31 +94,16 @@ public class AlbumRestController {
 	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 	@RequestMapping(value = "/albums/{id}", method = POST) // method = PUT)
 	// @PreAuthorize("hasPermission(#album, admin)")
-	@Transactional
 	public ResponseEntity update(@PathVariable Long id,
 			@RequestParam(value = "photo", required = false) MultipartFile photo) {
 
-		PhotoAlbum updatedPhotoAlbum = new PhotoAlbum();
-
-		if (photo != null) {
-			Image image = null;
-			try {
-				image = imageService.uploadImage(photo);
-			} catch (IOException e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			updatedPhotoAlbum.setPhoto(image);
+		PhotoAlbum updatedPhotoAlbum = null;
+		try {
+			updatedPhotoAlbum = albumService.updateAlbum(id, photo);
+		} catch (IOException e) {
+			log.info("image upload problem.", e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		PhotoAlbum album = itemService.getItem(id);
-
-		// update 메소드에서 할 수 있는 방법이 없는지 고민 필요.
-		if (updatedPhotoAlbum.getPhoto() != null) {
-			album.setPhoto(updatedPhotoAlbum.getPhoto());
-		}
-		album.setUpdatedDate(new Date());
-
-		// updatedPhotoAlbum = albumService.update(id, updatedPhotoAlbum);
 		return new ResponseEntity<>(modelMapper.map(updatedPhotoAlbum, ItemDto.Response.class), HttpStatus.OK);
 	}
 

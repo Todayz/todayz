@@ -5,11 +5,9 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -30,10 +28,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.ItemDto;
 import com.todayz.domain.club.Menu;
-import com.todayz.domain.common.Image;
 import com.todayz.domain.item.Article;
 import com.todayz.repository.ItemRepository;
-import com.todayz.service.ImageService;
+import com.todayz.service.ArticleService;
 import com.todayz.service.ItemService;
 import com.todayz.service.MenuService;
 
@@ -42,10 +39,10 @@ import com.todayz.service.MenuService;
 public class ArticleRestController {
 
 	@Autowired
-	private ItemService<Article> articleService;
+	private ItemService<Article> itemService;
 
 	@Autowired
-	private ImageService imageService;
+	private ArticleService articleService;
 
 	@Autowired
 	private MenuService menuService;
@@ -66,19 +63,12 @@ public class ArticleRestController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		if (articleImage != null) {
-			Image image = null;
-			try {
-				image = imageService.uploadImage(articleImage);
-			} catch (IOException e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			create.setArticleImage(image);
+		Article newArticle = null;
+		try {
+			newArticle = articleService.createArticle(create, articleImage, menuId);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		Article newArticle = modelMapper.map(create, Article.class);
-		Menu parent = menuService.getMenu(menuId);
-		newArticle.setParent(parent);
-		newArticle = articleService.create(newArticle);// create(create);
 		return new ResponseEntity<>(modelMapper.map(newArticle, ItemDto.Response.class), HttpStatus.CREATED);
 	}
 
@@ -101,7 +91,7 @@ public class ArticleRestController {
 	@RequestMapping(value = "/articles/{id}", method = GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ItemDto.Response getArticle(@PathVariable Long id) {
-		Article member = articleService.getItem(id);
+		Article member = itemService.getItem(id);
 		return modelMapper.map(member, ItemDto.Response.class);
 	}
 
@@ -109,41 +99,24 @@ public class ArticleRestController {
 	// http://stackoverflow.com/questions/21329426/spring-mvc-multipart-request-with-json
 	@RequestMapping(value = "/articles/{id}", method = POST) // method = PUT)
 	// @PreAuthorize("hasPermission(#article, admin)")
-	@Transactional
 	public ResponseEntity update(@PathVariable Long id, @RequestPart("article") @Valid ItemDto.Update updateDto,
 			@RequestParam(value = "articleImage", required = false) MultipartFile articleImage, BindingResult result) {
 		if (result.hasErrors()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		if (articleImage != null) {
-			Image image = null;
-			try {
-				image = imageService.uploadImage(articleImage);
-			} catch (IOException e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			updateDto.setArticleImage(image);
+		Article updatedArticle;
+		try {
+			updatedArticle = articleService.updateArticle(updateDto, articleImage, id);
+		} catch (IOException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Article updatedArticle = modelMapper.map(updateDto, Article.class);
-		Article article = articleService.getItem(id);
-
-		// update 메소드에서 할 수 있는 방법이 없는지 고민 필요.
-		article.setTitle(updatedArticle.getTitle());
-		article.setContent(updatedArticle.getContent());
-		if (updatedArticle.getArticleImage() != null) {
-			article.setArticleImage(updatedArticle.getArticleImage());
-		}
-		article.setUpdatedDate(new Date());
-
-		// updatedArticle = articleService.update(id, updatedArticle);
 		return new ResponseEntity<>(modelMapper.map(updatedArticle, ItemDto.Response.class), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/articles/{id}", method = DELETE)
 	public ResponseEntity leave(@PathVariable Long id) {
-		articleService.delete(id);
+		itemService.delete(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

@@ -8,5 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.todayz.domain.item.PhotoAlbum;
 
 public interface AlbumService {
-	public List<PhotoAlbum> create(Long clubId, MultipartFile[] photo) throws IOException;
+	public List<PhotoAlbum> createAlbum(Long clubId, MultipartFile[] photo) throws IOException;
+
+	public PhotoAlbum updateAlbum(Long id, MultipartFile photo) throws IOException;
 }

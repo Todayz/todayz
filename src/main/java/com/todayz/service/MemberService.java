@@ -1,5 +1,9 @@
 package com.todayz.service;
 
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.todayz.controller.support.MemberDto;
 import com.todayz.domain.member.Member;
 
@@ -8,22 +12,24 @@ public interface MemberService {
 
 	/**
 	 * 회원 가입
+	 * 
+	 * @throws IOException
 	 */
-	public Member join(MemberDto.Create dto);
+	public Member join(MemberDto.Create dto, MultipartFile profileImage) throws IOException;
 
 	/**
 	 * 수정
 	 * 
 	 * @param member
 	 */
-	public Member update(Long id, MemberDto.Update dto);
+	public Member update(Long id, MemberDto.Update dto, MultipartFile profileImage) throws IOException;
 
 	/**
 	 * @param id
 	 * @return
 	 */
 	public Member getMember(Long id);
-	
+
 	/**
 	 * @param id
 	 * @return

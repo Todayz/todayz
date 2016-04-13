@@ -29,20 +29,18 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.ClubDto;
 import com.todayz.domain.club.Club;
-import com.todayz.domain.common.Image;
 import com.todayz.repository.ClubRepository;
 import com.todayz.service.ClubService;
-import com.todayz.service.ImageService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 @SuppressWarnings("rawtypes")
 public class ClubRestController {
 
 	@Autowired
 	private ClubService clubService;
-
-	@Autowired
-	private ImageService imageService;
 
 	@Autowired
 	private ClubRepository clubRepository;
@@ -59,17 +57,13 @@ public class ClubRestController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		if (mainImage != null) {
-			Image image = null;
-			try {
-				image = imageService.uploadImage(mainImage);
-			} catch (IOException e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			create.setMainImage(image);
+		Club newClub = null;
+		try {
+			newClub = clubService.create(create, mainImage);
+		} catch (IOException e) {
+			log.info("image upload problem.", e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Club newClub = clubService.create(create);// create(create);
 		return new ResponseEntity<>(modelMapper.map(newClub, ClubDto.Response.class), HttpStatus.CREATED);
 	}
 
@@ -105,17 +99,13 @@ public class ClubRestController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 
-		if (mainImage != null) {
-			Image image = null;
-			try {
-				image = imageService.uploadImage(mainImage);
-			} catch (IOException e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
-			updateDto.setMainImage(image);
+		Club updatedClub = null;
+		try {
+			updatedClub = clubService.update(id, updateDto, mainImage);
+		} catch (IOException e) {
+			log.info("image upload problem.", e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-
-		Club updatedClub = clubService.update(id, updateDto);
 		return new ResponseEntity<>(modelMapper.map(updatedClub, ClubDto.Response.class), HttpStatus.OK);
 	}
 

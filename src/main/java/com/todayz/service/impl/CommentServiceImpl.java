@@ -19,8 +19,11 @@ import com.todayz.service.CommentService;
 import com.todayz.service.MemberService;
 import com.todayz.service.TodayzAclService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class CommentServiceImpl implements CommentService {
 
 	@Autowired
@@ -54,6 +57,7 @@ public class CommentServiceImpl implements CommentService {
 		comment = commentRepository.save(comment);
 
 		todayzAclService.addPermission(comment, new PrincipalSid(authName), BasePermission.DELETE);
+		log.info("comment create success. {}", comment);
 		return comment;
 	}
 
@@ -62,6 +66,8 @@ public class CommentServiceImpl implements CommentService {
 		Comment comment = getComment(id);
 		commentRepository.delete(comment);
 		todayzAclService.deleteAcl(comment);
+
+		log.info("comment delete success. {}", comment);
 	}
 
 	@Override

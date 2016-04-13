@@ -18,8 +18,11 @@ import org.springframework.stereotype.Service;
 import com.todayz.domain.AclDomain;
 import com.todayz.service.TodayzAclService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class TodayzAclServiceImpl<T extends AclDomain> implements TodayzAclService<T> {
 
 	@Autowired
@@ -42,6 +45,7 @@ public class TodayzAclServiceImpl<T extends AclDomain> implements TodayzAclServi
 		// logger.debug("Added permission " + permission + " for Sid " +
 		// recipient
 		// + " contact " + contact);
+		log.info("Added permission {}, for {},  {} ", permission, recipient, object);
 	}
 
 	@Override
@@ -61,15 +65,15 @@ public class TodayzAclServiceImpl<T extends AclDomain> implements TodayzAclServi
 		}
 
 		mutableAclService.updateAcl(acl);
-		/*
-		 * if (logger.isDebugEnabled()) { logger.debug("Deleted contact " +
-		 * contact + " ACL permissions for recipient " + recipient); }
-		 */
+
+		log.info("Deleted object {} ACL permissions for recipient {} ", object, recipient);
 	}
 
 	@Override
 	public void deleteAcl(T object) {
 		ObjectIdentity oid = new ObjectIdentityImpl(object.getClass(), object.getId());
 		mutableAclService.deleteAcl(oid, false);
+
+		log.info("Deleted acl object class : {}, object id : {}", object.getClass(), object.getId());
 	}
 }

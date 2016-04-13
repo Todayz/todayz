@@ -20,8 +20,11 @@ import com.todayz.domain.common.Image;
 import com.todayz.repository.ImageRepository;
 import com.todayz.service.ImageService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
 @Transactional
+@Slf4j
 public class ImageServiceImpl implements ImageService {
 
 	@Autowired
@@ -41,6 +44,7 @@ public class ImageServiceImpl implements ImageService {
 		for (MultipartFile image : images) {
 			uploadImages.add(uploadImage(null, image));
 		}
+
 		return uploadImages;
 	}
 
@@ -66,6 +70,9 @@ public class ImageServiceImpl implements ImageService {
 		uploadImage.setContentType(image.getContentType());
 
 		uploadImage = imageRepository.save(uploadImage);
+
+		log.info("upload image");
+
 		return uploadImage;
 	}
 
@@ -80,6 +87,8 @@ public class ImageServiceImpl implements ImageService {
 		if (id == null) {
 			throw new NullPointerException();
 		}
+
+		log.info("delete image");
 		imageRepository.delete(id);
 	}
 
@@ -97,6 +106,7 @@ public class ImageServiceImpl implements ImageService {
 			storeFile.append(System.currentTimeMillis());
 			storeFile.append(".");
 			storeFile.append(fileType);
+
 			return storeFile.toString();
 		}
 		return null;
