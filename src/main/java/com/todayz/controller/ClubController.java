@@ -113,6 +113,21 @@ public class ClubController {
 		return "club/menu/form";
 	}
 
+	@RequestMapping({ "/main/{id}/chat" })
+	public String clubChat(@PathVariable Long id, Model model) {
+		if (id == null) {
+			throw new NullPointerException();
+		}
+
+		Club club = clubService.getClub(id);
+		model.addAttribute("club", club);
+
+		// System.out.println(club.getJoiningMembers());
+		List<Menu> menuList = menuRepository.findByParentClub(club);
+		model.addAttribute("menuList", menuList);
+		return "club/chat/chat";
+	}
+
 	@RequestMapping({ "/main/{clubId}/menu/{menuId}/{itemType}/list" })
 	public String itemList(@PathVariable Long clubId, @PathVariable Long menuId, @PathVariable String itemType,
 			Model model) {

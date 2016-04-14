@@ -36,7 +36,7 @@
 				href="/pages/club/main/${club.id}/menu/0/album/list"><i
 					class="fa fa-table fa-fw"></i> 사진첩</a></li>
 			<sec:authorize access="hasPermission(#club,'READ')">
-				<li><a href="#"><i class="fa fa-edit fa-fw"></i> 채팅</a></li>
+				<li><a href="/pages/club/main/${club.id}/chat"><i class="fa fa-edit fa-fw"></i> 채팅</a></li>
 			</sec:authorize>
 			<sec:authorize access="hasPermission(#club,'ADMINISTRATION')">
 				<li><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> 모임장

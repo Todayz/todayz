@@ -93,7 +93,6 @@
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 	<script type="text/javascript">
 		$(function() {
-			event.preventDefault();
 			//?page=0&size=20;
 			var pageable = {
 				page: 0,

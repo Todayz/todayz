@@ -188,7 +188,10 @@ body {
     padding: 0;
     list-style: none;
 }
-
+.chat .chat-img img {
+	width: 35px;
+	height: 35px;
+}
 .chat li {
     margin-bottom: 10px;
     padding-bottom: 5px;
@@ -196,11 +199,11 @@ body {
 }
 
 .chat li.left .chat-body {
-    margin-left: 60px;
+    margin-left: 40px;
 }
 
 .chat li.right .chat-body {
-    margin-right: 60px;
+    margin-right: 40px;
 }
 
 .chat li .chat-body p {
@@ -212,9 +215,23 @@ body {
     margin-right: 5px;
 }
 
+.chat-panel {
+	padding-bottom: 60px;
+}
+
 .chat-panel .panel-body {
-    height: 350px;
     overflow-y: scroll;
+}
+
+.chat-panel .navbar-fixed-bottom {
+	margin-bottom: 0px;
+	border-bottom: 0px;
+}
+
+@media ( min-width :768px) {
+	.chat-panel .navbar-fixed-bottom {
+		margin: 0 0 0 250px;
+	}
 }
 
 /** 회원목록 */
