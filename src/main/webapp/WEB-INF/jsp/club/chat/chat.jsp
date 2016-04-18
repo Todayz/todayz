@@ -97,8 +97,8 @@
 	 	$(function() {
 	 		var authName = '${userInfo.username}';
 	 		var stompClient = null;
-		 	var showChatMessage = function(chatMessage) {
-				
+
+		 	var chatComponent = function(chatMessage) {
 				var $chatComponent = null;
 				var writer = chatMessage.writer;
 				if(authName === writer.authName) { 
@@ -140,13 +140,15 @@
 					//setConnected(true);
 					console.log('Connected: ' + frame);
 					stompClient.subscribe('/topic/chatMessages.${club.id}', function(chat) {
-	//alert(11);
-						//console.log('/topic/chatMessages');
-						console.log(JSON.parse(chat.body));
-						$chatComponent = showChatMessage(JSON.parse(chat.body));
-						$chatList.append($chatComponent.html());
-						//console.log($chatList.height());
-						//$(document).scrollTop($chatList.height());
+						var chatBody = JSON.parse(chat.body);
+						console.log(chatBody);
+						console.log(idList);
+						console.log('chat.body.id : ' + chatBody.id);
+						if(idList.indexOf(chatBody.id) == -1){
+							idList.push(chatBody.id);
+							$chatComponent = chatComponent(chatBody);
+							$chatList.append($chatComponent.html());
+						}
 					});
 				}, function(message) {
 					console.log('disconnect message : ' + message);
@@ -185,6 +187,84 @@
 					sendMessage(event, $(this));
 				}
 			});
+
+			//?page=0&size=20;
+			var pageable = {
+				page: 0,
+				size: 10,
+				sort: 'createdDate,desc',
+				clubId: '${club.id}'
+			};
+			// 내보낸 화면의 아이디들은 여기에 보관.
+			//보관되어진 id에 해당하는 데이터는 화면에 뿌려지지 않도록 하기 위함.
+			var idList = [];
+			// ajax 요청을 받는동안 또다른 요청을 하지 않기 위함.
+			var requesting = false;
+
+			// 공통화 필요.
+			var getClubs = function(callback) {
+				requesting = true;
+				var url = '/chats';
+				//var $lodingImg = $('#loader');
+				//TODO 변경 필요 (hard coding).
+				/* $lodingImg.show().css({
+					'top' : $(document).height() - 126 + 'px',
+					'left' : '45%'
+				}); */
+
+				$.ajax({
+					url : url,
+					type : 'GET',
+					cache : false,
+					data: pageable,
+					success : function(data) {
+						if (data) {
+							if(console) {
+								console.log(data);
+							}
+							//if(data.numberOfElements === data.size) {
+							if(!data.last) {
+								pageable.page += 1;
+							}
+
+							var chats = data.content;
+							var $chatList = $('.chat-panel .chat');
+							$.each(chats, function(index, chat) {
+								if(idList.indexOf(chat.id) == -1){
+									idList.push(chat.id);
+									var $chatComponent = callback(chat);
+									$chatList.prepend($chatComponent.html());									
+								}
+								//$("#loader").hide();
+							});
+							requesting = false;
+						}
+					}.bind(this),
+					error : function(xhr, status, err) {
+						if (console) {
+							console.log(xhr);
+							console.log(status);
+							console.log(err);
+						}
+					}.bind(this)
+				});
+			};
+
+			getClubs(chatComponent);
+			$(window).scroll(
+					function() {
+						console.log('scrollTop : ' + $(window).scrollTop()
+								+ ', documentHeight : '
+								+ $(document).height() + ', windowHeight: '
+								+ $(window).height());						
+						//if ($(window).scrollTop() == $(document).height()
+						//		- $(window).height()) {
+						if ($(window).scrollTop() === 0) {
+							if (!requesting) {
+								getClubs(chatComponent);
+							}
+						}
+					});
 		});
 	</script>
 </body>

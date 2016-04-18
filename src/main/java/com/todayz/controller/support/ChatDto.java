@@ -3,7 +3,6 @@ package com.todayz.controller.support;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.todayz.domain.club.Club;
 
 import lombok.Data;
 
