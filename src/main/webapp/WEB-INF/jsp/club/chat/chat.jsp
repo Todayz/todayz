@@ -81,7 +81,7 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
-	<script src="/js/sockjs-0.3.4.js"></script>
+	<script src="/js/sockjs-1.0.3.js"></script>
 	<script src="/js/stomp.js"></script>
 	<script type="text/javascript">
 		

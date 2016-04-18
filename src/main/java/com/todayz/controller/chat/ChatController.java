@@ -11,9 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import com.todayz.controller.support.ChatDto;
 import com.todayz.domain.chat.Chat;
-import com.todayz.domain.club.Club;
 import com.todayz.service.ChatService;
-import com.todayz.service.ClubService;
 
 @Controller
 public class ChatController {
