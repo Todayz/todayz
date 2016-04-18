@@ -428,6 +428,47 @@ body {
     margin-right: 5px;
 }
 /** 댓글목록 끝*/
+
+/**미팅 패널*/
+.meeting-panel #title-panel {
+	padding-left: 10px;
+	padding-bottom: 10px;
+	font-size: 16px;
+}
+
+.meeting-panel .meeting-panel-left {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.meeting-panel .meeting-panel-center {
+	padding-left: 3px;
+	padding-right: 10px;
+}
+
+.meeting-panel .meeting-date {
+	border-radius: 10px 7px 7px 7px;
+	-moz-border-radius: 7px 7px 7px 7px;
+	-webkit-border-radius: 7px 7px 7px 7px;
+	border: 1px solid #bbbbbb;
+}
+
+.meeting-panel .day-of-the-week {
+	border-radius: 7px 7px 0px 0px;
+	-moz-border-radius: 7px 7px 0px 0px;
+	-webkit-border-radius: 7px 7px 0px 0px;
+	background-color: #ff0000;
+	color: #ffffff;
+	text-align: center;
+}
+
+.meeting-panel .day {
+	text-align: center;
+}
+.meeting-panel .meeting-date-time {
+	font-size: 13px;
+}
+/**미팅 패널 끝*/
 .login-panel {
     margin-top: 25%;
 }

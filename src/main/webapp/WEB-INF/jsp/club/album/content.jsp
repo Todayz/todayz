@@ -95,7 +95,7 @@
 								</span>
 								<div class="comments-body clearfix">
 									<div class="header">
-										<strong class="primary-font"><span id="writer">${comment.writer.name}</span></strong>
+										<strong class="primary-font"><span id="writer"><c:out value="${comment.writer.name}"/></span></strong>
 										<sec:authorize access="hasPermission(#club,'ADMINISTRATION') or hasPermission(#comment,'DELETE')">
 										<a id="delete-link" class="pull-right text-muted" href="/comments/${comment.id}"><i class="fa fa-times fa-3x"></i></a>
 										</sec:authorize>

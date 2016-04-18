@@ -253,10 +253,10 @@
 			getClubs(chatComponent);
 			$(window).scroll(
 					function() {
-						console.log('scrollTop : ' + $(window).scrollTop()
-								+ ', documentHeight : '
-								+ $(document).height() + ', windowHeight: '
-								+ $(window).height());						
+						//console.log('scrollTop : ' + $(window).scrollTop()
+						//		+ ', documentHeight : '
+						//		+ $(document).height() + ', windowHeight: '
+						//		+ $(window).height());						
 						//if ($(window).scrollTop() == $(document).height()
 						//		- $(window).height()) {
 						if ($(window).scrollTop() === 0) {

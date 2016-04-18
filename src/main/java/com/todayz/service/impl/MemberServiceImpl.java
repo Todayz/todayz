@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.MemberDto;
+import com.todayz.domain.AclDomain;
 import com.todayz.domain.club.Club;
 import com.todayz.domain.club.Meeting;
 import com.todayz.domain.common.Image;
@@ -59,7 +60,7 @@ public class MemberServiceImpl implements MemberService {
 	private ModelMapper modelMapper;
 
 	@Autowired
-	private TodayzAclService<Club> todayzAclService;
+	private TodayzAclService<AclDomain> todayzAclService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -181,15 +182,17 @@ public class MemberServiceImpl implements MemberService {
 		Club club = clubRepository.findOne(clubId);
 
 		List<Member> members = club.getJoiningMembers();
-		members.add(member);
+		if (!members.contains(member)) {
+			members.add(member);
+			todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
+			todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
+		}
 		// member.getJoinClubs().add(club);
 
 		// System.out.println(club.getJoiningMembers().get(0));
 		// System.out.println(member.getJoinClubs().get(0));
 
 		// TODO Permission Read Write 추가.
-		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
-		todayzAclService.addPermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
 
 		log.info("member join club success. {}", member.getAuthName());
 	}
@@ -199,12 +202,12 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		Club club = clubRepository.findOne(clubId);
 
-		todayzAclService.deletePermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
-		todayzAclService.deletePermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
-
 		List<Member> members = club.getJoiningMembers();
-		members.remove(member);
-
+		if (members.contains(member)) {
+			todayzAclService.deletePermission(club, new PrincipalSid(getUsername()), BasePermission.READ);
+			todayzAclService.deletePermission(club, new PrincipalSid(getUsername()), BasePermission.WRITE);
+			members.remove(member);
+		}
 		log.info("member leave club success. {}", member.getAuthName());
 	}
 
@@ -214,7 +217,12 @@ public class MemberServiceImpl implements MemberService {
 		Meeting meeting = meetingRepository.findOne(meetingId);
 
 		List<Member> members = meeting.getAttachMembers();
-		members.add(member);
+		if (!members.contains(member)) {
+			members.add(member);
+			// 추후에 attach Permission 추가하여 그것으로 변경.
+			todayzAclService.addPermission(meeting, new PrincipalSid(getUsername()), BasePermission.READ);
+			todayzAclService.addPermission(meeting, new PrincipalSid(getUsername()), BasePermission.WRITE);
+		}
 
 		log.info("member attach meeting success. {}", member.getAuthName());
 	}
@@ -225,7 +233,13 @@ public class MemberServiceImpl implements MemberService {
 		Meeting meeting = meetingRepository.findOne(meetingId);
 
 		List<Member> members = meeting.getAttachMembers();
-		members.remove(member);
+		if (members.contains(member)) {
+			// 추후에 attach Permission 추가하여 그것으로 변경.
+			todayzAclService.deletePermission(meeting, new PrincipalSid(getUsername()), BasePermission.READ);
+			todayzAclService.deletePermission(meeting, new PrincipalSid(getUsername()), BasePermission.WRITE);
+
+			members.remove(member);
+		}
 
 		log.info("member detach meeting success. {}", member.getAuthName());
 	}

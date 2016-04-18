@@ -72,7 +72,57 @@
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
-			
+			<div class="row">
+				<c:forEach var="meeting" items="${meetingList}">
+					<div class="col-lg-6 col-md-6">
+						<div class="meeting-panel panel panel-default">
+							<input id="meeting-id" type="hidden" value="${meeting.id}" />
+							<div class="panel-body">
+								<div class="row">
+									<!-- <i class="fa fa-comments fa-5x"></i> -->
+									<div id="title-panel" class="text-primary">
+										<strong><span id="title"><c:out value="${meeting.title}"/></span><span id="quota">(${meeting.quota})</span></strong>
+									</div>
+									<div class="col-xs-3 meeting-panel-left">
+										<div class="meeting-date">
+											<div class="day-of-the-week">목요일</div>
+											<div class="day huge">21</div>
+										</div>
+									</div>
+									<div class="col-xs-6 meeting-panel-center">
+										<time datetime="2016-04-21" class="meeting-date-time">
+											<div class="date-wrap"><i class="fa fa-clock-o fa-fw"></i> <span id="meetingDate">${meeting.meetingDate}</span></div>
+											<div class="place-wrap"><i class="fa fa-map-marker fa-fw"></i><span id="place"><c:out value="${meeting.place}"/></span></div>
+											<div class="costs-wrap"><i class="fa fa-usd fa-fw"></i><span id="attendCosts"><c:out value="${meeting.attendCosts}"/></span></div>
+										</time>
+									</div>
+									<div class="col-xs-3 text-right">
+										<div>
+											<sec:authorize access="hasPermission(#club,'READ') and !hasPermission(#meeting,'READ')">
+												<button id="attach-meeting"
+													class="btn btn-primary attach-meeting meeting-btn">참석</button>
+											</sec:authorize>
+											<sec:authorize access="hasPermission(#club,'READ') and hasPermission(#meeting,'READ')">
+												<button id="detach-meeting"
+													class="btn btn-default detach-meeting meeting-btn">참석취소</button>
+											</sec:authorize>
+										</div>
+									</div>
+								</div>
+							</div>
+							<a id="meeting-view-detail" class="meeting-view-detail">
+								<div class="panel-footer">
+									<span class="pull-left">자세히 보기</span> <span
+										class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+									<div class="clearfix"></div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<!-- /.col-lg-6 .col-md-6-->
+				</c:forEach>
+			</div>
+			<!-- /.row-->
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default notice-panel">
@@ -97,7 +147,7 @@
 						</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<div id="notice">${club.notice}</div>
+							<div id="notice"><c:out value="${club.notice}"/></div>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -105,53 +155,6 @@
 				</div>
 				<!-- /.col-lg-8 -->
 				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							<i class="fa fa-bell fa-fw"></i> Notifications Panel
-						</div>
-						<!-- /.panel-heading -->
-						<div class="panel-body">
-							<div class="list-group">
-								<a href="#" class="list-group-item"> <i
-									class="fa fa-comment fa-fw"></i> New Comment <span
-									class="pull-right text-muted small"><em>4 minutes
-											ago</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-twitter fa-fw"></i> 3 New Followers <span
-									class="pull-right text-muted small"><em>12 minutes
-											ago</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-envelope fa-fw"></i> Message Sent <span
-									class="pull-right text-muted small"><em>27 minutes
-											ago</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-tasks fa-fw"></i> New Task <span
-									class="pull-right text-muted small"><em>43 minutes
-											ago</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-upload fa-fw"></i> Server Rebooted <span
-									class="pull-right text-muted small"><em>11:32 AM</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-bolt fa-fw"></i> Server Crashed! <span
-									class="pull-right text-muted small"><em>11:13 AM</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-warning fa-fw"></i> Server Not Responding <span
-									class="pull-right text-muted small"><em>10:57 AM</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-shopping-cart fa-fw"></i> New Order Placed <span
-									class="pull-right text-muted small"><em>9:49 AM</em> </span>
-								</a> <a href="#" class="list-group-item"> <i
-									class="fa fa-money fa-fw"></i> Payment Received <span
-									class="pull-right text-muted small"><em>Yesterday</em> </span>
-								</a>
-							</div>
-							<!-- /.list-group -->
-							<a href="#" class="btn btn-default btn-block">View All Alerts</a>
-						</div>
-						<!-- /.panel-body -->
-					</div>
-					<!-- /.panel -->
-
 					<div class="members-panel panel panel-default">
 						<div class="panel-heading">
 							<i class="fa fa-comments fa-fw"></i> 가입한 멤버 <strong
@@ -179,7 +182,7 @@
 									</span>
 										<div class="members-body clearfix">
 											<div class="header">
-												<strong class="primary-font">${joiningMember.name}</strong> 
+												<strong class="primary-font"><c:out value="${joiningMember.name}"/></strong> 
 												<small
 													class="pull-right text-muted"> <i
 													class="	fa fa-birthday-cake fa-fw"></i> ${formattedDate}
@@ -207,10 +210,48 @@
 
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
 	 <!-- Script to Activate the Carousel -->
-    <script>
-    $('.carousel').carousel({
-        interval: 5000 //changes the speed
-    })
-    </script>
+    <script type="text/javascript">
+	    $(function() {
+	        $('.carousel').carousel({
+	            interval: 5000 //changes the speed
+	        });
+	        
+	        $('.meeting-btn').on('click', function(event) {
+	        	event.preventDefault();
+	        	var button = $(event.target);
+	        	var meetingId = button.closest('.meeting-panel').find('#meeting-id').val();
+				var url = null;
+				
+				if (button.hasClass('attach-meeting')) {
+					url = '/meetings/' + meetingId
+							+ '/attach';
+				} else {
+					url = '/meetings/' + meetingId
+							+ '/detach';
+				}
+				$.ajax({
+					url : url,
+					type : 'GET',
+					cache : false,
+					success : function(data) {
+						//TODO
+					}.bind(this),
+					error : function(xhr, status, err) {
+						if (console) {
+							console.log(xhr);
+							console.log(status);
+							console.log(err);
+						}
+					}.bind(this)
+				});
+			});
+	
+			$('.meeting-view-detail').on('click', function(event) {
+				event.preventDefault();
+				//TODO 회원목록 출력
+				//alert(2);
+			});
+		});
+	</script>
 </body>
 </html>

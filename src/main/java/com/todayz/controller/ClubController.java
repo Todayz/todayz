@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.todayz.context.web.TodayzSession;
 import com.todayz.domain.club.Club;
+import com.todayz.domain.club.Meeting;
 import com.todayz.domain.club.Menu;
 import com.todayz.domain.common.Comment;
 import com.todayz.domain.item.Article;
@@ -21,10 +22,12 @@ import com.todayz.domain.item.Item;
 import com.todayz.domain.item.PhotoAlbum;
 import com.todayz.domain.member.Member;
 import com.todayz.repository.CommentRepository;
+import com.todayz.repository.MeetingRepository;
 import com.todayz.repository.MenuRepository;
 import com.todayz.security.UserDetailsImpl;
 import com.todayz.service.ClubService;
 import com.todayz.service.ItemService;
+import com.todayz.service.MeetingService;
 import com.todayz.service.MemberService;
 
 //리팩토링 필요.
@@ -45,8 +48,12 @@ public class ClubController {
 	@Autowired
 	private ItemService<Item> itemService;
 
-	// @Autowired
-	// private MemberService memberService;
+	@Autowired
+	private MeetingService meetingService;
+
+	@Autowired
+	private MeetingRepository meetingRepository;
+
 	@Autowired
 	private CommentRepository commentRepository;
 
@@ -67,10 +74,14 @@ public class ClubController {
 		Club club = clubService.getClub(id);
 		model.addAttribute("club", club);
 
-		// System.out.println(club.getJoiningMembers());
+		// menu list
 		List<Menu> menuList = menuRepository.findByParentClub(club);
 		model.addAttribute("menuList", menuList);
 
+		// meeting list
+		List<Meeting> meetingList = meetingRepository.findByParent(club);
+		model.addAttribute("meetingList", meetingList);
+		
 		return "club/main";
 	}
 
@@ -126,6 +137,26 @@ public class ClubController {
 		List<Menu> menuList = menuRepository.findByParentClub(club);
 		model.addAttribute("menuList", menuList);
 		return "club/chat/chat";
+	}
+
+	@RequestMapping({ "/main/{id}/meeting/form" })
+	public String meetingForm(@PathVariable Long id, Model model,
+			@RequestParam(value = "meetingId", required = false) Long meetingId) {
+		if (id == null) {
+			throw new NullPointerException();
+		}
+
+		Club club = clubService.getClub(id);
+		model.addAttribute("club", club);
+
+		// System.out.println(club.getJoiningMembers());
+		List<Menu> menuList = menuRepository.findByParentClub(club);
+		model.addAttribute("menuList", menuList);
+		if (meetingId != null) {
+			Meeting meeting = meetingService.getMeeting(meetingId);
+			model.addAttribute("meeting", meeting);
+		}
+		return "club/meeting/form";
 	}
 
 	@RequestMapping({ "/main/{clubId}/menu/{menuId}/{itemType}/list" })

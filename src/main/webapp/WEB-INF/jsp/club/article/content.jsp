@@ -59,7 +59,7 @@
 												alt="User Avatar" class="img-circle" />
 										</c:otherwise>
 									</c:choose>
-								</span><span id="writer">${article.writer.name}</span></strong>
+								</span><span id="writer"><c:out value="${article.writer.name}"/></span></strong>
 							</div>
 							<small class="text-muted"> <i class="fa fa-clock-o fa-fw"></i>
 								<span id="updatedDate">${article.updatedDate}</span>
@@ -99,7 +99,7 @@
 								</span>
 								<div class="comments-body clearfix">
 									<div class="header">
-										<strong class="primary-font"><span id="writer">${comment.writer.name}</span></strong>
+										<strong class="primary-font"><span id="writer"><c:out value="${comment.writer.name}"/></span></strong>
 										<sec:authorize access="hasPermission(#club,'ADMINISTRATION') or hasPermission(#comment,'DELETE')">
 										<a id="delete-link" class="pull-right text-muted" href="/comments/${comment.id}"><i class="fa fa-times fa-3x"></i></a>
 										</sec:authorize>
