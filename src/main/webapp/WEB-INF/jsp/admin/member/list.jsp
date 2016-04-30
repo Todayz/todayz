@@ -107,9 +107,9 @@
 									var $memberComponent = callback(member);
 									$memberList.append($memberComponent.html());									
 								}
-								$("#loader").hide();
 							});
 							requesting = false;
+							$lodingImg.hide();
 						}
 					}.bind(this),
 					error : function(xhr, status, err) {

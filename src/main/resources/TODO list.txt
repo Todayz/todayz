@@ -28,3 +28,7 @@ Permission.ATTACH 추가.
 삭제기능 없는부분 추가할 것.
 
 미팅 참석자 목록 추가.
+
+Validation 각각 form 마다 추가.
+
+Entity부분 Cascade 부분 수정 필요.

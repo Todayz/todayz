@@ -7,7 +7,6 @@
 <html lang="ko">
 <head>
 <%@ include file="/WEB-INF/jspf/head.jspf"%>
-<title>Login</title>
 </head>
 <body>
 	<!-- Navigation -->
@@ -22,17 +21,24 @@
 	<!-- TODO validation -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-4 col-md-offset-4">
-				<div class="login-panel panel panel-default">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="form-panel signup-panel panel panel-default">
 					<div class="panel-heading">
-						<h3 class="panel-title">Sign Up</h3>
+						<c:choose>
+							<c:when test="${member.id == null}">
+								<h3 class="panel-title">회원가입하기</h3>
+							</c:when>
+							<c:otherwise>
+								<h3 class="panel-title">회원정보수정</h3>
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div class="panel-body">
 						<form id="signup-form" role="form" action="/members">
 							<input type="hidden" id="_csrf" name="_csrf"
 								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>username</label>
+								<label>인증아이디</label>
 								<c:choose>
 									<c:when test="${member.id == null}">
 										<input id="authName" class="form-control" name="authName"
@@ -45,30 +51,30 @@
 								</c:choose>
 							</div>
 							<div class="form-group">
-								<label>password</label> <input class="form-control"
+								<label>비밀번호</label> <input class="form-control"
 									id="password" name="password" type="password" />
 							</div>
 							<div class="form-group">
-								<label>name</label> <input class="form-control" id="name"
+								<label>닉네임</label> <input class="form-control" id="name"
 									name="name" value="${member.name}" type="text" />
 							</div>
 							<div class="form-group">
-								<label>phone number</label> <input class="form-control"
+								<label>휴대폰번호</label> <input class="form-control"
 									id="phoneNumber" name="phoneNumber"
 									value="${member.phoneNumber}" type="text" />
 							</div>
 							<div class="form-group">
-								<label>birthday</label> <input class="form-control"
+								<label>생일</label> <input class="form-control"
 									id="birthday" name="birthday" value="${formattedDate}"
 									type="text" />
 							</div>
 							<div class="form-group">
-								<label>description</label>
+								<label>자신에 대한 설명</label>
 								<textarea class="form-control" id="description"
 									name="description" rows="3"><c:out value="${member.description}"/></textarea>
 							</div>
 							<div class="form-group">
-								<label>profile image</label> 
+								<label>프로필 이미지</label> 
 								<c:if test="${member.profileImage.id != null}">
 									<img alt="" src="/upload/images/${member.profileImage.id}"
 										style="width: 70px; height: auto;">
@@ -77,8 +83,7 @@
 									id="profileImage" name="profileImage" accept="*" />
 								<span id="upload-file-message"></span>
 							</div>
-							<button type="submit" class="btn btn-default">Submit
-								Button</button>
+							<button type="submit" class="btn btn-default">전송</button>
 						</form>
 					</div>
 				</div>
@@ -86,7 +91,6 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
-	<script src="/js/todayz.js"></script>
 	<script type="text/javascript">
 	$(function() {
 		// file upload 관련..참조(아래)

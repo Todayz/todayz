@@ -112,8 +112,8 @@
 									var $clubComponent = callback(club);
 									$clubList.append($clubComponent.html());									
 								}
-								$("#loader").hide();
 							});
+							$lodingImg.hide();
 							requesting = false;
 						}
 					}.bind(this),

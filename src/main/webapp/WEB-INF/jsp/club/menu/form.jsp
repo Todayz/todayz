@@ -22,7 +22,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-4 col-md-offset-4">
-				<div class="login-panel panel panel-default">
+				<div class="form-panel panel panel-default">
 					<div class="panel-heading">
 						<c:choose>
 							<c:when test="${menu.title == null}">
@@ -51,7 +51,6 @@
 		</div>
 	</div>
 	<%@ include file="/WEB-INF/jspf/footer.jspf"%>
-	<script src="/js/todayz.js"></script>
 	<script type="text/javascript">
 		//공통화 필요.
 		// menu.id, club.id

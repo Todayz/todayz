@@ -132,8 +132,8 @@
 									var $albumComponent = callback(album);
 									$albumList.append($albumComponent.html());									
 								}
-								$('#loader').hide();
 							});
+							$lodingImg.hide();
 							requesting = false;
 						}
 					}.bind(this),

@@ -140,8 +140,8 @@
 									var $articleComponent = callback(article);
 									$articleList.append($articleComponent.html());									
 								}
-								$("#loader").hide();
 							});
+							$lodingImg.hide();
 							requesting = false;
 						}
 					}.bind(this),
