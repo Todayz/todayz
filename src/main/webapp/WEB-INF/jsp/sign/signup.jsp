@@ -49,29 +49,35 @@
 											value="${member.authName}" type="text" autofocus disabled />
 									</c:otherwise>
 								</c:choose>
+								<div class="error-message authName"></div>
 							</div>
 							<div class="form-group">
 								<label>비밀번호</label> <input class="form-control"
 									id="password" name="password" type="password" />
+								<div class="error-message password"></div>
 							</div>
 							<div class="form-group">
 								<label>닉네임</label> <input class="form-control" id="name"
 									name="name" value="${member.name}" type="text" />
+								<div class="error-message name"></div>
 							</div>
 							<div class="form-group">
 								<label>휴대폰번호</label> <input class="form-control"
 									id="phoneNumber" name="phoneNumber"
 									value="${member.phoneNumber}" type="text" />
+								<div class="error-message phoneNumber"></div>
 							</div>
 							<div class="form-group">
 								<label>생일</label> <input class="form-control"
 									id="birthday" name="birthday" value="${formattedDate}"
 									type="text" />
+								<div class="error-message birthday"></div>
 							</div>
 							<div class="form-group">
 								<label>자신에 대한 설명</label>
 								<textarea class="form-control" id="description"
 									name="description" rows="3"><c:out value="${member.description}"/></textarea>
+								<div class="error-message description"></div>
 							</div>
 							<div class="form-group">
 								<label>프로필 이미지</label> 
@@ -134,8 +140,15 @@
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {
+					var errors = xhr.responseJSON.errors;
+					errors.forEach(function(obj) {
+						var field = obj.field;
+						$(".error-message." + field).text(obj.defaultMessage);
+					});
+
 					if (console) {
 						console.log(xhr);
+						//console.log(errors);
 						console.log(status);
 						console.log(err);
 					}

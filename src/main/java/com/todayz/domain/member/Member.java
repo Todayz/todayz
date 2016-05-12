@@ -32,17 +32,22 @@ public class Member {
 	@Column(name = "MEMBER_ID")
 	private Long id;
 
-	@Column(unique = true)
+	@Column(length = 20, unique = true, nullable = false)
 	private String authName;
 
+	@Column(length = 256, nullable = false)
 	private String password;
 
+	@Column(length = 100, nullable = false)
 	private String name;
 
+	@Column(length = 600)
 	private String description;
 
+	@Column(length = 15, nullable = false)
 	private String phoneNumber;
 
+	@Column(nullable = false)
 	private Date birthday;
 
 	// image 를 굳이 LAZY 로 불러올 필요가 있는지 확인 필요.
@@ -65,9 +70,10 @@ public class Member {
 	// @OneToMany(mappedBy = "writer")
 	// private List<Item> items;
 
-	//@OneToMany(mappedBy = "parent")
-	//private List<MemberRole> roles = new ArrayList<>();
+	// @OneToMany(mappedBy = "parent")
+	// private List<MemberRole> roles = new ArrayList<>();
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(nullable = false)
 	private Date joinDate;
 }

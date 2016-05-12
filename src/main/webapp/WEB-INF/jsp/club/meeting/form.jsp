@@ -43,26 +43,31 @@
 								<label>제목</label>
 									<input id="title" class="form-control" name="title"
 										value="${meeting.title}" type="text" autofocus />
+									<div class="error-message title"></div>
 							</div>
 							<div class="form-group">
 								<label>모임날짜</label>
 									<input id="meetingDate" class="form-control" name="meetingDate"
 										value="${meeting.meetingDate}" type="text" />
+									<div class="error-message meetingDate"></div>
 							</div>
 							<div class="form-group">
 								<label>정모장소</label>
 									<input id="place" class="form-control" name="place"
 										value="${meeting.place}" type="text" />
+									<div class="error-message place"></div>
 							</div>
 							<div class="form-group">
 								<label>만남비용</label>
 									<input id="attendCosts" class="form-control" name="attendCosts"
 										value="${meeting.attendCosts}" type="text" />
+									<div class="error-message attendCosts"></div>
 							</div>
 							<div class="form-group">
 								<label>정원</label>
 									<input id="quota" class="form-control" name="quota"
 										value="${meeting.quota}" type="text" />
+									<div class="error-message quota"></div>
 							</div>
 							<button type="submit" class="btn btn-default">Submit
 								Button</button>
@@ -116,6 +121,11 @@
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {
+					var errors = xhr.responseJSON.errors;
+					errors.forEach(function(obj) {
+						var field = obj.field;
+						$(".error-message." + field).text(obj.defaultMessage);
+					});
 					if (console) {
 						console.log(xhr);
 						console.log(status);

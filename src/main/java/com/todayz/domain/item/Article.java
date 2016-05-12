@@ -1,6 +1,7 @@
 package com.todayz.domain.item;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -20,6 +21,7 @@ import lombok.ToString;
 @ToString
 public class Article extends Item {
 
+	@Column(length = 200, nullable = false)
 	private String title;
 
 	@Lob

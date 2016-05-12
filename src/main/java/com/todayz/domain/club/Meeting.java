@@ -37,15 +37,19 @@ public class Meeting implements AclDomain {
 	@Column(name = "MEETING_ID")
 	private Long id;
 
+	@Column(length = 100, nullable = false)
 	private String title;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date meetingDate;
 
+	@Column(length = 50, nullable = false)
 	private String place;
 
+	@Column(length = 100, nullable = false)
 	private String attendCosts;
 
+	@Column(nullable = false)
 	private Long quota;
 
 	@ManyToOne(fetch = FetchType.LAZY)

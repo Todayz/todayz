@@ -45,5 +45,6 @@ public class Comment implements AclDomain {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 
+	@Column(length = 256, nullable = false)
 	private String content;
 }

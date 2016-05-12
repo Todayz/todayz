@@ -43,6 +43,7 @@
 								<label>제목</label>
 									<input id="title" class="form-control" name="title"
 										value="${article.title}" type="text" autofocus />
+									<div class="error-message title"></div>
 							</div>
 							<div class="form-group">
 								<label>내용</label>
@@ -118,6 +119,11 @@
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {
+					var errors = xhr.responseJSON.errors;
+					errors.forEach(function(obj) {
+						var field = obj.field;
+						$(".error-message." + field).text(obj.defaultMessage);
+					});
 					if (console) {
 						console.log(xhr);
 						console.log(status);

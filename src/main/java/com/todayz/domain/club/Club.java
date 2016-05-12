@@ -41,6 +41,7 @@ public class Club implements AclDomain {
 	@Column(name = "CLUB_ID")
 	private Long id;
 
+	@Column(length = 100, nullable = false)
 	private String title;
 
 	@OneToOne(cascade = CascadeType.ALL)

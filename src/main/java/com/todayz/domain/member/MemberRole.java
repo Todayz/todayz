@@ -28,5 +28,6 @@ public class MemberRole {
 	@JoinColumn(name = "MEMBER_ID")
 	private Member parent;
 
+	@Column(length = 50, nullable = false)
 	private String role;
 }

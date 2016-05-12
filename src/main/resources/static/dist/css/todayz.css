@@ -616,3 +616,8 @@ table.dataTable thead .sorting:after {
 .panel-yellow a:hover {
     color: #df8a13;
 }
+
+/**valid error message*/
+form .error-message {
+	color: #ff0000;
+}

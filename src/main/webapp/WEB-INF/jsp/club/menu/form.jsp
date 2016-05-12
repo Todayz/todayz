@@ -26,7 +26,7 @@
 					<div class="panel-heading">
 						<c:choose>
 							<c:when test="${menu.title == null}">
-								<h3 class="panel-title">Menu Create page</h3>
+								<h3 class="panel-title">메뉴 추가</h3>
 							</c:when>
 							<c:otherwise>
 								<h3 class="panel-title"><c:out value="${menu.title}"/></h3>
@@ -41,6 +41,7 @@
 								<label>메뉴 이름</label>
 									<input id="title" class="form-control" name="title"
 										value="${menu.title}" type="text" autofocus />
+									<div class="error-message title"></div>
 							</div>
 							<button type="submit" class="btn btn-default">Submit
 								Button</button>
@@ -85,6 +86,12 @@
 					}
 				}.bind(this),
 				error : function(xhr, status, err) {
+					/* var errors = xhr.responseJSON.errors;
+					errors.forEach(function(obj) {
+						var field = obj.field;
+						$(".error-message." + field).text(obj.defaultMessage);
+					}); */
+					console.log(xhr);
 					if (console) {
 						console.log(xhr);
 						console.log(status);

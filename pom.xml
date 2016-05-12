@@ -9,7 +9,7 @@
 	<packaging>war</packaging>
 
 	<name>todayz</name>
-	<description>Demo project for Spring Boot</description>
+	<description>동호회 사이트</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

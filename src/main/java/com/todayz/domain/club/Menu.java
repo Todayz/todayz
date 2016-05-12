@@ -9,6 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,7 +32,9 @@ public class Menu {
 	private Long id;
 
 	// private MenuType type;
-
+	@NotBlank
+	@Size(max = 50)
+	@Column(length = 100, nullable = false)
 	private String title;
 
 	@ManyToOne(fetch = FetchType.LAZY)
