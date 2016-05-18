@@ -27,7 +27,7 @@
 					<div class="panel-heading">
 						<c:choose>
 							<c:when test="${club.title == null}">
-								<h3 class="panel-title">Club Create page</h3>
+								<h3 class="panel-title">클럽 생성 페이지</h3>
 							</c:when>
 							<c:otherwise>
 								<h3 class="panel-title"><c:out value="${club.title}"/></h3>
@@ -39,22 +39,21 @@
 							<input type="hidden" id="_csrf" name="_csrf"
 								value="${_csrf.token}"></input>
 							<div class="form-group">
-								<label>Club title</label>
+								<label>클럽명</label>
 									<input id="title" class="form-control" name="title"
 										value="${club.title}" type="text" autofocus />
 									<div class="error-message title"></div>
 							</div>
 							<div class="form-group">
-								<label>notice</label>
+								<label>설명</label>
 								<textarea class="form-control" id="notice"
 									name="notice" rows="3">${club.notice}</textarea>
 							</div>
 							<div class="form-group">
-								<label>Main image</label> <input type="file"
+								<label>메인 이미지</label> <input type="file"
 									id="mainImage" name="mainImage" />
 							</div>
-							<button type="submit" class="btn btn-default">Submit
-								Button</button>
+							<button type="submit" class="btn btn-default">생성</button>
 						</form>
 					</div>
 				</div>

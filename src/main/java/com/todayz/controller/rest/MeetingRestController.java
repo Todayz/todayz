@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.todayz.context.web.TodayzSession;
 import com.todayz.controller.support.MeetingDto;
+import com.todayz.controller.support.MemberDto;
 import com.todayz.domain.club.Club;
 import com.todayz.domain.club.Meeting;
 import com.todayz.domain.member.Member;
@@ -144,5 +145,17 @@ public class MeetingRestController {
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/meetings/{id}/attachMembers", method = GET)
+	//@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity getAttachMembers(@PathVariable Long id) {
+		if (id == null) {
+			throw new NullPointerException();
+		}
+		Meeting meeting = meetingService.getMeeting(id);
+		List<MemberDto.Response> content = meeting.getAttachMembers().stream()
+				.map(member -> modelMapper.map(member, MemberDto.Response.class)).collect(Collectors.toList());
+		return new ResponseEntity<>(content, HttpStatus.OK);
 	}
 }

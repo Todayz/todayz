@@ -468,7 +468,15 @@ body {
 .meeting-panel .meeting-date-time {
 	font-size: 13px;
 }
-
+.meeting-panel .members-img img {
+	width: 35px;
+	height: 35px;
+}
+.meeting-panel .members li {
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #999;
+}
 /**미팅 패널 끝*/
 .form-panel {
 	margin-top: 25%;

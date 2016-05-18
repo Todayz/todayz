@@ -21,7 +21,7 @@ import lombok.ToString;
 @ToString
 public class Article extends Item {
 
-	@Column(length = 200, nullable = false)
+	@Column(length = 200)
 	private String title;
 
 	@Lob
