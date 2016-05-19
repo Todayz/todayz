@@ -28,9 +28,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.todayz.controller.support.ClubDto;
+import com.todayz.controller.support.MemberDto;
 import com.todayz.domain.club.Club;
+import com.todayz.domain.member.Member;
 import com.todayz.repository.ClubRepository;
 import com.todayz.service.ClubService;
+import com.todayz.service.MemberService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +44,9 @@ public class ClubRestController {
 
 	@Autowired
 	private ClubService clubService;
+
+	@Autowired
+	private MemberService memberService;
 
 	@Autowired
 	private ClubRepository clubRepository;
@@ -82,11 +88,22 @@ public class ClubRestController {
 		return new PageImpl<>(content, pageable, page.getTotalElements());
 	}
 
+	@RequestMapping(value = "/clubs/member/{id}", method = GET)
+	// @ResponseStatus(HttpStatus.OK)
+	public ResponseEntity getJoinedClubs(@PathVariable Long id) {
+		Member member = memberService.getMember(id);
+		List<Club> clubs = member.getJoinClubs();
+		//멤버의 가입된 클럽의 목록만 가져옴.
+		List<ClubDto.Response> content = clubs.stream().map(club -> modelMapper.map(club, ClubDto.Response.class))
+				.collect(Collectors.toList());
+		return new ResponseEntity<>(content, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/clubs/{id}", method = GET)
 	@ResponseStatus(HttpStatus.OK)
 	public ClubDto.Response getClub(@PathVariable Long id) {
-		Club member = clubService.getClub(id);
-		return modelMapper.map(member, ClubDto.Response.class);
+		Club club = clubService.getClub(id);
+		return modelMapper.map(club, ClubDto.Response.class);
 	}
 
 	// file upload 관련..참조(아래)

@@ -1,6 +1,8 @@
 package com.todayz.domain.member;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -9,11 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.todayz.domain.club.Club;
 import com.todayz.domain.common.Image;
 
 import lombok.Getter;
@@ -60,8 +64,8 @@ public class Member {
 	 * 
 	 * // 객체로 바뀔 가능성 존재 private List<String> hobbies;
 	 */
-	// @ManyToMany(mappedBy = "joiningMembers")
-	// private List<Club> joinClubs = new ArrayList<>();
+	@ManyToMany(mappedBy = "joiningMembers")
+	private List<Club> joinClubs = new ArrayList<>();
 
 	// @ManyToMany(mappedBy = "attachMembers")
 	// private List<Meeting> attachMeetings = new ArrayList<>();

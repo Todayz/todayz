@@ -24,7 +24,7 @@
 				<!-- /.col-lg-12 -->
 			</div>
 			<!-- /.row -->
-			<div id="joined-club-list" class="row member-list"></div>
+			<div id="joined-club-list" class="row joined-member-list"></div>
 
 			<div class="row">
 				<div class="col-lg-12">
@@ -78,7 +78,7 @@
 			// ajax 요청을 받는동안 또다른 요청을 하지 않기 위함.
 			var requesting = false;
 
-			// 공통화 필요.
+			// 공통화 필요. 클럽 전체
 			var getClubs = function(callback) {
 				requesting = true;
 				var url = '/clubs';
@@ -128,6 +128,38 @@
 				});
 			};
 
+			//가입한 클럽
+			var getJoinedClubs = function(callback) {
+				var url = '/clubs/member/${userInfo.id}';
+
+				$.ajax({
+					url : url,
+					type : 'GET',
+					cache : false,
+					success : function(data) {
+						if (data) {
+							if(console) {
+								console.log(data);
+							}
+							var $clubList = $('#joined-club-list');
+							var clubs = data;
+							clubs.forEach(function(club) {
+								var $clubComponent = callback(club);
+								$clubList.append($clubComponent.html());
+							});
+						}
+					}.bind(this),
+					error : function(xhr, status, err) {
+						if (console) {
+							console.log(xhr);
+							console.log(status);
+							console.log(err);
+						}
+						alert("error");
+					}.bind(this)
+				});
+			}
+
 			var clubComponent = function(club) {
 			/* private Long id;
 			  private String title;
@@ -157,7 +189,9 @@
 
 				return $clubComponent;
 			}
+			//ready 시 실행.
 			getClubs(clubComponent);
+			getJoinedClubs(clubComponent);
 			$(window).scroll(
 					function() {
 						if ($(window).scrollTop() == $(document).height()

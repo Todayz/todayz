@@ -119,7 +119,7 @@
 							</a>
 							<!-- /.panel-heading -->
 							<div class="panel-body">
-								<ul class="members">
+								<ul class="members" style="display:none;">
 								</ul>
 							</div>
 						</div>
@@ -286,62 +286,64 @@
 				event.preventDefault();
 				//TODO 회원목록 출력
 				var view = $(event.target);
-	        	var meetingId = view.closest('.meeting-panel').find('#meeting-id').val();
-				var url = '/meetings/' + meetingId + '/attachMembers';
-				$.ajax({
-					url : url,
-					type : 'GET',
-					cache : false,
-					success : function(data) {
-						if (data) {
-							if(console) {
-								console.log(data);
-							}
-
-							var attachMembers = data;
-							var $memberList = view.closest('.meeting-panel').find('.members');
-							$memberList.empty();
-							var $attachMemberComponent = $('.attach-member-component');
-							attachMembers.forEach(function(member) {
-								var $name = $attachMemberComponent.find('#name');
-								var $description = $attachMemberComponent.find('#description');
-								var $profileImage = $attachMemberComponent.find('#profileImage');
-								var $birthday = $attachMemberComponent.find('#birthday');
-
-								$name.text('');
-								$description.text('');
-								$birthday.text('');
-
-								$name.text(member.name);
-								$description.text(member.description);
-								if(member.profileImage != null && member.profileImage.id != null) {
-									$profileImage.show();
-									$profileImage.attr('src', '/upload/images/'+member.profileImage.id);
-								} else {
-									 $profileImage.removeAttr('src');
-									 $profileImage.hide();
+				view.closest('.meeting-panel').find('.members').toggle('slow', function() {
+					var meetingId = view.closest('.meeting-panel').find('#meeting-id').val();
+					var url = '/meetings/' + meetingId + '/attachMembers';
+					$.ajax({
+						url : url,
+						type : 'GET',
+						cache : false,
+						success : function(data) {
+							if (data) {
+								if(console) {
+									console.log(data);
 								}
-								$birthday.text(member.birthday);
-								
-								$memberList.append($attachMemberComponent.html());
-							});
-							//$.each(attachMembers, function(index, member) {
-								//alert(member);
-								/* if(idList.indexOf(album.id) == -1){
-									idList.push(album.id);
-									var $albumComponent = callback(album);
-									$albumList.append($albumComponent.html());									
-								} */
-							//});
-						}
-					}.bind(this),
-					error : function(xhr, status, err) {
-						if (console) {
-							console.log(xhr);
-							console.log(status);
-							console.log(err);
-						}
-					}.bind(this)
+
+								var attachMembers = data;
+								var $memberList = view.closest('.meeting-panel').find('.members');
+								$memberList.empty();
+								var $attachMemberComponent = $('.attach-member-component');
+								attachMembers.forEach(function(member) {
+									var $name = $attachMemberComponent.find('#name');
+									var $description = $attachMemberComponent.find('#description');
+									var $profileImage = $attachMemberComponent.find('#profileImage');
+									var $birthday = $attachMemberComponent.find('#birthday');
+
+									$name.text('');
+									$description.text('');
+									$birthday.text('');
+
+									$name.text(member.name);
+									$description.text(member.description);
+									if(member.profileImage != null && member.profileImage.id != null) {
+										$profileImage.show();
+										$profileImage.attr('src', '/upload/images/'+member.profileImage.id);
+									} else {
+										 $profileImage.removeAttr('src');
+										 $profileImage.hide();
+									}
+									$birthday.text(member.birthday);
+									
+									$memberList.append($attachMemberComponent.html());
+								});
+								//$.each(attachMembers, function(index, member) {
+									//alert(member);
+									/* if(idList.indexOf(album.id) == -1){
+										idList.push(album.id);
+										var $albumComponent = callback(album);
+										$albumList.append($albumComponent.html());									
+									} */
+								//});
+							}
+						}.bind(this),
+						error : function(xhr, status, err) {
+							if (console) {
+								console.log(xhr);
+								console.log(status);
+								console.log(err);
+							}
+						}.bind(this)
+					});
 				});
 			});
 		});
